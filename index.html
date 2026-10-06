@@ -227,10 +227,6 @@
       color: var(--pearl);
     }
 
-    .placeholder {
-      /* Temporary targets: replace href values with real locations later. */
-    }
-
     .goal-box {
       background: var(--eggshell);
       border-left: 7px solid var(--crimson);
@@ -381,6 +377,84 @@
       color: var(--noir);
     }
 
+
+    /* Unavailable resource overlay */
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      z-index: 3000;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+      background: rgba(17, 17, 17, 0.72);
+      backdrop-filter: blur(3px);
+    }
+
+    .modal-backdrop.show {
+      display: flex;
+    }
+
+    .modal {
+      width: min(520px, 100%);
+      background: var(--eggshell);
+      color: var(--black);
+      border: 3px solid var(--crimson);
+      box-shadow: 10px 10px 0 var(--noir);
+      padding: 34px;
+      position: relative;
+    }
+
+    .modal-label {
+      color: var(--crimson);
+      font-size: 0.72rem;
+      font-weight: bold;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      margin-bottom: 10px;
+    }
+
+    .modal h2 {
+      font-size: 2rem;
+      margin-bottom: 12px;
+    }
+
+    .modal p {
+      color: var(--muted);
+      margin-bottom: 24px;
+    }
+
+    .modal-close {
+      border: 2px solid var(--noir);
+      background: var(--noir);
+      color: var(--pearl);
+      padding: 11px 18px;
+      font-family: Verdana, Geneva, sans-serif;
+      font-weight: bold;
+      cursor: pointer;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .modal-close:hover {
+      background: var(--crimson);
+      border-color: var(--crimson);
+    }
+
+    .resource-button.status-red .arrow { color: #a51d2d; }
+    .resource-button.status-green .arrow { color: #24734a; }
+    .resource-button.status-blue .arrow { color: #2459a6; }
+
+    .resource-button.status-red:hover,
+    .resource-button.status-green:hover,
+    .resource-button.status-blue:hover {
+      color: var(--pearl);
+    }
+
+    .resource-button.status-red:hover { background: #a51d2d; border-color: #a51d2d; }
+    .resource-button.status-green:hover { background: #24734a; border-color: #24734a; }
+    .resource-button.status-blue:hover { background: #2459a6; border-color: #2459a6; }
+
     @media (max-width: 900px) {
       .resource-grid,
       .people-grid {
@@ -443,7 +517,7 @@
       <div class="eyebrow">CSE499B · Senior Design II · Group 6 · Section 14</div>
       <h1>G.U.A.R.D.I.A.N.</h1>
       <p class="hero-subtitle">
-        Guarded Unified AI for Real-time Driver's Intelligence, Alerting, and Networked-security
+        Guarded Unified AI for Real-time Driver Intelligence, Alerting, and Networked Security
         <br><br>
         A Secure Edge-AI Driver Monitoring and Fleet Management System for Bangladesh Transportation Precautions & Safety
       </p>
@@ -458,53 +532,52 @@
         </div>
 
         <div class="resource-grid">
-          <!-- Replace each temporary href="#" with the actual location later. -->
-          <a class="resource-button placeholder" href="../Frontend/home.html" aria-label="Frontend Design">
-            <span>Interface</span>
+          <a class="resource-button" href="../Frontend/home.html" aria-label="Frontend Design">
+            <span>Interface / Frontend Design</span>
             <span class="arrow">→</span>
           </a>
 
-          <a class="resource-button placeholder" href="../Facial_Expressions" aria-label="Face Detection Dataset">
-            <span>Facial Expression Dataset</span>
+          <a class="resource-button" href="../Facial_Expressions" aria-label="Face Detection Dataset">
+            <span>Face Detection Dataset</span>
             <span class="arrow">→</span>
           </a>
 
-          <a class="resource-button placeholder" href="../Behavior_Dataset" aria-label="Body Behavior Dataset">
-            <span>Body Motion & Behavior Dataset</span>
+          <a class="resource-button" href="../Behavior_Dataset" aria-label="Body Behavior Dataset">
+            <span>Body Motion &amp; Behavior Dataset</span>
             <span class="arrow">→</span>
           </a>
 
-          <a class="resource-button placeholder" href="database.html" aria-label="Database ERD">
-            <span>Database Table: ERD</span>
+          <a class="resource-button" href="database.html" aria-label="Database ERD">
+            <span>Database ERD</span>
             <span class="arrow">→</span>
           </a>
 
-          <a class="resource-button placeholder" href="#" aria-label="Face Detection System">
+          <a class="resource-button" href="../ThroughVideo/src/face_detector.py" aria-label="Face Detection System">
             <span>Face Detection System</span>
             <span class="arrow">→</span>
           </a>
 
-          <a class="resource-button" href="#" aria-label="GPS & Sensors">
-            <span>GPS Tracker & Acceleration Measurement</span>
+          <a class="resource-button status-blue missing-link" href="#" data-resource="GPS Tracker &amp; Acceleration Measurement" aria-label="GPS and Sensors">
+            <span>GPS &amp; Sensor System</span>
             <span class="arrow">→</span>
           </a>
 
-          <a class="resource-button placeholder" href="#" aria-label="Hosted Live Demo">
+          <a class="resource-button status-red missing-link" href="#" data-resource="Host Link to Actual Prototype" aria-label="Hosted Live Demo">
             <span>Host Link to Actual Prototype</span>
             <span class="arrow">→</span>
           </a>
 
-          <a class="resource-button" href="https://github.com/Muhtadina/G.U.A.R.D.I.A.N..git" aria-label="GitHub Repository">
-            <span>GitHub Repository Directory</span>
+          <a class="resource-button status-green" href="https://github.com/Muhtadina/G.U.A.R.D.I.A.N." target="_blank" rel="noopener noreferrer" aria-label="GitHub Repository">
+            <span>GitHub Repository</span>
+            <span class="arrow">↗</span>
+          </a>
+
+          <a class="resource-button status-blue missing-link" href="#" data-resource="Medium Article" aria-label="Medium Article">
+            <span>Medium Article <small>(Coming Soon)</small></span>
             <span class="arrow">→</span>
           </a>
 
-          <a class="resource-button" href="#" aria-label="Medium">
-            <span>Published Journal on Medium</span>
-            <span class="arrow">→</span>
-          </a>
-
-          <a class="resource-button placeholder" href="mailto:muhtadinaserniabat.official@gmail.com?subject=G.U.A.R.D.I.A.N.%20Project" aria-label="Contact">
+          <a class="resource-button" href="mailto:muhtadinaserniabat.official@gmail.com?subject=G.U.A.R.D.I.A.N.%20Project" aria-label="Contact Team">
             <span>Contact Team</span>
             <span class="arrow">→</span>
           </a>
@@ -669,6 +742,53 @@
       </a>
     </div>
   </footer>
+
+
+  <div class="modal-backdrop" id="unavailableModal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+    <div class="modal">
+      <div class="modal-label">Resource unavailable</div>
+      <h2 id="modalTitle">Not available for the moment.</h2>
+      <p id="modalMessage">
+        This part of the G.U.A.R.D.I.A.N. project is not currently hosted or published.
+        It may still be under development, or the link may take more time to become available.
+      </p>
+      <button class="modal-close" id="modalClose" type="button">Close</button>
+    </div>
+  </div>
+
+  <script>
+    const modal = document.getElementById("unavailableModal");
+    const modalTitle = document.getElementById("modalTitle");
+    const modalMessage = document.getElementById("modalMessage");
+    const modalClose = document.getElementById("modalClose");
+
+    document.querySelectorAll(".missing-link").forEach(link => {
+      link.addEventListener("click", event => {
+        event.preventDefault();
+
+        const resource = link.dataset.resource || "This resource";
+        modalTitle.textContent = resource;
+        modalMessage.textContent =
+          "This resource is not available for the moment. It may still be under development, " +
+          "or the actual link may take more time to become available.";
+        modal.classList.add("show");
+      });
+    });
+
+    function closeModal() {
+      modal.classList.remove("show");
+    }
+
+    modalClose.addEventListener("click", closeModal);
+
+    modal.addEventListener("click", event => {
+      if (event.target === modal) closeModal();
+    });
+
+    document.addEventListener("keydown", event => {
+      if (event.key === "Escape") closeModal();
+    });
+  </script>
 
 </body>
 </html>
