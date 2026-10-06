@@ -1,0 +1,652 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>G.U.A.R.D.I.A.N. | Database ERD</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --chalk:#f2f0e8;
+  --eggshell:#ebe5d7;
+  --pearl:#f7f4eb;
+  --black:#111111;
+  --noir:#191919;
+  --crimson:#8e1d2d;
+  --crimson-dark:#651421;
+  --ink:#171717;
+  --muted:#625f59;
+  --line:#c9c2b4;
+  --green:#8e1d2d;
+  --green-dark:#651421;
+}
+*{box-sizing:border-box}
+body{
+  margin:0;background:var(--chalk);color:var(--black);
+  font-family:Verdana,Geneva,sans-serif;
+  line-height:1.65;
+}
+header{
+  position:sticky;top:0;z-index:1000;
+  background:var(--crimson);
+  border-bottom:3px solid var(--crimson-dark);
+}
+.nav{
+  max-width:1200px;margin:auto;min-height:62px;
+  display:flex;align-items:center;justify-content:space-between;
+  gap:24px;padding:0 28px;
+}
+.brand{
+  color:var(--pearl);
+  font-family:"Oswald",sans-serif;
+  font-size:1.35rem;
+  letter-spacing:1.5px;
+  font-weight:600;
+}
+.navlinks{
+  display:flex;align-items:center;gap:24px;
+  list-style:none;flex-wrap:wrap;
+}
+.navlinks a{
+  color:var(--pearl);
+  text-decoration:none;
+  font-size:.78rem;
+  font-weight:bold;
+  letter-spacing:.4px;
+  text-transform:uppercase;
+}
+.navlinks a:hover{text-decoration:underline}
+main{
+  max-width:1200px;margin:auto;padding:72px 28px;
+}
+.crumb{
+  color:var(--crimson);
+  font-size:.75rem;font-weight:bold;
+  letter-spacing:2px;text-transform:uppercase;
+  margin-bottom:12px;
+}
+h1,h2,h3{
+  font-family:"Oswald",sans-serif;
+  font-weight:600;line-height:1.1;
+}
+h1{
+  font-size:clamp(2.8rem,6vw,5rem);
+  letter-spacing:1px;
+  margin:0 0 10px;
+}
+.subtitle{
+  color:var(--muted);
+  max-width:900px;
+  margin:0 0 28px;
+}
+section{}
+.notice{
+  background:var(--eggshell);
+  border-left:7px solid var(--crimson);
+  padding:24px 28px;
+  margin-bottom:30px;
+  font-size:.95rem;
+}
+.notice strong{color:var(--crimson)}
+.toolbar{
+  display:flex;gap:8px;align-items:center;flex-wrap:wrap;
+  margin-bottom:18px;
+}
+button,.search{
+  font:inherit;font-size:.78rem;
+  border:1px solid var(--line);
+  background:var(--pearl);
+  border-radius:0;
+  padding:9px 12px;
+}
+button{
+  cursor:pointer;color:var(--black);
+  font-weight:bold;text-transform:uppercase;
+  letter-spacing:.35px;
+}
+button.active,button:hover{
+  background:var(--crimson);
+  border-color:var(--crimson);
+  color:var(--pearl);
+}
+.search{
+  margin-left:auto;width:230px;outline:none;
+}
+.search:focus{border-color:var(--crimson)}
+.legend{
+  display:flex;gap:18px;flex-wrap:wrap;
+  font-size:.72rem;color:var(--muted);
+  margin-bottom:14px;
+}
+.legend span:before{
+  content:"";display:inline-block;width:9px;height:9px;
+  border-radius:0;background:var(--crimson);
+  margin-right:5px;
+}
+.legend .transport:before{background:#6f8491}
+.legend .ai:before{background:#786a87}
+.legend .alert:before{background:#9c5d58}
+
+.erd-wrap{
+  overflow:auto;
+  border:1px solid var(--line);
+  border-radius:0;
+  background:var(--pearl);
+  padding:18px;
+}
+.erd{
+  min-width:1120px;position:relative;width:1120px;height:940px;
+  background:
+    linear-gradient(rgba(201,194,180,.55) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(201,194,180,.55) 1px,transparent 1px);
+  background-size:24px 24px;
+  border:1px solid var(--line);
+}
+svg{
+  position:absolute;inset:0;width:100%;height:100%;
+  z-index:1;pointer-events:none;overflow:visible;
+}
+svg .relation{
+  fill:none;
+  stroke:#7a746c;
+  stroke-width:1.5;
+  vector-effect:non-scaling-stroke;
+}
+svg .relation.main{
+  stroke:var(--crimson);
+  stroke-width:2;
+}
+svg .cardinality{
+  font-family:Verdana,Geneva,sans-serif;
+  font-size:10px;
+  fill:var(--muted);
+  font-weight:bold;
+}
+.entity{
+  position:absolute;width:190px;
+  background:var(--pearl);
+  border:1px solid var(--line);
+  border-radius:0;
+  z-index:2;
+  box-shadow:none;
+}
+.entity.hidden{display:none}
+.entity-head{
+  padding:9px 10px;
+  border-bottom:2px solid var(--crimson);
+  font-family:"Oswald",sans-serif;
+  font-size:14px;font-weight:600;
+  color:var(--black);
+  display:flex;justify-content:space-between;gap:6px;
+  letter-spacing:.4px;
+}
+.entity-head small{
+  font-family:Verdana,Geneva,sans-serif;
+  font-size:8px;text-transform:uppercase;
+  font-weight:bold;color:var(--crimson);
+  letter-spacing:.5px;
+}
+.entity-body{padding:7px 10px 9px}
+.field{
+  font-family:Consolas,"Courier New",monospace;
+  font-size:10px;padding:2px 0;color:#555;
+  white-space:nowrap;
+}
+.pk{color:#8e5f1f;font-weight:700}
+.fk{color:#3d6476;font-weight:700}
+.group-title{
+  position:absolute;
+  font-family:"Oswald",sans-serif;
+  font-size:12px;color:var(--crimson);
+  text-transform:uppercase;letter-spacing:1.5px;
+  z-index:0;
+}
+.bottom{
+  display:grid;grid-template-columns:repeat(3,1fr);
+  gap:18px;margin-top:28px;
+}
+.card{
+  border:1px solid var(--line);
+  border-radius:0;
+  padding:24px;background:var(--eggshell);
+}
+.card h2{
+  font-family:"Oswald",sans-serif;
+  font-size:1.4rem;margin:0 0 8px;color:var(--crimson);
+}
+.card p,.card li{font-size:.82rem;color:var(--muted)}
+.card ul{margin:7px 0 0;padding-left:18px}
+footer{
+  background:var(--noir);
+  color:var(--pearl);
+  border-top:0;
+  text-align:center;
+  padding:30px 28px;
+  font-size:.75rem;
+}
+@media(max-width:900px){
+  .nav{align-items:flex-start;padding-top:14px;padding-bottom:14px;flex-direction:column}
+  .navlinks{gap:14px}
+  .bottom{grid-template-columns:1fr}
+}
+@media(max-width:600px){
+  main{padding-top:55px}
+  .search{margin-left:0;width:100%}
+  h1{font-size:2.8rem}
+}
+</style>
+</head>
+<body>
+
+<header>
+  <nav class="nav">
+    <div class="brand">G.U.A.R.D.I.A.N.</div>
+    <div class="navlinks">
+      <a href="./">Home</a>
+      <a href="./#resources">Resources</a>
+      <a href="./#goal">Goal</a>
+      <a href="./#weekly-plan">Weekly Plan</a>
+      <a href="./#developers">Developers</a>
+      <a href="./#contact">Contact</a>
+    </div>
+  </nav>
+</header>
+
+<main>
+  <div class="crumb">Project Resources / Database ERD</div>
+  <h1>Database ERD</h1>
+  <p class="subtitle">
+    Draft Entity Relationship Diagram for the G.U.A.R.D.I.A.N. secure edge-AI
+    driver monitoring and fleet management system.
+  </p>
+
+  <div class="notice">
+    <strong>Current draft — v0.1:</strong>
+    This ERD represents the current database planning stage. Entities and relationships
+    may be refined as the backend, dashboard, monitoring pipeline and booking system are developed.
+  </div>
+
+  <div class="toolbar">
+    <button class="active" data-filter="all">All</button>
+    <button data-filter="auth">Authentication</button>
+    <button data-filter="transport">Transport</button>
+    <button data-filter="booking">Passenger</button>
+    <button data-filter="ai">AI Monitoring</button>
+    <button data-filter="alert">Alerting</button>
+    <button data-filter="media">Video</button>
+    <input class="search" id="search" placeholder="Search entities...">
+  </div>
+
+  <div class="legend">
+    <span>Core / authentication</span>
+    <span class="transport">Transport</span>
+    <span class="ai">AI monitoring</span>
+    <span class="alert">Alerting</span>
+  </div>
+
+  <div class="erd-wrap">
+  <div class="erd">
+
+    <svg id="relations" viewBox="0 0 1120 940" preserveAspectRatio="none" aria-label="Entity relationship connectors">
+      <defs>
+        <marker id="one" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
+          <path d="M6,0 L6,7" stroke="currentColor" stroke-width="1.2" fill="none"/>
+        </marker>
+        <marker id="many" markerWidth="10" markerHeight="8" refX="8" refY="4" orient="auto">
+          <path d="M0,0 L8,4 L0,8 M0,4 L8,4" stroke="currentColor" stroke-width="1.2" fill="none"/>
+        </marker>
+      </defs>
+      <g id="relationship-lines"></g>
+    </svg>
+
+    <div class="group-title" style="left:18px;top:15px">01 · Authentication & Access</div>
+    <div class="group-title" style="left:18px;top:220px">02 · Transport</div>
+    <div class="group-title" style="left:18px;top:425px">03 · Trip & Monitoring</div>
+    <div class="group-title" style="left:18px;top:635px">04 · AI Events & Response</div>
+
+    <!-- 01 -->
+    <div class="entity" id="role" data-cat="auth" style="left:0;top:45px">
+      <div class="entity-head">ROLE <small>AUTH</small></div>
+      <div class="entity-body">
+        <div class="field"><span class="pk">PK</span> role_id</div>
+        <div class="field">role_name</div><div class="field">description</div>
+      </div>
+    </div>
+    <div class="entity" id="user_account" data-cat="auth" style="left:240px;top:45px">
+      <div class="entity-head">USER_ACCOUNT <small>AUTH</small></div>
+      <div class="entity-body">
+        <div class="field"><span class="pk">PK</span> user_id</div>
+        <div class="field"><span class="fk">FK</span> role_id</div>
+        <div class="field">email</div><div class="field">phone</div>
+        <div class="field">password_hash</div><div class="field">account_status</div>
+      </div>
+    </div>
+    <div class="entity" id="staff_profile" data-cat="auth" style="left:470px;top:45px">
+      <div class="entity-head">STAFF_PROFILE <small>AUTH</small></div>
+      <div class="entity-body">
+        <div class="field"><span class="pk">PK</span> staff_id</div>
+        <div class="field"><span class="fk">FK</span> user_id</div>
+        <div class="field">name</div><div class="field">designation</div><div class="field">contact</div>
+      </div>
+    </div>
+    <div class="entity" id="audit_log" data-cat="auth" style="left:710px;top:45px">
+      <div class="entity-head">AUDIT_LOG <small>AUTH</small></div>
+      <div class="entity-body">
+        <div class="field"><span class="pk">PK</span> log_id</div>
+        <div class="field"><span class="fk">FK</span> user_id</div>
+        <div class="field">action</div><div class="field">entity_type</div><div class="field">timestamp</div>
+      </div>
+    </div>
+
+    <!-- 02 -->
+    <div class="entity" id="driver" data-cat="transport" style="left:0;top:250px">
+      <div class="entity-head">DRIVER <small>CORE</small></div>
+      <div class="entity-body">
+        <div class="field"><span class="pk">PK</span> driver_id</div>
+        <div class="field">name</div><div class="field">phone</div>
+        <div class="field">image_url</div><div class="field">status</div>
+      </div>
+    </div>
+    <div class="entity" id="driver_private" data-cat="transport" style="left:240px;top:250px">
+      <div class="entity-head">DRIVER_PRIVATE <small>PRIVATE</small></div>
+      <div class="entity-body">
+        <div class="field"><span class="pk">PK</span> driver_private_id</div>
+        <div class="field"><span class="fk">FK</span> driver_id</div>
+        <div class="field">nid</div><div class="field">sensitive_details</div>
+      </div>
+    </div>
+    <div class="entity" id="bus" data-cat="transport" style="left:470px;top:250px">
+      <div class="entity-head">BUS <small>CORE</small></div>
+      <div class="entity-body">
+        <div class="field"><span class="pk">PK</span> bus_id</div>
+        <div class="field">registration_no</div><div class="field">bus_number</div>
+        <div class="field">seat_count</div><div class="field">status</div>
+      </div>
+    </div>
+    <div class="entity" id="conductor" data-cat="transport" style="left:710px;top:250px">
+      <div class="entity-head">CONDUCTOR <small>CORE</small></div>
+      <div class="entity-body">
+        <div class="field"><span class="pk">PK</span> conductor_id</div>
+        <div class="field">name</div><div class="field">phone</div><div class="field">status</div>
+      </div>
+    </div>
+
+    <!-- 03 -->
+    <div class="entity" id="route" data-cat="transport" style="left:0;top:455px">
+      <div class="entity-head">ROUTE <small>ROUTE</small></div>
+      <div class="entity-body">
+        <div class="field"><span class="pk">PK</span> route_id</div>
+        <div class="field">route_name</div><div class="field">origin</div>
+        <div class="field">destination</div><div class="field">status</div>
+      </div>
+    </div>
+    <div class="entity" id="road_segment" data-cat="transport" style="left:240px;top:455px">
+      <div class="entity-head">ROAD_SEGMENT <small>ROAD</small></div>
+      <div class="entity-body">
+        <div class="field"><span class="pk">PK</span> segment_id</div>
+        <div class="field"><span class="fk">FK</span> route_id</div>
+        <div class="field">segment_name</div><div class="field">sequence_no</div>
+      </div>
+    </div>
+    <div class="entity" id="speed_limit" data-cat="transport" style="left:470px;top:455px">
+      <div class="entity-head">SPEED_LIMIT <small>ROAD</small></div>
+      <div class="entity-body">
+        <div class="field"><span class="pk">PK</span> speed_limit_id</div>
+        <div class="field"><span class="fk">FK</span> segment_id</div>
+        <div class="field">max_speed</div><div class="field">effective_from</div>
+      </div>
+    </div>
+    <div class="entity" id="trip_schedule" data-cat="transport" style="left:710px;top:455px">
+      <div class="entity-head">TRIP_SCHEDULE <small>TRIP</small></div>
+      <div class="entity-body">
+        <div class="field"><span class="pk">PK</span> schedule_id</div>
+        <div class="field"><span class="fk">FK</span> route_id</div>
+        <div class="field">departure_time</div><div class="field">arrival_time</div><div class="field">status</div>
+      </div>
+    </div>
+
+    <!-- 04 -->
+    <div class="entity" id="driver_trip" data-cat="ai" style="left:0;top:680px">
+      <div class="entity-head">DRIVER_TRIP <small>CENTRAL</small></div>
+      <div class="entity-body">
+        <div class="field"><span class="pk">PK</span> trip_id</div>
+        <div class="field"><span class="fk">FK</span> driver_id</div>
+        <div class="field"><span class="fk">FK</span> bus_id</div>
+        <div class="field"><span class="fk">FK</span> route_id</div>
+        <div class="field">start_time / end_time</div><div class="field">trip_status</div>
+      </div>
+    </div>
+    <div class="entity" id="gps_telemetry" data-cat="ai" style="left:240px;top:680px">
+      <div class="entity-head">GPS_TELEMETRY <small>GPS</small></div>
+      <div class="entity-body">
+        <div class="field"><span class="pk">PK</span> telemetry_id</div>
+        <div class="field"><span class="fk">FK</span> trip_id</div>
+        <div class="field">timestamp</div><div class="field">latitude / longitude</div>
+        <div class="field">speed</div><div class="field">acceleration</div>
+      </div>
+    </div>
+    <div class="entity" id="live_session" data-cat="ai" style="left:470px;top:680px">
+      <div class="entity-head">LIVE_SESSION <small>LIVE</small></div>
+      <div class="entity-body">
+        <div class="field"><span class="pk">PK</span> session_id</div>
+        <div class="field"><span class="fk">FK</span> trip_id</div>
+        <div class="field">started_at</div><div class="field">ended_at</div><div class="field">stream_status</div>
+      </div>
+    </div>
+    <div class="entity" id="score_record" data-cat="alert" style="left:710px;top:680px">
+      <div class="entity-head">SCORE_RECORD <small>RISK</small></div>
+      <div class="entity-body">
+        <div class="field"><span class="pk">PK</span> score_id</div>
+        <div class="field"><span class="fk">FK</span> trip_id</div>
+        <div class="field">emotion_score</div><div class="field">behavior_score</div>
+        <div class="field">driving_score</div><div class="field">overall_risk</div>
+      </div>
+    </div>
+
+    <div class="entity" id="face_emotion_event" data-cat="ai" style="left:940px;top:680px">
+      <div class="entity-head">FACE_EMOTION_EVENT <small>CV</small></div>
+      <div class="entity-body">
+        <div class="field"><span class="pk">PK</span> event_id</div>
+        <div class="field"><span class="fk">FK</span> session_id</div>
+        <div class="field">timestamp</div><div class="field">emotion</div><div class="field">confidence</div>
+      </div>
+    </div>
+
+    <div class="entity" id="body_motion_event" data-cat="ai" style="left:0;top:855px">
+      <div class="entity-head">BODY_MOTION_EVENT <small>CV</small></div>
+      <div class="entity-body">
+        <div class="field"><span class="pk">PK</span> event_id</div>
+        <div class="field"><span class="fk">FK</span> session_id</div>
+        <div class="field">body_angle</div><div class="field">movement_type</div><div class="field">confidence</div>
+      </div>
+    </div>
+    <div class="entity" id="steering_event" data-cat="ai" style="left:240px;top:855px">
+      <div class="entity-head">STEERING_EVENT <small>CV</small></div>
+      <div class="entity-body">
+        <div class="field"><span class="pk">PK</span> event_id</div>
+        <div class="field"><span class="fk">FK</span> session_id</div>
+        <div class="field">turn_severity</div><div class="field">left_hand</div><div class="field">right_hand</div>
+      </div>
+    </div>
+    <div class="entity" id="alert" data-cat="alert" style="left:470px;top:855px">
+      <div class="entity-head">ALERT <small>RESPONSE</small></div>
+      <div class="entity-body">
+        <div class="field"><span class="pk">PK</span> alert_id</div>
+        <div class="field"><span class="fk">FK</span> score_id</div>
+        <div class="field">alert_type</div><div class="field">severity</div><div class="field">status</div>
+      </div>
+    </div>
+    <div class="entity" id="video_recording" data-cat="media" style="left:710px;top:855px">
+      <div class="entity-head">VIDEO_RECORDING <small>MEDIA</small></div>
+      <div class="entity-body">
+        <div class="field"><span class="pk">PK</span> video_id</div>
+        <div class="field"><span class="fk">FK</span> trip_id</div>
+        <div class="field">start_time / end_time</div><div class="field">storage_path</div><div class="field">retention_until</div>
+      </div>
+    </div>
+    <div class="entity" id="video_archive" data-cat="media" style="left:940px;top:855px">
+      <div class="entity-head">VIDEO_ARCHIVE <small>MEDIA</small></div>
+      <div class="entity-body">
+        <div class="field"><span class="pk">PK</span> archive_id</div>
+        <div class="field"><span class="fk">FK</span> video_id</div>
+        <div class="field">archived_at</div><div class="field">archive_path</div><div class="field">archived_by</div>
+      </div>
+    </div>
+  </div>
+  </div>
+
+  <div class="bottom">
+    <section class="card">
+      <h2>Access Roles</h2>
+      <ul>
+        <li>Passenger</li>
+        <li>Moderator</li>
+        <li>Route Manager</li>
+        <li>Admin</li>
+      </ul>
+    </section>
+    <section class="card">
+      <h2>Core Design</h2>
+      <p>
+        Drivers are monitored entities rather than login accounts.
+        <strong>DRIVER_TRIP</strong> acts as the central record connecting
+        driver, bus, route, telemetry, live monitoring, scores and alerts.
+      </p>
+    </section>
+    <section class="card">
+      <h2>Planned Refinement</h2>
+      <p>
+        Passenger booking/seat records, route assignments, notification and
+        escalation rules, agency structure and the final video-retention workflow
+        will be refined as development progresses.
+      </p>
+    </section>
+  </div>
+</main>
+
+<footer>
+  G.U.A.R.D.I.A.N. · CSE499B · Senior Design II · Group 6 · Section 14
+</footer>
+
+<script>
+const buttons=[...document.querySelectorAll('button[data-filter]')];
+const entities=[...document.querySelectorAll('.entity')];
+const search=document.getElementById('search');
+let active='all';
+
+const relationships = [
+  ["role","user_account","one-to-many",true],
+  ["user_account","staff_profile","one-to-one",false],
+  ["user_account","audit_log","one-to-many",false],
+  ["driver","driver_private","one-to-one",true],
+  ["route","road_segment","one-to-many",false],
+  ["road_segment","speed_limit","one-to-many",false],
+  ["route","trip_schedule","one-to-many",false],
+  ["driver","driver_trip","one-to-many",true],
+  ["bus","driver_trip","one-to-many",false],
+  ["conductor","driver_trip","one-to-many",false],
+  ["trip_schedule","driver_trip","one-to-many",false],
+  ["driver_trip","gps_telemetry","one-to-many",true],
+  ["driver_trip","live_session","one-to-one",true],
+  ["live_session","face_emotion_event","one-to-many",false],
+  ["live_session","body_motion_event","one-to-many",false],
+  ["live_session","steering_event","one-to-many",false],
+  ["driver_trip","score_record","one-to-many",false],
+  ["score_record","alert","one-to-many",true],
+  ["driver_trip","video_recording","one-to-many",false],
+  ["video_recording","video_archive","one-to-one",false]
+];
+
+function box(id){
+  const el=document.getElementById(id);
+  if(!el || el.classList.contains('hidden')) return null;
+  return {
+    el,
+    left:el.offsetLeft, top:el.offsetTop,
+    right:el.offsetLeft+el.offsetWidth,
+    bottom:el.offsetTop+el.offsetHeight,
+    cx:el.offsetLeft+el.offsetWidth/2,
+    cy:el.offsetTop+el.offsetHeight/2
+  };
+}
+
+function addPath(group,d,main=false){
+  const p=document.createElementNS('http://www.w3.org/2000/svg','path');
+  p.setAttribute('d',d);
+  p.setAttribute('class','relation'+(main?' main':''));
+  group.appendChild(p);
+}
+
+function addText(group,x,y,text){
+  const t=document.createElementNS('http://www.w3.org/2000/svg','text');
+  t.setAttribute('x',x);
+  t.setAttribute('y',y);
+  t.setAttribute('class','cardinality');
+  t.textContent=text;
+  group.appendChild(t);
+}
+
+function drawRelationships(){
+  const group=document.getElementById('relationship-lines');
+  if(!group) return;
+  group.innerHTML='';
+
+  relationships.forEach(([aId,bId,type,main])=>{
+    const a=box(aId), b=box(bId);
+    if(!a || !b) return;
+
+    const horizontal=Math.abs(a.cx-b.cx)>=Math.abs(a.cy-b.cy);
+    let x1,y1,x2,y2,mid;
+
+    if(horizontal){
+      if(a.cx<b.cx){
+        x1=a.right; y1=a.cy; x2=b.left; y2=b.cy;
+      }else{
+        x1=a.left; y1=a.cy; x2=b.right; y2=b.cy;
+      }
+      mid=(x1+x2)/2;
+      addPath(group,`M ${x1} ${y1} H ${mid} V ${y2} H ${x2}`,main);
+      addText(group,mid-18,y1-7,'1');
+      addText(group,x2<mid?x2+6:x2-17,y2-7,type==='one-to-one'?'1':'N');
+    }else{
+      if(a.cy<b.cy){
+        x1=a.cx; y1=a.bottom; x2=b.cx; y2=b.top;
+      }else{
+        x1=a.cx; y1=a.top; x2=b.cx; y2=b.bottom;
+      }
+      mid=(y1+y2)/2;
+      addPath(group,`M ${x1} ${y1} V ${mid} H ${x2} V ${y2}`,main);
+      addText(group,x1+7,mid-5,'1');
+      addText(group,x2+7,y2<y1?y2+15:y2-5,type==='one-to-one'?'1':'N');
+    }
+  });
+}
+
+function filter(){
+  const q=search.value.toLowerCase().trim();
+  entities.forEach(e=>{
+    const matchesCat=active==='all'||e.dataset.cat===active;
+    const matchesText=!q||e.innerText.toLowerCase().includes(q);
+    e.classList.toggle('hidden',!(matchesCat&&matchesText));
+  });
+  requestAnimationFrame(drawRelationships);
+}
+
+buttons.forEach(b=>b.onclick=()=>{
+  buttons.forEach(x=>x.classList.remove('active'));
+  b.classList.add('active');
+  active=b.dataset.filter;
+  filter();
+});
+search.oninput=filter;
+
+window.addEventListener('resize',drawRelationships);
+window.addEventListener('load',()=>{
+  filter();
+  drawRelationships();
+});
+</script>
+</body>
+</html>
