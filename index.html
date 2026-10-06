@@ -1,0 +1,674 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>G.U.A.R.D.I.A.N. | CSE499B</title>
+
+  <!-- Google Font: Oswald -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --chalk: #f2f0e8;
+      --eggshell: #ebe5d7;
+      --pearl: #f7f4eb;
+      --black: #111111;
+      --noir: #191919;
+      --crimson: #8e1d2d;
+      --crimson-dark: #651421;
+      --ink: #171717;
+      --muted: #625f59;
+      --line: #c9c2b4;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      background: var(--chalk);
+      color: var(--black);
+      font-family: Verdana, Geneva, sans-serif;
+      line-height: 1.65;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .nav-wrap {
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      background: var(--crimson);
+      border-bottom: 3px solid var(--crimson-dark);
+    }
+
+    nav {
+      max-width: 1200px;
+      margin: auto;
+      min-height: 62px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+      padding: 0 28px;
+    }
+
+    .nav-brand {
+      color: var(--pearl);
+      font-family: "Oswald", sans-serif;
+      font-size: 1.35rem;
+      letter-spacing: 1.5px;
+      font-weight: 600;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 24px;
+      list-style: none;
+      flex-wrap: wrap;
+    }
+
+    .nav-links a {
+      color: var(--pearl);
+      font-size: 0.78rem;
+      font-weight: bold;
+      letter-spacing: 0.4px;
+      text-transform: uppercase;
+    }
+
+    .nav-links a:hover {
+      text-decoration: underline;
+    }
+
+    .hero {
+      max-width: 1200px;
+      margin: auto;
+      padding: 92px 28px 72px;
+    }
+
+    .eyebrow {
+      color: var(--crimson);
+      font-size: 0.78rem;
+      font-weight: bold;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      margin-bottom: 16px;
+    }
+
+    h1, h2, h3 {
+      font-family: "Oswald", sans-serif;
+      font-weight: 600;
+      line-height: 1.1;
+    }
+
+    h1 {
+      font-size: clamp(3.2rem, 8vw, 6.8rem);
+      letter-spacing: 1px;
+      max-width: 1000px;
+    }
+
+    .hero-subtitle {
+      margin-top: 24px;
+      max-width: 900px;
+      font-size: 1.05rem;
+      color: var(--muted);
+    }
+
+    .hero-rule {
+      width: 110px;
+      height: 5px;
+      background: var(--crimson);
+      margin-top: 32px;
+    }
+
+    section {
+      scroll-margin-top: 85px;
+    }
+
+    .section {
+      max-width: 1200px;
+      margin: auto;
+      padding: 72px 28px;
+    }
+
+    .section-heading {
+      margin-bottom: 28px;
+    }
+
+    .section-kicker {
+      color: var(--crimson);
+      font-size: 0.75rem;
+      font-weight: bold;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+
+    h2 {
+      font-size: clamp(2rem, 4vw, 3.5rem);
+    }
+
+    /* Project resource buttons */
+    .resources {
+      background: var(--noir);
+      color: var(--pearl);
+      max-width: none;
+    }
+
+    .resources-inner {
+      max-width: 1200px;
+      margin: auto;
+      padding: 72px 28px;
+    }
+
+    .resources .section-kicker {
+      color: var(--pearl);
+      opacity: 0.75;
+    }
+
+    .resources h2 {
+      color: var(--pearl);
+    }
+
+    .resource-grid {
+      margin-top: 34px;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 14px;
+    }
+
+    .resource-button {
+      min-height: 105px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+      padding: 22px;
+      background: var(--eggshell);
+      color: var(--black);
+      border: 2px solid var(--eggshell);
+      font-family: Verdana, Geneva, sans-serif;
+      font-size: 0.88rem;
+      font-weight: bold;
+      transition: 0.18s ease;
+    }
+
+    .resource-button span:first-child {
+      text-align: left;
+    }
+
+    .resource-button .arrow {
+      color: var(--crimson);
+      font-size: 1.35rem;
+      flex-shrink: 0;
+    }
+
+    .resource-button:hover {
+      background: var(--crimson);
+      border-color: var(--crimson);
+      color: var(--pearl);
+      transform: translateY(-3px);
+    }
+
+    .resource-button:hover .arrow {
+      color: var(--pearl);
+    }
+
+    .placeholder {
+      /* Temporary targets: replace href values with real locations later. */
+    }
+
+    .goal-box {
+      background: var(--eggshell);
+      border-left: 7px solid var(--crimson);
+      padding: 36px;
+      max-width: 1050px;
+      font-size: 1.05rem;
+    }
+
+    .goal-box strong {
+      color: var(--crimson);
+    }
+
+    /* Roadmap */
+    .roadmap {
+      display: grid;
+      gap: 18px;
+      margin-top: 30px;
+    }
+
+    .phase {
+      background: var(--eggshell);
+      border: 1px solid var(--line);
+      padding: 28px;
+    }
+
+    .phase-top {
+      display: flex;
+      justify-content: space-between;
+      gap: 20px;
+      align-items: baseline;
+      border-bottom: 1px solid var(--line);
+      padding-bottom: 14px;
+      margin-bottom: 18px;
+    }
+
+    .phase h3 {
+      font-size: 1.75rem;
+    }
+
+    .weeks {
+      color: var(--crimson);
+      font-size: 0.75rem;
+      font-weight: bold;
+      letter-spacing: 1px;
+      white-space: nowrap;
+      text-transform: uppercase;
+    }
+
+    .phase ul {
+      padding-left: 20px;
+    }
+
+    .phase li + li {
+      margin-top: 8px;
+    }
+
+    .week-one {
+      margin-top: 22px;
+      padding: 26px;
+      border: 2px solid var(--crimson);
+      background: var(--pearl);
+    }
+
+    .week-one h3 {
+      color: var(--crimson);
+      font-size: 1.55rem;
+      margin-bottom: 12px;
+    }
+
+    /* People */
+    .people-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 14px;
+      margin-top: 30px;
+    }
+
+    .person-card {
+      background: var(--eggshell);
+      border: 1px solid var(--line);
+      padding: 25px;
+      min-height: 190px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .person-role {
+      color: var(--crimson);
+      font-size: 0.72rem;
+      font-weight: bold;
+      letter-spacing: 1.4px;
+      text-transform: uppercase;
+      margin-bottom: 16px;
+    }
+
+    .person-card h3 {
+      font-size: 1.35rem;
+    }
+
+    .person-id {
+      color: var(--muted);
+      font-size: 0.78rem;
+      margin-top: 8px;
+    }
+
+    footer {
+      background: var(--noir);
+      color: var(--pearl);
+      padding: 45px 28px;
+    }
+
+    .footer-inner {
+      max-width: 1200px;
+      margin: auto;
+      display: flex;
+      justify-content: space-between;
+      gap: 30px;
+      align-items: center;
+    }
+
+    .footer-title {
+      font-family: "Oswald", sans-serif;
+      font-size: 1.5rem;
+      letter-spacing: 1px;
+    }
+
+    .footer-copy {
+      color: #c9c5bc;
+      font-size: 0.78rem;
+      max-width: 650px;
+      margin-top: 6px;
+    }
+
+    .contact-link {
+      display: inline-block;
+      border: 1px solid var(--pearl);
+      color: var(--pearl);
+      padding: 11px 16px;
+      font-size: 0.78rem;
+      font-weight: bold;
+      text-transform: uppercase;
+      letter-spacing: 0.6px;
+    }
+
+    .contact-link:hover {
+      background: var(--pearl);
+      color: var(--noir);
+    }
+
+    @media (max-width: 900px) {
+      .resource-grid,
+      .people-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      nav {
+        align-items: flex-start;
+        padding-top: 14px;
+        padding-bottom: 14px;
+        flex-direction: column;
+      }
+
+      .nav-links {
+        gap: 14px;
+      }
+    }
+
+    @media (max-width: 600px) {
+      .hero {
+        padding-top: 62px;
+      }
+
+      .resource-grid,
+      .people-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .phase-top,
+      .footer-inner {
+        flex-direction: column;
+      }
+
+      .goal-box,
+      .phase,
+      .person-card {
+        padding: 22px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="nav-wrap">
+    <nav>
+      <a class="nav-brand" href="#home">G.U.A.R.D.I.A.N.</a>
+      <ul class="nav-links">
+        <li><a href="#resources">Resources</a></li>
+        <li><a href="#goal">Goal</a></li>
+        <li><a href="#roadmap">Weekly Plan</a></li>
+        <li><a href="#team">Developers</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+    </nav>
+  </div>
+
+  <main>
+    <header class="hero" id="home">
+      <div class="eyebrow">CSE499B · Senior Design II · Group 6 · Section 14</div>
+      <h1>G.U.A.R.D.I.A.N.</h1>
+      <p class="hero-subtitle">
+        Guarded Unified AI for Real-time Driver's Intelligence, Alerting, and Networked-security
+        <br><br>
+        A Secure Edge-AI Driver Monitoring and Fleet Management System for Bangladesh Transportation Precautions & Safety
+      </p>
+      <div class="hero-rule"></div>
+    </header>
+
+    <section class="resources" id="resources">
+      <div class="resources-inner">
+        <div class="section-heading">
+          <div class="section-kicker">Project Hub</div>
+          <h2>Project Resources</h2>
+        </div>
+
+        <div class="resource-grid">
+          <!-- Replace each temporary href="#" with the actual location later. -->
+          <a class="resource-button placeholder" href="../Frontend/home.html" aria-label="Frontend Design">
+            <span>Interface</span>
+            <span class="arrow">→</span>
+          </a>
+
+          <a class="resource-button placeholder" href="../Facial_Expressions" aria-label="Face Detection Dataset">
+            <span>Facial Expression Dataset</span>
+            <span class="arrow">→</span>
+          </a>
+
+          <a class="resource-button placeholder" href="../Behavior_Dataset" aria-label="Body Behavior Dataset">
+            <span>Body Motion & Behavior Dataset</span>
+            <span class="arrow">→</span>
+          </a>
+
+          <a class="resource-button placeholder" href="database.html" aria-label="Database ERD">
+            <span>Database Table: ERD</span>
+            <span class="arrow">→</span>
+          </a>
+
+          <a class="resource-button placeholder" href="#" aria-label="Face Detection System">
+            <span>Face Detection System</span>
+            <span class="arrow">→</span>
+          </a>
+
+          <a class="resource-button" href="#" aria-label="GPS & Sensors">
+            <span>GPS Tracker & Acceleration Measurement</span>
+            <span class="arrow">→</span>
+          </a>
+
+          <a class="resource-button placeholder" href="#" aria-label="Hosted Live Demo">
+            <span>Host Link to Actual Prototype</span>
+            <span class="arrow">→</span>
+          </a>
+
+          <a class="resource-button" href="https://github.com/Muhtadina/G.U.A.R.D.I.A.N..git" aria-label="GitHub Repository">
+            <span>GitHub Repository Directory</span>
+            <span class="arrow">→</span>
+          </a>
+
+          <a class="resource-button" href="#" aria-label="Medium">
+            <span>Published Journal on Medium</span>
+            <span class="arrow">→</span>
+          </a>
+
+          <a class="resource-button placeholder" href="mailto:muhtadinaserniabat.official@gmail.com?subject=G.U.A.R.D.I.A.N.%20Project" aria-label="Contact">
+            <span>Contact Team</span>
+            <span class="arrow">→</span>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="goal">
+      <div class="section-heading">
+        <div class="section-kicker">The Project</div>
+        <h2>Main Goal</h2>
+      </div>
+
+      <div class="goal-box">
+        <strong>G.U.A.R.D.I.A.N.</strong> aims to build a secure, edge-AI driver monitoring and fleet
+        management system for Bangladesh Transportation. The system is designed to identify observable
+        risky driver states and behavior in real time, relate them to vehicle motion, support timely
+        intervention, minimize continuous raw-video transmission, and securely synchronize relevant metadata.
+      </div>
+    </section>
+
+    <section class="section" id="roadmap">
+      <div class="section-heading">
+        <div class="section-kicker">Senior Design II</div>
+        <h2>10-Week Plan</h2>
+      </div>
+
+      <div class="roadmap">
+
+        <article class="phase">
+          <div class="phase-top">
+            <h3>Phase 01 — Foundation &amp; Data Collection</h3>
+            <div class="weeks">Weeks 1–2</div>
+          </div>
+          <ul>
+            <li>Finalize face detector.</li>
+            <li>Submit NSU IRB request.</li>
+            <li>Begin BRTC/BSPMS institutional contact.</li>
+            <li>Arrange mini camera and collect 3–5 driver recordings and metadata.</li>
+          </ul>
+        </article>
+
+        <article class="phase">
+          <div class="phase-top">
+            <h3>Phase 02 — Baseline Models &amp; Dataset</h3>
+            <div class="weeks">Weeks 2–4</div>
+          </div>
+          <ul>
+            <li>Train drowsiness and emotion models using existing YawDD, FER2013, RAVDESS, and WESAD data.</li>
+            <li>Proceed without depending on real-world data collection.</li>
+            <li>Create an augmented dataset.</li>
+          </ul>
+        </article>
+
+        <article class="phase">
+          <div class="phase-top">
+            <h3>Phase 03 — Backend, Dashboard &amp; Fusion</h3>
+            <div class="weeks">Weeks 3–7</div>
+          </div>
+          <ul>
+            <li>Build dashboard skeleton.</li>
+            <li>Build backend structure.</li>
+            <li>Develop moderator interface.</li>
+            <li>Integrate vehicle motion sensors.</li>
+            <li>Build the motion-residual fusion model using real or simulated telemetry as available.</li>
+          </ul>
+        </article>
+
+        <article class="phase">
+          <div class="phase-top">
+            <h3>Phase 04 — Deployment, Validation &amp; Finalization</h3>
+            <div class="weeks">Weeks 7–10</div>
+          </div>
+          <ul>
+            <li>Complete dashboard frontend.</li>
+            <li>Deploy and test on-device inference.</li>
+            <li>Conduct accuracy testing and end-to-end system integration.</li>
+            <li>Finalize report, demo rehearsal, and pitch preparation.</li>
+          </ul>
+        </article>
+
+      </div>
+
+      <div class="week-one">
+        <h3>Week 01 — Facial landmark &amp; EAR work</h3>
+        <ul>
+          <li>Moved EAR calculation outside the landmark-building loop.</li>
+          <li>Collected all face landmarks first.</li>
+          <li>Verified the existing MediaPipe eye landmark indices.</li>
+          <li>Calculated EAR only after all landmarks were available, preventing the IndexError.</li>
+          <li><code>feature_extractor.py</code> remained logically correct and unchanged.</li>
+        </ul>
+      </div>
+
+      <div class="week-one">
+        <h3>Week 02 — Building Interface & Planning ERD</h3>
+        <ul>
+          <li>. . .</li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="section" id="team">
+      <div class="section-heading">
+        <div class="section-kicker">Team</div>
+        <h2>Developers &amp; Supervisor</h2>
+      </div>
+
+      <div class="people-grid">
+        <article class="person-card">
+          <div>
+            <div class="person-role">Developer</div>
+            <h3>Muhtadina Serniabat Tasin</h3>
+          </div>
+          <div class="person-id">2232160642</br>muhtadina.tasin@northsouth.edu</div>
+          <div class="person-id">Department of Electrical and Computer Engineering · North South University</div>
+        </article>
+
+        <article class="person-card">
+          <div>
+            <div class="person-role">Developer</div>
+            <h3>Farhana Afrin Nahin</h3>
+          </div>
+          <div class="person-id">2221056042</br>farhana.nahin@northsouth.edu</div>
+          <div class="person-id">Department of Electrical and Computer Engineering · North South University</div>
+        </article>
+
+        <article class="person-card">
+          <div>
+            <div class="person-role">Developer</div>
+            <h3>Abtahi Saif</h3>
+          </div>
+          <div class="person-id">2221072642</br>abtahi.saif@northsouth.edu</div>
+          <div class="person-id">Department of Electrical and Computer Engineering · North South University</div>
+        </article>
+
+        <article class="person-card">
+          <div>
+            <div class="person-role">Supervisor</div>
+            <h3>Mr. Abu Obaidah [AbO]</h3>
+            <div class="person-id">Senior Lecturer</div>
+            <div class="person-id">Department of Electrical and Computer Engineering · North South University</div>
+            <div class="person-id"><a href="https://ece.northsouth.edu/people/abu-obaidah/">Click here to view Profile</div>
+          </div>
+        </article>
+      </div>
+    </section>
+  </main>
+
+  <footer id="contact">
+    <div class="footer-inner">
+      <div>
+        <div class="footer-title">G.U.A.R.D.I.A.N.</div>
+        <div class="footer-copy">
+          CSE499B · Senior Design II · Group 6 · Section 16
+        </div>
+      </div>
+
+      <!-- Replace YOUR_EMAIL_HERE with the actual email address later. -->
+      <a class="contact-link" href="mailto:muhtadinaserniabat.official@gmail.com?subject=G.U.A.R.D.I.A.N.%20Project">
+        Contact the Team
+      </a>
+    </div>
+  </footer>
+
+</body>
+</html>
