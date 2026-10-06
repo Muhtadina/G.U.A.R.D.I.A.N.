@@ -2,9 +2,7 @@ import math
 
 
 def distance(p1, p2):
-    """
-    Euclidean distance between two landmark points.
-    """
+    """Calculate Euclidean distance between two points."""
 
     return math.sqrt(
         (p1[0] - p2[0]) ** 2 +
@@ -18,6 +16,9 @@ def calculate_ear(landmarks, eye_points):
 
     eye_points:
         [p1, p2, p3, p4, p5, p6]
+
+    p1 and p4 = horizontal eye corners
+    p2, p3, p5, p6 = vertical eye points
     """
 
     p1 = landmarks[eye_points[0]]
@@ -32,31 +33,11 @@ def calculate_ear(landmarks, eye_points):
 
     horizontal = distance(p1, p4)
 
-    ear = (vertical_1 + vertical_2) / (2.0 * horizontal)
+    if horizontal == 0:
+        return 0.0
+
+    ear = (vertical_1 + vertical_2) / (
+        2.0 * horizontal
+    )
 
     return ear
-
-
-def calculate_mar(landmarks, mouth_points):
-    """
-    Calculate Mouth Aspect Ratio (MAR).
-
-    mouth_points:
-        [left, top1, top2, right, bottom2, bottom1]
-    """
-
-    left = landmarks[mouth_points[0]]
-    top_1 = landmarks[mouth_points[1]]
-    top_2 = landmarks[mouth_points[2]]
-    right = landmarks[mouth_points[3]]
-    bottom_2 = landmarks[mouth_points[4]]
-    bottom_1 = landmarks[mouth_points[5]]
-
-    vertical_1 = distance(top_1, bottom_1)
-    vertical_2 = distance(top_2, bottom_2)
-
-    horizontal = distance(left, right)
-
-    mar = (vertical_1 + vertical_2) / (2.0 * horizontal)
-
-    return mar
