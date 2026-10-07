@@ -1,0 +1,13 @@
+const state={role:localStorage.getItem('guardian_role')||'Moderator'};
+const roles=['Passenger','Moderator','Route Manager','Admin'];
+function toast(msg){const t=document.querySelector('.toast');if(!t)return;t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2200)}
+function setRole(role){state.role=role;localStorage.setItem('guardian_role',role);document.querySelectorAll('[data-role]').forEach(x=>x.classList.toggle('selected',x.dataset.role===role));document.querySelectorAll('[data-current-role]').forEach(x=>x.textContent=role)}
+function login(){setRole(state.role);const targets={'Passenger':'passenger-dashboard.html','Moderator':'dashboard.html','Route Manager':'route-manager-dashboard.html','Admin':'admin.html'};location.href=targets[state.role]||'home.html'}
+function logout(){localStorage.removeItem('guardian_role');location.href='index.html'}
+function nav(){const page=location.pathname.split('/').pop()||'index.html';document.querySelectorAll('.nav a[data-page]').forEach(a=>a.classList.toggle('active',a.dataset.page===page));}
+function requireRole(){document.querySelectorAll('[data-hide-role]').forEach(el=>{const roles=el.dataset.hideRole.split(',');el.classList.toggle('hidden',roles.includes(state.role))});document.querySelectorAll('[data-current-role]').forEach(x=>x.textContent=state.role)}
+function filterTable(inputId,tableId){const input=document.getElementById(inputId),table=document.getElementById(tableId);if(!input||!table)return;input.addEventListener('input',()=>{const q=input.value.toLowerCase();table.querySelectorAll('tbody tr').forEach(r=>r.style.display=r.textContent.toLowerCase().includes(q)?'':'none')})}
+function selectSeat(btn){if(btn.classList.contains('taken'))return;document.querySelectorAll('.seat').forEach(x=>x.classList.remove('selected'));btn.classList.add('selected');document.querySelectorAll('[data-seat-result]').forEach(x=>x.textContent=btn.textContent)}
+function acknowledge(btn){btn.textContent='Acknowledged';btn.disabled=true;btn.classList.remove('red');btn.classList.add('dark');toast('Alert acknowledged. Escalation timer stopped.')} 
+function confirmAction(msg){toast(msg)}
+document.addEventListener('DOMContentLoaded',()=>{nav();requireRole();document.querySelectorAll('[data-role]').forEach(b=>b.addEventListener('click',()=>setRole(b.dataset.role)));document.querySelectorAll('[data-seat]').forEach(b=>b.addEventListener('click',()=>selectSeat(b)));document.querySelectorAll('[data-ack]').forEach(b=>b.addEventListener('click',()=>acknowledge(b)));document.querySelectorAll('[data-toast]').forEach(b=>b.addEventListener('click',()=>toast(b.dataset.toast)));});
