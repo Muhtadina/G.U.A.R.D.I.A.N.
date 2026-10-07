@@ -1,0 +1,40 @@
+Adhikari, B., Duric, Z., Wijesekera, D., & Yu, B. (2025). Repeated Route Naturalistic Driver Behavior Analysis Using Motion and Gaze Measurements. IEEE Transactions on Intelligent Transportation Systems, 26, 3273-3283. (https://doi.org/10.1109/tits.2024.3520893)
+
+Agung, E. S., Rifai, A., & Wijayanto, T. (2024). Image-based facial emotion recognition using convolutional neural network on emognition dataset. Scientific Reports, 14. (https://doi.org/10.1038/s41598-024-65276-x)
+
+Ben, X., Ren, Y., Zhang, J., Wang, S.-J., Kpalma, K., Meng, W., & Liu, Y.-J. (2021). Video-Based Facial Micro-Expression Analysis: A Survey of Datasets, Features and Algorithms. IEEE Transactions on Pattern Analysis and Machine Intelligence, 44, 5826-5846. https://doi.org/10.1109/tpami.2021.3067464
+
+Bertram, T. (2024). A multimodal driver monitoring benchmark dataset for driver modeling in assisted driving automation. Scientific Data, 11. https://doi.org/10.1038/s41597-024-03137-y
+
+Boukerche, A. (2021). Driving Behavior Analysis Guidelines for Intelligent Transportation Systems. IEEE Transactions on Intelligent Transportation Systems, 23, 6027-6045. https://doi.org/10.1109/tits.2021.3076140
+
+Canal, F. Z., Müller, T. R., Matias, J. C., Scotton, G. G., De Sá, A. R., Pozzebon, E., & Sobieranski, A. (2021). A survey on facial emotion recognition techniques: A state-of-the-art literature review. Inf. Sci., 582, 593-617. https://doi.org/10.1016/j.ins.2021.10.005
+
+Gaya-Morey, F. X., Manresa-Yee, C., Martinie, C., & Buades-Rubio, J. (2025). Evaluating Facial Expression Recognition Datasets for Deep Learning: A Benchmark Study With Novel Similarity Metrics. IEEE Transactions on Affective Computing, 17, 3717-3729. https://doi.org/10.1109/taffc.2026.3693316
+
+Houston, J., Zuidhof, G., Bergamini, L., Ye, Y., Chen, L., Jain, A., Omari, S., Iglovikov, V., & Ondruska, P. (2020). One Thousand and One Hours: Self-driving Motion Prediction Dataset. 409-418. https://doi.org/10.48550/arxiv.2006.14480
+
+Kosti, R., Álvarez, J., Recasens, A., & Lapedriza, À. (2020). Context Based Emotion Recognition Using EMOTIC Dataset. IEEE Transactions on Pattern Analysis and Machine Intelligence, 42, 2755-2766. https://doi.org/10.1109/tpami.2019.2916866
+
+Li, W., Cui, Y.-D., Y., Chen, X., Li, G.-F., Zeng, G.-Z., Guo, G., & Cao, D. (2021). A Spontaneous Driver Emotion Facial Expression (DEFE) Dataset for Intelligent Vehicles: Emotions Triggered by Video-Audio Clips in Driving Scenarios. IEEE Transactions on Affective Computing, 14, 747-760. https://doi.org/10.1109/taffc.2021.3063387
+
+Martin, M., Roitberg, A., Haurilet, M., Horne, M., Reiß, S., Voit, M., & Stiefelhagen, R. (2019). Drive&Act: A Multi-Modal Dataset for Fine-Grained Driver Behavior Recognition in Autonomous Vehicles. 2019 IEEE/CVF International Conference on Computer Vision (ICCV), 2801-2810. https://doi.org/10.1109/iccv.2019.00289
+
+Mollahosseini, A., Hasani, B., & Mahoor, M. (2017). AffectNet: A Database for Facial Expression, Valence, and Arousal Computing in the Wild. IEEE Transactions on Affective Computing, 10, 18-31. https://doi.org/10.1109/taffc.2017.2740923
+
+Ramanishka, V., Chen, Y.-T., Misu, T., & Saenko, K. (2018). Toward Driving Scene Understanding: A Dataset for Learning Driver Behavior and Causal Reasoning. 2018 IEEE/CVF Conference on Computer Vision and Pattern Recognition, 7699-7707. https://doi.org/10.1109/cvpr.2018.00803
+
+Saganowski, S., Komoszynska, J., Behnke, M., Perz, B., Kunc, D., Klich, B., Kaczmarek, Ł., & Kazienko, P. (2022). Emognition dataset: emotion recognition with self-reports, facial expressions, and physiology using wearables. Scientific Data, 9. https://doi.org/10.1038/s41597-022-01262-0
+
+Taamneh, S., Tsiamyrtzis, P., Dcosta, M., Buddharaju, P., Khatri, A., Manser, M., Ferris, T., Wunderlich, R., & Pavlidis, I. (2017). A multimodal dataset for various forms of distracted driving. Scientific Data, 4, 10762 - 10774. https://doi.org/10.1038/sdata.2017.110
+
+Tan, D., Tian, W., Wang, C., Chen, L., & Xiong, L. (2024). Driver Distraction Behavior Recognition for Autonomous Driving: Approaches, Datasets and Challenges. IEEE Transactions on Intelligent Vehicles, 9, 8000-8026. https://doi.org/10.1109/tiv.2024.3405990
+
+Tao, X.-M., Gao, D., Zhang, W.-Q., Liu, T., Du, B., Zhang, S., & Qin, Y.-J. (2024). A multimodal physiological dataset for driving behaviour analysis. Scientific Data, 11. https://doi.org/10.1038/s41597-024-03222-2
+
+Xiang, G., Yao, S., Deng, H., Wu, X., Wang, X., Xu, Q., Yu, T., Wang, K., & Peng, Y. (2024). A multi-modal driver emotion dataset and study: Including facial expressions and synchronized physiological signals. Eng. Appl. Artif. Intell., 130, 107772. https://doi.org/10.1016/j.engappai.2023.107772
+
+Yadav, K. S., & Kumar, L. (2026). FER20E: An Extended Facial Expression Recognition Dataset With 20 Discrete Emotions. IEEE Transactions on Image Processing, 35, 8775-8787. https://doi.org/10.1109/tip.2026.3721357
+
+Zhan, W., Sun, L.-T., Wang, D., Shi, H., Clausse, A., Naumann, M., Königshof, H., Stiller, C., De La Fortelle, A., & Tomizuka, M. (2019). INTERACTION Dataset: An INTERnational, Adversarial and Cooperative moTION Dataset in Interactive Driving Scenarios with Semantic Maps. ArXiv, abs/1910.03088. https://doi.org/10.48550/arxiv.1910.03088
+
