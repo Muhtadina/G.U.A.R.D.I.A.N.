@@ -137,7 +137,7 @@ button.active,button:hover{
   padding:18px;
 }
 .erd{
-  min-width:1120px;position:relative;width:1120px;height:1010px;
+  min-width:1120px;position:relative;width:1120px;height:1320px;
   background:
     linear-gradient(rgba(201,194,180,.55) 1px,transparent 1px),
     linear-gradient(90deg,rgba(201,194,180,.55) 1px,transparent 1px);
@@ -263,10 +263,9 @@ footer{
   </p>
 
   <div class="notice">
-    <strong>Current draft — v0.1:</strong>
-    This ERD is designed around the actual G.U.A.R.D.I.A.N. operating model. Passenger, moderator,
-    route manager and admin are login accounts with separate operational profiles; drivers and conductors
-    are profiled operational entities and do not receive login accounts.
+    <strong>Current Draft — V0.1:</strong>
+    This ERD is designed around the actual G.U.A.R.D.I.A.N. operating model. Passenger, moderator, route manager and admin are the four login roles; drivers and conductors
+    are operational entities and do not receive login accounts. This is a conceptual draft, not the final normalized schema. [Weekly Progress II]
   </div>
 
   <div class="toolbar">
@@ -290,7 +289,7 @@ footer{
   <div class="erd-wrap">
   <div class="erd">
 
-    <svg id="relations" viewBox="0 0 1120 1010" preserveAspectRatio="none" aria-label="Entity relationship connectors">
+    <svg id="relations" viewBox="0 0 1120 1320" preserveAspectRatio="none" aria-label="Entity relationship connectors">
       <defs>
         <marker id="one" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
           <path d="M6,0 L6,7" stroke="currentColor" stroke-width="1.2" fill="none"/>
@@ -512,6 +511,79 @@ footer{
         <div class="field">archived_at</div><div class="field">archive_path</div><div class="field">archived_by</div>
       </div>
     </div>
+
+    <div class="group-title" style="left:18px;top:1020px">05 · Passenger Booking & Feedback</div>
+    <div class="entity" id="booking" data-cat="booking" style="left:0;top:1050px">
+      <div class="entity-head">BOOKING <small>PASSENGER</small></div>
+      <div class="entity-body">
+        <div class="field"><span class="pk">PK</span> booking_id</div>
+        <div class="field"><span class="fk">FK</span> passenger_id</div>
+        <div class="field"><span class="fk">FK</span> trip_id</div>
+        <div class="field">booking_time</div><div class="field">status</div>
+      </div>
+    </div>
+    <div class="entity" id="booking_seat" data-cat="booking" style="left:240px;top:1050px">
+      <div class="entity-head">BOOKING_SEAT <small>PASSENGER</small></div>
+      <div class="entity-body">
+        <div class="field"><span class="pk">PK</span> booking_seat_id</div>
+        <div class="field"><span class="fk">FK</span> booking_id</div>
+        <div class="field"><span class="fk">FK</span> seat_id</div>
+        <div class="field">price</div><div class="field">status</div>
+      </div>
+    </div>
+    <div class="entity" id="payment" data-cat="booking" style="left:470px;top:1050px">
+      <div class="entity-head">PAYMENT <small>PASSENGER</small></div>
+      <div class="entity-body">
+        <div class="field"><span class="pk">PK</span> payment_id</div>
+        <div class="field"><span class="fk">FK</span> booking_id</div>
+        <div class="field">method</div><div class="field">status</div><div class="field">transaction_ref</div>
+      </div>
+    </div>
+    <div class="entity" id="rating" data-cat="booking" style="left:710px;top:1050px">
+      <div class="entity-head">RATING <small>PASSENGER</small></div>
+      <div class="entity-body">
+        <div class="field"><span class="pk">PK</span> rating_id</div>
+        <div class="field"><span class="fk">FK</span> passenger_id</div>
+        <div class="field"><span class="fk">FK</span> trip_id</div>
+        <div class="field"><span class="fk">FK</span> driver_id</div>
+        <div class="field">rating</div><div class="field">comment</div>
+      </div>
+    </div>
+    <div class="entity" id="notification" data-cat="alert" style="left:940px;top:1050px">
+      <div class="entity-head">NOTIFICATION <small>ALERT</small></div>
+      <div class="entity-body">
+        <div class="field"><span class="pk">PK</span> notification_id</div>
+        <div class="field"><span class="fk">FK</span> alert_id</div>
+        <div class="field"><span class="fk">FK</span> recipient_id</div>
+        <div class="field">sound_enabled</div><div class="field">read_status</div>
+      </div>
+    </div>
+    <div class="group-title" style="left:18px;top:1195px">06 · Automated Response</div>
+    <div class="entity" id="alert_action" data-cat="alert" style="left:0;top:1220px">
+      <div class="entity-head">ALERT_ACTION <small>RESPONSE</small></div>
+      <div class="entity-body">
+        <div class="field"><span class="pk">PK</span> action_id</div>
+        <div class="field"><span class="fk">FK</span> alert_id</div>
+        <div class="field"><span class="fk">FK</span> actor_id</div>
+        <div class="field">action</div><div class="field">timestamp</div>
+      </div>
+    </div>
+    <div class="entity" id="escalation_rule" data-cat="alert" style="left:285px;top:1220px">
+      <div class="entity-head">ESCALATION_RULE <small>SYSTEM</small></div>
+      <div class="entity-body">
+        <div class="field"><span class="pk">PK</span> rule_id</div>
+        <div class="field">alert_type</div><div class="field">timeout</div>
+        <div class="field">escalation_level</div><div class="field">system_action</div>
+      </div>
+    </div>
+    <div class="entity" id="bus_seat" data-cat="transport" style="left:570px;top:1220px">
+      <div class="entity-head">BUS_SEAT <small>TRANSPORT</small></div>
+      <div class="entity-body">
+        <div class="field"><span class="pk">PK</span> seat_id</div>
+        <div class="field"><span class="fk">FK</span> bus_id</div>
+        <div class="field">seat_number</div><div class="field">seat_type</div>
+      </div>
+    </div>
   </div>
   </div>
 
@@ -536,8 +608,8 @@ footer{
     <section class="card">
       <h2>Planned Refinement</h2>
       <p>
-        Passenger booking/seat records, route assignments, notification and
-        escalation rules, agency structure and the final video-retention workflow
+        Cardinalities, route assignment history, notification/escalation timing,
+        agency scoping, scoring thresholds, retention rules and final constraints
         will be refined as development progresses.
       </p>
     </section>
@@ -566,6 +638,7 @@ const relationships = [
   ["route","trip_schedule","one-to-many",false],
   ["driver","driver_trip","one-to-many",true],
   ["bus","driver_trip","one-to-many",false],
+  ["bus","bus_seat","one-to-many",false],
   ["conductor","driver_trip","one-to-many",false],
   ["trip_schedule","driver_trip","one-to-many",false],
   ["driver_trip","gps_telemetry","one-to-many",true],
@@ -576,7 +649,17 @@ const relationships = [
   ["driver_trip","score_record","one-to-many",false],
   ["score_record","alert","one-to-many",true],
   ["driver_trip","video_recording","one-to-many",false],
-  ["video_recording","video_archive","one-to-one",false]
+  ["video_recording","video_archive","one-to-one",false],
+  ["passenger_profile","booking","one-to-many",true],
+  ["driver_trip","booking","one-to-many",true],
+  ["booking","booking_seat","one-to-many",false],
+  ["bus_seat","booking_seat","one-to-many",false],
+  ["booking","payment","one-to-one",false],
+  ["passenger_profile","rating","one-to-many",false],
+  ["driver_trip","rating","one-to-many",false],
+  ["driver","rating","one-to-many",false],
+  ["alert","notification","one-to-many",true],
+  ["alert","alert_action","one-to-many",false]
 ];
 
 function box(id){
