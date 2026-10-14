@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="G.U.A.R.D.I.A.N. development progress: upper-body pose detection, feature extraction, arm-elevation validation, and next steps.">
+  <title>G.U.A.R.D.I.A.N. | COMPUTER VISION</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --crimson: #8e1d2d;
+      --crimson-dark: #651421;
+      --chalk: #f2f0e8;
+      --eggshell: #ebe5d7;
+      --noir: #191919;
+      --muted: #69645e;
+      --line: #d2c9b8;
+      --panel: #fffdf7;
+      --amber: #9b6515;
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; scroll-padding-top: 90px; }
+    body { margin: 0; background: var(--chalk); color: var(--noir); font-family: Verdana, sans-serif; line-height: 1.7; }
+    a { color: var(--crimson); }
+    .topbar { position: sticky; top: 0; z-index: 20; background: var(--crimson); color: var(--chalk); border-bottom: 4px solid var(--crimson-dark); }
+    .nav { max-width: 1200px; margin: auto; padding: 12px 22px; display: flex; gap: 22px; align-items: center; justify-content: space-between; }
+    .brand { font: 600 1.15rem 'Oswald', sans-serif; letter-spacing: .08em; white-space: nowrap; color: var(--chalk); text-decoration: none; }
+    .navlinks { display: flex; gap: 17px; flex-wrap: wrap; justify-content: flex-end; }
+    .navlinks a { color: var(--chalk); font-size: .78rem; text-decoration: none; font-weight: bold; }
+    .navlinks a:hover { text-decoration: underline; }
+    .hero { background: var(--noir); color: var(--chalk); border-bottom: 8px solid var(--crimson); }
+    .hero-inner { max-width: 1200px; margin: auto; padding: 62px 22px 54px; }
+    .eyebrow { color: #e8a6ad; text-transform: uppercase; font-size: .75rem; font-weight: bold; letter-spacing: .17em; }
+    h1, h2, h3 { font-family: 'Oswald', sans-serif; line-height: 1.2; text-transform: uppercase; }
+    h1 { font-size: clamp(2.4rem, 6vw, 4.8rem); max-width: 850px; margin: 12px 0; letter-spacing: .015em; }
+    .hero p { max-width: 760px; color: #e4dfd6; font-size: 1rem; }
+    .meta { display: flex; flex-wrap: wrap; gap: 9px; margin-top: 25px; }
+    .tag { display: inline-block; padding: 5px 10px; border: 1px solid #716a62; font-size: .72rem; letter-spacing: .04em; }
+    main { max-width: 1200px; margin: auto; padding: 30px 22px 65px; }
+    section { margin: 0 0 34px; }
+    .section-head { display: flex; gap: 16px; align-items: baseline; border-bottom: 2px solid var(--noir); margin-bottom: 18px; }
+    .section-head h2 { font-size: clamp(1.5rem, 3vw, 2rem); margin: 0 0 9px; }
+    .section-no { color: var(--crimson); font: 600 1.1rem 'Oswald', sans-serif; }
+    .lead { font-size: 1.03rem; max-width: 950px; }
+    .grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 15px; }
+    .panel { background: var(--panel); border: 1px solid var(--line); border-top: 4px solid var(--crimson); padding: 19px; min-width: 0; }
+    .panel h3 { margin: 0 0 8px; font-size: 1.12rem; }
+    .panel p:last-child { margin-bottom: 0; }
+    .status { display: inline-block; font-size: .7rem; font-weight: bold; letter-spacing: .06em; padding: 3px 7px; border: 1px solid currentColor; text-transform: uppercase; }
+    .status.done { color: #315b3b; }
+    .status.progress { color: var(--amber); }
+    .status.pending { color: var(--muted); }
+    .gallery { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px; }
+    figure { margin: 0; background: var(--panel); border: 1px solid var(--line); padding: 12px; }
+    figure img { display: block; width: 100%; aspect-ratio: 16 / 9; object-fit: contain; background: var(--eggshell); border: 1px dashed #b8ad9b; }
+    figcaption { padding: 10px 2px 2px; font-size: .85rem; }
+    figcaption strong { display: block; font-family: 'Oswald', sans-serif; text-transform: uppercase; font-size: 1rem; }
+    .insert-note { color: var(--muted); font-size: .78rem; }
+    .callout { border-left: 5px solid var(--crimson); background: var(--eggshell); padding: 15px 18px; margin: 18px 0; }
+    .callout.warning { border-left-color: var(--amber); }
+    pre { overflow-x: auto; background: var(--noir); color: #f4f0e8; padding: 16px; font: .86rem/1.6 Consolas, 'Courier New', monospace; border: 1px solid #3b3935; }
+    code { font-family: Consolas, 'Courier New', monospace; }
+    :not(pre) > code { background: #e4ddcf; padding: 2px 5px; }
+    .table-wrap { overflow-x: auto; }
+    table { border-collapse: collapse; width: 100%; background: var(--panel); }
+    th, td { text-align: left; padding: 11px 12px; border: 1px solid var(--line); vertical-align: top; }
+    th { background: var(--noir); color: var(--chalk); font-family: 'Oswald', sans-serif; text-transform: uppercase; font-weight: 500; }
+    .steps { padding-left: 23px; }
+    .steps li { margin: 0 0 10px; }
+    footer { background: var(--noir); color: #e7e0d5; border-top: 7px solid var(--crimson); }
+    .footer-inner { max-width: 1200px; margin: auto; padding: 25px 22px 30px; display: flex; gap: 22px; justify-content: space-between; flex-wrap: wrap; }
+    footer strong { font-family: 'Oswald', sans-serif; text-transform: uppercase; color: white; }
+    footer p { margin: 4px 0; font-size: .85rem; }
+    @media (max-width: 760px) { .nav { align-items: flex-start; flex-direction: column; gap: 8px; } .navlinks { justify-content: flex-start; gap: 12px; } .grid { grid-template-columns: 1fr; } .gallery { grid-template-columns: 1fr; } .hero-inner { padding-top: 42px; } }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <nav class="nav" aria-label="Main navigation">
+      <a class="brand" href="index.html">G.U.A.R.D.I.A.N.</a>
+      <div class="navlinks">
+        <a href="#overview">Overview</a>
+        <a href="#screenshots">Screenshots</a>
+        <a href="#methods">Methods</a>
+        <a href="#testing">Testing</a>
+        <a href="#next-steps">Next Steps</a>
+      </div>
+    </nav>
+  </header>
+
+  <header class="hero">
+    <div class="hero-inner">
+      <div class="eyebrow">CSE499.16 · Senior Engineering Design · Group 6</div>
+      <h1>COMPUTER VISION </br>PROGRESS UPDATE</h1>
+      <p>Face landmarks, eye-openness measurement, upper-body pose estimation, and geometric feature extraction — a record of the current local prototype.</p>
+      <div class="meta">
+        <span class="tag">REPORT PROGRESS: ON GOING</span>
+        <span class="tag">PIPELINE: COMPUTER VISION</span>
+        <span class="tag">CURRENT FOCUS: ANGLE VALIDATION</span>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <!-- SECTION ORDER: Overview first, then screenshot gallery, then Methods. -->
+    <section id="overview">
+      <div class="section-head"><span class="section-no">01</span><h2>Overview</h2></div>
+      <p class="lead">Today’s work focused on checking the upper-body pose pipeline and validating the arm-elevation feature before adding data logging. The webcam-based MediaPipe Pose Landmarker pipeline is in place, and the feature-extraction module contains an Eye Aspect Ratio (EAR) helper and an arm-angle function. The arm-elevation readings are not yet validated, so this report records the issue honestly rather than presenting the calculation as complete.</p>
+      <div class="grid">
+        <article class="panel">
+          <span class="status done">Completed</span>
+          <h3>Pipeline inspection</h3>
+          <p>Reviewed <code>pose_detector.py</code> and <code>feature_extractor.py</code>, and created backup copies before further edits.</p>
+        </article>
+        <article class="panel">
+          <span class="status done">Verified</span>
+          <h3>Degree conversion</h3>
+          <p>Confirmed that Python’s <code>math.degrees(math.acos(x))</code> returns 0°, 90°, and 180° for cosine inputs 1, 0, and −1.</p>
+        </article>
+        <article class="panel">
+          <span class="status progress">In progress</span>
+          <h3>Arm-elevation validation</h3>
+          <p>Observed readings did not match the expected angle range. The source of the discrepancy remains under investigation.</p>
+        </article>
+      </div>
+      <div class="callout warning"><strong>Current limitation:</strong> Do not use arm-elevation values for driver scoring, alerts, or model training until the calculation and landmark geometry have been verified.</div>
+    </section>
+
+    <section id="screenshots">
+      <div class="section-head"><span class="section-no">02</span><h2>Implementation Screenshots</h2></div>
+      <p>Insert the screenshots captured during development in the four image slots below. Keep this gallery between the overview and methods so readers can see the implementation evidence before the technical explanation.</p>
+      <div class="gallery">
+        <figure>
+          <!-- INSERT SCREENSHOT: face landmarks / facial landmark detection. Suggested file: images/face-landmarks.png -->
+          <img src="images/face-landmarks.png" alt="Placeholder for face landmark detection screenshot" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+          <div style="display:none;aspect-ratio:16/9;background:var(--eggshell);border:1px dashed #b8ad9b;align-items:center;justify-content:center;text-align:center;padding:18px;color:var(--muted);">Insert screenshot here<br><code>images/face-landmarks.png</code></div>
+          <figcaption><strong>01 · Facial Landmarks</strong><span class="insert-note">Screenshot slot — replace with the captured facial landmark output.</span></figcaption>
+        </figure>
+        <figure>
+          <!-- INSERT SCREENSHOT: MediaPipe upper-body pose detection. Suggested file: images/pose-detection.png -->
+          <img src="images/pose-detection.png" alt="Placeholder for upper-body pose detection screenshot" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+          <div style="display:none;aspect-ratio:16/9;background:var(--eggshell);border:1px dashed #b8ad9b;align-items:center;justify-content:center;text-align:center;padding:18px;color:var(--muted);">Insert screenshot here<br><code>images/pose-detection.png</code></div>
+          <figcaption><strong>02 · Upper-Body Pose</strong><span class="insert-note">Screenshot slot — show the detected shoulders, elbows, and torso landmarks.</span></figcaption>
+        </figure>
+        <figure>
+          <!-- INSERT SCREENSHOT: webcam window showing arm-elevation values. Suggested file: images/arm-elevation.png -->
+          <img src="images/arm-elevation.png" alt="Placeholder for arm elevation test screenshot" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+          <div style="display:none;aspect-ratio:16/9;background:var(--eggshell);border:1px dashed #b8ad9b;align-items:center;justify-content:center;text-align:center;padding:18px;color:var(--muted);">Insert screenshot here<br><code>images/arm-elevation.png</code></div>
+          <figcaption><strong>03 · Arm-Elevation Test</strong><span class="insert-note">Screenshot slot — document the current readings and validation issue.</span></figcaption>
+        </figure>
+        <figure>
+          <!-- INSERT SCREENSHOT: feature_extractor.py in the editor. Suggested file: images/feature-extractor.png -->
+          <img src="images/feature-extractor.png" alt="Placeholder for feature extractor code screenshot" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+          <div style="display:none;aspect-ratio:16/9;background:var(--eggshell);border:1px dashed #b8ad9b;align-items:center;justify-content:center;text-align:center;padding:18px;color:var(--muted);">Insert screenshot here<br><code>images/feature-extractor.png</code></div>
+          <figcaption><strong>04 · Feature Extraction</strong><span class="insert-note">Screenshot slot — show the EAR and arm-elevation helper functions.</span></figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <section id="methods">
+      <div class="section-head"><span class="section-no">03</span><h2>Methods &amp; Implementation</h2></div>
+      <h3>Pose detection pipeline</h3>
+      <ol class="steps">
+        <li>Capture a frame from the local webcam using OpenCV.</li>
+        <li>Convert the frame from BGR to RGB and wrap it as a MediaPipe image.</li>
+        <li>Run MediaPipe Pose Landmarker in video mode with a monotonically increasing timestamp.</li>
+        <li>Read the shoulder, elbow, and hip landmarks, and check landmark visibility before calculating features.</li>
+        <li>Draw the selected landmarks and connections on the frame for visual inspection.</li>
+      </ol>
+      <h3>Arm-angle calculation currently under review</h3>
+      <p>The helper function builds an arm vector from shoulder to elbow and a torso-reference vector from shoulder to hip. It then uses the dot product to calculate the angle between those vectors.</p>
+      <pre><code>arm_x = elbow[0] - shoulder[0]
+arm_y = elbow[1] - shoulder[1]
+
+torso_x = hip[0] - shoulder[0]
+torso_y = hip[1] - shoulder[1]
+
+arm_length = math.hypot(arm_x, arm_y)
+torso_length = math.hypot(torso_x, torso_y)
+
+dot_product = arm_x * torso_x + arm_y * torso_y
+cosine = dot_product / (arm_length * torso_length)
+cosine = max(-1.0, min(1.0, cosine))
+angle = math.degrees(math.acos(cosine))</code></pre>
+      <div class="callout"><strong>Interpretation note:</strong> The code above calculates the unsigned angle between two vectors. The returned angle should be between 0° and 180°; the precise mapping to “arm down,” “horizontal,” and “overhead” depends on the chosen reference vector and coordinate geometry. The current implementation still needs a controlled test and possible correction.</div>
+      <h3>Existing feature helper: Eye Aspect Ratio</h3>
+      <p>The feature-extraction module also includes a helper for Eye Aspect Ratio (EAR), which compares vertical eye-landmark distances with the horizontal distance between eye corners. EAR can support blink or eye-closure analysis after its landmark mapping and thresholds are validated for the chosen model and use case.</p>
+    </section>
+
+    <section id="testing">
+      <div class="section-head"><span class="section-no">04</span><h2>Testing &amp; Findings</h2></div>
+      <p>The degree-conversion sanity check passed. However, the observed webcam measurements did not align with the expected arm positions, so the feature is not considered validated.</p>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Test</th><th>Expected (approx.)</th><th>Observed</th><th>Status</th></tr></thead>
+          <tbody>
+            <tr><td>Arm down</td><td>0°</td><td>−1.5° reported</td><td><span class="status progress">Recheck output source</span></td></tr>
+            <tr><td>Arm horizontal</td><td>90°</td><td>−8.4° reported</td><td><span class="status progress">Investigating</span></td></tr>
+            <tr><td>Arm overhead</td><td>180°</td><td>−12° reported</td><td><span class="status progress">Investigating</span></td></tr>
+            <tr><td>Python degree-conversion sanity check</td><td>0°, 90°, 180°</td><td>0°, 90°, 180°</td><td><span class="status done">Passed</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="callout warning"><strong>Finding:</strong> Negative readings cannot be returned by the pasted <code>calculate_arm_elevation()</code> implementation using <code>math.acos()</code> as shown. This suggests the displayed/recorded value may come from a different calculation or running code, or that the source of the output has not yet been isolated. The root cause is unresolved as of this report.</div>
+    </section>
+
+    <section id="next-steps">
+      <div class="section-head"><span class="section-no">05</span><h2>Next Steps</h2></div>
+      <ol class="steps">
+        <li><strong>Resolve the angle discrepancy:</strong> verify the exact running function and distinguish arm elevation from shoulder tilt.</li>
+        <li><strong>Validate landmark geometry:</strong> inspect shoulder, elbow, and hip coordinates for controlled arm-down, horizontal, and overhead positions.</li>
+        <li><strong>Repeat stability tests:</strong> assess jitter, landmark visibility, left/right consistency, and torso movement.</li>
+        <li><strong>Add CSV logging only after validation:</strong> record timestamp, side, visibility/confidence where available, and the validated angle.</li>
+        <li><strong>Capture final evidence:</strong> replace the screenshot placeholders with real development screenshots.</li>
+        <li><strong>Extend feature extraction:</strong> proceed to additional validated body-motion features for the GUARDIAN monitoring pipeline.</li>
+      </ol>
+      <p><span class="status progress">Current priority</span> Correct and validate arm-elevation measurements before building downstream scoring or logging around them.</p>
+    </section>
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+      <div><strong>G.U.A.R.D.I.A.N.</strong><p>Guarded Unified AI for Real-time Driver Intelligence, Alerting, and Networked security</p><p>CSE499.16 · Senior Engineering Design · Group 6</p></div>
+      <div><strong>Development team</strong><p>Muhtadina Serniabat Tasin — Team Lead</p><p>Farhana Afrin Nahin — ML Algorithm Support</p><p>Abtahi Saif — Logistics &amp; Web Design</p></div>
+      <div><strong>Project links</strong><p><a href="https://github.com/Muhtadina/G.U.A.R.D.I.A.N..git" target="_blank" rel="noopener noreferrer">GitHub Repository</a></p><p><a href="index.html">Project Presentation Hub</a></p></div>
+    </div>
+  </footer>
+</body>
+</html>
