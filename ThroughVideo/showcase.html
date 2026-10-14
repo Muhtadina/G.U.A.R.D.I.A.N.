@@ -159,6 +159,72 @@
       </div>
     </section>
 
+    <section id="features">
+    <div class="section-head"><div><div class="section-kicker">02 / Methods</div><h2>Calculations and implementation</h2></div></div>
+    <article class="card">
+      <h3>A. Eye Aspect Ratio (EAR)</h3>
+      <p>For six eye landmarks, two vertical distances are compared with the horizontal eye width. This helps quantify whether the eye appears open or closed.</p>
+      <div class="formula">EAR = (‖p₂ − p₆‖ + ‖p₃ − p₅‖) / (2 × ‖p₁ − p₄‖)</div>
+      <p class="small">The distance function uses Euclidean distance. Landmark ordering must match the selected eye contour. Thresholds should be calibrated and evaluated across users, lighting conditions, and camera positions.</p>
+      <div class="code-wrap"><div class="code-title"><span>feature_extractor.py</span><span>Existing function</span></div><pre><code>def calculate_ear(landmarks, eye_points):
+    p1 = landmarks[eye_points[0]]
+    p2 = landmarks[eye_points[1]]
+    p3 = landmarks[eye_points[2]]
+    p4 = landmarks[eye_points[3]]
+    p5 = landmarks[eye_points[4]]
+    p6 = landmarks[eye_points[5]]
+
+    vertical_1 = distance(p2, p6)
+    vertical_2 = distance(p3, p5)
+    horizontal = distance(p1, p4)
+
+    if horizontal == 0:
+        return 0.0
+
+    return (vertical_1 + vertical_2) / (2.0 * horizontal)</code></pre></div>
+    </article>
+    <article class="card" style="margin-top:18px">
+      <h3>B. Shoulder-line tilt</h3>
+      <p>The detector calculates the orientation of the line joining the left and right shoulders, then normalizes the result to the range −90° to +90°.</p>
+      <div class="formula">θ = degrees(atan2(y₂ − y₁, x₂ − x₁))</div>
+      <p class="small">This describes shoulder-line orientation in the image. It is not an arm-raising angle. Image coordinates increase downward, so the sign may differ from conventional Cartesian diagrams.</p>
+      <div class="code-wrap"><div class="code-title"><span>pose_detector.py</span><span>Current calculation</span></div><pre><code>dx = x2 - x1
+dy = y2 - y1
+
+shoulder_angle = math.degrees(
+    math.atan2(dy, dx)
+)
+
+if shoulder_angle > 90:
+    shoulder_angle -= 180
+elif shoulder_angle < -90:
+    shoulder_angle += 180</code></pre></div>
+    </article>
+    <article class="card" style="margin-top:18px">
+      <h3>C. Upper-arm elevation relative to torso</h3>
+      <p>The upper-arm vector runs from shoulder to elbow. The torso reference vector runs from shoulder to the same-side hip. The angle between these vectors estimates the arm's position relative to the torso.</p>
+      <div class="formula">θ = arccos[(a · t) / (‖a‖ × ‖t‖)]</div>
+      <div class="code-wrap"><div class="code-title"><span>feature_extractor.py</span><span>Added function</span></div><pre><code>arm_x = elbow[0] - shoulder[0]
+arm_y = elbow[1] - shoulder[1]
+
+torso_x = hip[0] - shoulder[0]
+torso_y = hip[1] - shoulder[1]
+
+arm_length = math.hypot(arm_x, arm_y)
+torso_length = math.hypot(torso_x, torso_y)
+
+if arm_length == 0 or torso_length == 0:
+    return None
+
+dot_product = arm_x * torso_x + arm_y * torso_y
+cosine = dot_product / (arm_length * torso_length)
+cosine = max(-1.0, min(1.0, cosine))
+angle = math.degrees(math.acos(cosine))
+return angle</code></pre></div>
+      <p class="small">Idealized upright reference: arm down ≈ 0°, arm horizontal ≈ 90°, arm overhead ≈ 180°. Camera viewpoint, torso lean, occlusion, and landmark error can change the observed values.</p>
+    </article>
+  </section>
+
     <section id="methods">
       <div class="section-head"><span class="section-no">03</span><h2>Methods &amp; Implementation</h2></div>
       <h3>Pose detection pipeline</h3>
