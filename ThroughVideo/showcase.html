@@ -74,6 +74,172 @@
     footer strong { font-family: 'Oswald', sans-serif; text-transform: uppercase; color: white; }
     footer p { margin: 4px 0; font-size: .85rem; }
     @media (max-width: 760px) { .nav { align-items: flex-start; flex-direction: column; gap: 8px; } .navlinks { justify-content: flex-start; gap: 12px; } .grid { grid-template-columns: 1fr; } .gallery { grid-template-columns: 1fr; } .hero-inner { padding-top: 42px; } }
+    
+/* =========================================
+   CALCULATIONS & IMPLEMENTATION
+   ========================================= */
+
+#features {
+  margin-top: 42px;
+}
+
+#features .section-head {
+  align-items: center;
+  padding-bottom: 10px;
+  border-bottom: 2px solid var(--noir);
+  margin-bottom: 24px;
+}
+
+#features .section-head h2 {
+  margin: 0;
+  font-size: clamp(1.6rem, 3vw, 2.15rem);
+}
+
+#features .section-kicker {
+  color: var(--crimson);
+  font-size: 0.72rem;
+  font-weight: bold;
+  letter-spacing: 0.16em;
+  margin-bottom: 5px;
+}
+
+#features .card {
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-top: 4px solid var(--crimson);
+  padding: clamp(18px, 3vw, 28px);
+  min-width: 0;
+}
+
+#features .card h3 {
+  font-size: 1.2rem;
+  margin: 0 0 12px;
+  color: var(--noir);
+}
+
+#features .card > p {
+  max-width: 900px;
+}
+
+#features .formula {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  width: 100%;
+  min-height: 94px;
+  margin: 22px 0;
+  padding: 22px 18px;
+  overflow-x: auto;
+
+  background: var(--chalk);
+  border: 1px solid var(--line);
+  border-left: 5px solid var(--crimson);
+  border-radius: 3px;
+
+  color: var(--noir);
+  font-family: "Cambria Math", Cambria, "Times New Roman", serif;
+  font-size: clamp(1.1rem, 2.5vw, 1.55rem);
+  line-height: 1.8;
+  text-align: center;
+  font-weight: 500;
+}
+
+#features .formula::before {
+  content: "FORMULA";
+  position: absolute;
+  top: 5px;
+  left: 10px;
+  color: var(--muted);
+  font: bold 0.58rem Verdana, sans-serif;
+  letter-spacing: 0.12em;
+}
+
+#features .formula sub,
+#features .formula sup {
+  font-size: 0.72em;
+  line-height: 0;
+}
+
+#features .formula .frac {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: stretch;
+  vertical-align: middle;
+  text-align: center;
+  line-height: 1.4;
+  margin: 0 5px;
+}
+
+#features .formula .frac > span:first-child {
+  padding: 0 8px 5px;
+  border-bottom: 1.5px solid currentColor;
+}
+
+#features .formula .frac > span:last-child {
+  padding: 5px 8px 0;
+}
+
+#features .small {
+  color: var(--muted);
+  font-size: 0.84rem;
+  line-height: 1.75;
+}
+
+#features .code-wrap {
+  margin-top: 20px;
+  border: 1px solid #3b3935;
+  overflow: hidden;
+}
+
+#features .code-title {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+  padding: 10px 15px;
+  background: #292725;
+  color: #f4f0e8;
+  font-size: 0.76rem;
+  border-bottom: 2px solid var(--crimson);
+}
+
+#features .code-title span:first-child {
+  font-weight: bold;
+}
+
+#features .code-title span:last-child {
+  color: #e8a6ad;
+}
+
+#features .code-wrap pre {
+  margin: 0;
+  border: 0;
+  border-radius: 0;
+}
+
+#features .card + .card {
+  margin-top: 20px;
+}
+
+@media (max-width: 600px) {
+  #features .card {
+    padding: 16px;
+  }
+
+  #features .formula {
+    padding: 27px 10px 16px;
+    font-size: 1.05rem;
+  }
+
+  #features .code-title {
+    align-items: flex-start;
+  }
+}
+
   </style>
 </head>
 <body>
@@ -160,7 +326,7 @@
     </section>
 
     <section id="features">
-    <div class="section-head"><div><div class="section-kicker">02 / Methods</div><h2>Calculations and implementation</h2></div></div>
+    <div class="section-head"><span class="section-no">02</span><h2>Calculations and implementation</h2></div>
     <article class="card">
       <h3>A. Eye Aspect Ratio (EAR)</h3>
       <p>For six eye landmarks, two vertical distances are compared with the horizontal eye width. This helps quantify whether the eye appears open or closed.</p>
