@@ -326,7 +326,7 @@
     </section>
 
     <section id="features">
-    <div class="section-head"><span class="section-no">02</span><h2>Calculations and implementation</h2></div>
+    <div class="section-head"><span class="section-no">03</span><h2>Calculations and implementation</h2></div>
     <article class="card">
       <h3>A. Eye Aspect Ratio (EAR)</h3>
       <p>For six eye landmarks, two vertical distances are compared with the horizontal eye width. This helps quantify whether the eye appears open or closed.</p>
@@ -392,7 +392,7 @@ return angle</code></pre></div>
   </section>
 
     <section id="methods">
-      <div class="section-head"><span class="section-no">03</span><h2>Methods &amp; Implementation</h2></div>
+      <div class="section-head"><span class="section-no">04</span><h2>Methods &amp; Implementation</h2></div>
       <h3>Pose detection pipeline</h3>
       <ol class="steps">
         <li>Capture a frame from the local webcam using OpenCV.</li>
@@ -422,7 +422,7 @@ angle = math.degrees(math.acos(cosine))</code></pre>
     </section>
 
     <section id="testing">
-      <div class="section-head"><span class="section-no">04</span><h2>Testing &amp; Findings</h2></div>
+      <div class="section-head"><span class="section-no">05</span><h2>Testing &amp; Findings</h2></div>
       <p>The degree-conversion sanity check passed. However, the observed webcam measurements did not align with the expected arm positions, so the feature is not considered validated.</p>
       <div class="table-wrap">
         <table>
@@ -439,7 +439,7 @@ angle = math.degrees(math.acos(cosine))</code></pre>
     </section>
 
     <section id="next-steps">
-      <div class="section-head"><span class="section-no">05</span><h2>Next Steps</h2></div>
+      <div class="section-head"><span class="section-no">06</span><h2>Next Steps</h2></div>
       <ol class="steps">
         <li><strong>Resolve the angle discrepancy:</strong> verify the exact running function and distinguish arm elevation from shoulder tilt.</li>
         <li><strong>Validate landmark geometry:</strong> inspect shoulder, elbow, and hip coordinates for controlled arm-down, horizontal, and overhead positions.</li>
