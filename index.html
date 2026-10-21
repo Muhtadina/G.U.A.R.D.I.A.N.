@@ -1094,11 +1094,87 @@
       prototype and would require additional safety validation.
     </div>
   </div>
+  
+  
+  <!-- DIAGRAM 02: CAMERA INPUT & INTERFACE -->
+  <div class="arch-panel" id="camera-interface">
+    <div class="arch-panel-heading">
+      <h3>02 / Camera Input &amp; Interface</h3>
+      <span class="arch-tag">Computer Vision Pipeline</span>
+    </div>
+
+    <p class="arch-intro">
+      The camera interface captures and validates video frames before
+      forwarding them to the computer-vision pipeline. Keeping camera
+      handling separate allows compatible camera hardware to be replaced
+      without redesigning the core face and pose processing logic.
+    </p>
+
+    <div class="arch-input-grid">
+
+      <article class="arch-input-card">
+        <div class="arch-module-number">01</div>
+        <h4>Camera Source</h4>
+        <p>
+          Standard RGB webcam for the current prototype.
+          Compatible low-light or infrared cameras may be evaluated
+          in a later deployment stage.
+        </p>
+      </article>
+
+      <article class="arch-input-card">
+        <div class="arch-module-number">02</div>
+        <h4>Frame Capture</h4>
+        <p>
+          Open the camera device and capture video frames using OpenCV.
+          Configure the device index, resolution, and frame rate.
+        </p>
+      </article>
+
+      <article class="arch-input-card">
+        <div class="arch-module-number">03</div>
+        <h4>Frame Validation</h4>
+        <p>
+          Check whether frames are available and usable.
+          Handle camera disconnection, invalid frames, and
+          insufficient visual information.
+        </p>
+      </article>
+
+      <article class="arch-input-card">
+        <div class="arch-module-number">04</div>
+        <h4>Vision Pipeline</h4>
+        <p>
+          Convert frames to the required image format and pass them
+          to the Face Landmarker and Pose Landmarker for feature
+          extraction and subsequent risk assessment.
+        </p>
+      </article>
+
+    </div>
+
+    <div class="arch-note">
+      <strong>Monitoring availability:</strong>
+      If the camera fails or the driver's face or body cannot be
+      detected reliably, flag the visual monitoring state as unavailable
+      and log the event. Missing or unreliable visual data must not be
+      interpreted as evidence that the driver is safe.
+    </div>
+
+    <div class="arch-note">
+      <strong>Hardware flexibility:</strong>
+      Camera replacement may require adjustments to device configuration,
+      frame capture, image conversion, or low-light handling. The vision
+      pipeline can remain unchanged when the replacement provides
+      compatible input, but detection performance must be tested again.
+    </div>
+  </div>
+
 
   <!-- DIAGRAM 02: SPEED ALERT WORKFLOW -->
   <div class="arch-panel">
     <div class="arch-panel-heading">
-      <h3>02 / How the Speed Alert Works</h3>
+      <h3>03 / How the Speed Alert Works</h3>
       <span class="arch-tag">Decision Workflow</span>
     </div>
 
@@ -1413,4 +1489,1512 @@
 
 </body>
 </html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>G.U.A.R.D.I.A.N. | CSE499B</title>
 
+  <!-- Google Font: Oswald -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --chalk: #f2f0e8;
+      --eggshell: #ebe5d7;
+      --pearl: #f7f4eb;
+      --black: #111111;
+      --noir: #191919;
+      --crimson: #8e1d2d;
+      --crimson-dark: #651421;
+      --ink: #171717;
+      --muted: #625f59;
+      --line: #c9c2b4;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      background: var(--chalk);
+      color: var(--black);
+      font-family: Verdana, Geneva, sans-serif;
+      line-height: 1.65;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .nav-wrap {
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      background: var(--crimson);
+      border-bottom: 3px solid var(--crimson-dark);
+    }
+
+    nav {
+      max-width: 1200px;
+      margin: auto;
+      min-height: 62px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+      padding: 0 28px;
+    }
+
+    .nav-brand {
+      color: var(--pearl);
+      font-family: "Oswald", sans-serif;
+      font-size: 1.35rem;
+      letter-spacing: 1.5px;
+      font-weight: 600;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 24px;
+      list-style: none;
+      flex-wrap: wrap;
+    }
+
+    .nav-links a {
+      color: var(--pearl);
+      font-size: 0.78rem;
+      font-weight: bold;
+      letter-spacing: 0.4px;
+      text-transform: uppercase;
+    }
+
+    .nav-links a:hover {
+      text-decoration: underline;
+    }
+
+    .hero {
+      max-width: 1200px;
+      margin: auto;
+      padding: 92px 28px 72px;
+    }
+
+    .eyebrow {
+      color: var(--crimson);
+      font-size: 0.78rem;
+      font-weight: bold;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      margin-bottom: 16px;
+    }
+
+    h1, h2, h3 {
+      font-family: "Oswald", sans-serif;
+      font-weight: 600;
+      line-height: 1.1;
+    }
+
+    h1 {
+      font-size: clamp(3.2rem, 8vw, 6.8rem);
+      letter-spacing: 1px;
+      max-width: 1000px;
+    }
+
+    .hero-subtitle {
+      margin-top: 24px;
+      max-width: 900px;
+      font-size: 1.05rem;
+      color: var(--muted);
+    }
+
+    .hero-rule {
+      width: 110px;
+      height: 5px;
+      background: var(--crimson);
+      margin-top: 32px;
+    }
+
+    section {
+      scroll-margin-top: 85px;
+    }
+
+    .section {
+      max-width: 1200px;
+      margin: auto;
+      padding: 72px 28px;
+    }
+
+    .section-heading {
+      margin-bottom: 28px;
+    }
+
+    .section-kicker {
+      color: var(--crimson);
+      font-size: 0.75rem;
+      font-weight: bold;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+
+    h2 {
+      font-size: clamp(2rem, 4vw, 3.5rem);
+    }
+
+    /* Project resource buttons */
+    .resources {
+      background: var(--noir);
+      color: var(--pearl);
+      max-width: none;
+    }
+
+    .resources-inner {
+      max-width: 1200px;
+      margin: auto;
+      padding: 72px 28px;
+    }
+
+    .resources .section-kicker {
+      color: var(--pearl);
+      opacity: 0.75;
+    }
+
+    .resources h2 {
+      color: var(--pearl);
+    }
+
+    .resource-grid {
+      margin-top: 34px;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 14px;
+    }
+
+    .resource-button {
+      min-height: 105px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+      padding: 22px;
+      background: var(--eggshell);
+      color: var(--black);
+      border: 2px solid var(--eggshell);
+      font-family: Verdana, Geneva, sans-serif;
+      font-size: 0.88rem;
+      font-weight: bold;
+      transition: 0.18s ease;
+    }
+
+    .resource-button span:first-child {
+      text-align: left;
+    }
+
+    .resource-button .arrow {
+      color: var(--crimson);
+      font-size: 1.35rem;
+      flex-shrink: 0;
+    }
+
+    .resource-button:hover {
+      background: var(--crimson);
+      border-color: var(--crimson);
+      color: var(--pearl);
+      transform: translateY(-3px);
+    }
+
+    .resource-button:hover .arrow {
+      color: var(--pearl);
+    }
+
+    .goal-box {
+      background: var(--eggshell);
+      border-left: 7px solid var(--crimson);
+      padding: 36px;
+      max-width: 1050px;
+      font-size: 1.05rem;
+    }
+
+    .goal-box strong {
+      color: var(--crimson);
+    }
+
+    /* ================================
+   G.U.A.R.D.I.A.N. ARCHITECTURE
+================================ */
+
+.guardian-arch {
+  --arch-cream: #f7f4eb;
+  --arch-eggshell: #ebe5d7;
+  --arch-ink: #191919;
+  --arch-red: #8e1d2d;
+  --arch-line: #c9c2b4;
+  --arch-muted: #625f59;
+}
+
+.guardian-arch .arch-intro {
+  max-width: 820px;
+  color: var(--arch-muted);
+  margin-top: -12px;
+  margin-bottom: 32px;
+}
+
+.guardian-arch .arch-panel {
+  border: 1px solid var(--arch-line);
+  background: var(--arch-cream);
+  padding: clamp(18px, 3vw, 32px);
+  margin-top: 24px;
+}
+
+.guardian-arch .arch-panel-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 24px;
+}
+
+.guardian-arch .arch-panel-heading h3 {
+  font-size: clamp(1.35rem, 2.5vw, 1.8rem);
+}
+
+.guardian-arch .arch-label {
+  display: inline-block;
+  color: var(--arch-red);
+  font-size: 0.7rem;
+  font-weight: bold;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+}
+
+.guardian-arch .arch-tag {
+  display: inline-block;
+  border: 1px solid var(--arch-line);
+  padding: 4px 9px;
+  font-size: 0.68rem;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+}
+
+/* Four input modules */
+
+.guardian-arch .arch-input-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.guardian-arch .arch-input-card {
+  background: var(--arch-eggshell);
+  border: 1px solid var(--arch-line);
+  border-top: 4px solid var(--arch-red);
+  padding: 18px 15px;
+  min-width: 0;
+}
+
+.guardian-arch .arch-module-number {
+  font-family: "Oswald", sans-serif;
+  font-size: 1.8rem;
+  color: var(--arch-red);
+  line-height: 1;
+  margin-bottom: 14px;
+}
+
+.guardian-arch .arch-input-card h4 {
+  font-family: "Oswald", sans-serif;
+  font-size: 1.2rem;
+  line-height: 1.2;
+  margin-bottom: 9px;
+}
+
+.guardian-arch .arch-input-card p {
+  color: var(--arch-muted);
+  font-size: 0.8rem;
+  line-height: 1.6;
+  overflow-wrap: anywhere;
+}
+
+.guardian-arch .arch-connector {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 12px 0;
+  color: var(--arch-red);
+}
+
+.guardian-arch .arch-connector-line {
+  width: 2px;
+  height: 22px;
+  background: var(--arch-red);
+}
+
+.guardian-arch .arch-connector-arrow {
+  font-size: 1.4rem;
+  line-height: 1;
+}
+
+.guardian-arch .arch-engine {
+  background: var(--arch-ink);
+  color: var(--arch-cream);
+  border: 3px solid var(--arch-red);
+  padding: 24px;
+  text-align: center;
+}
+
+.guardian-arch .arch-engine .arch-label {
+  color: #e9a9b0;
+}
+
+.guardian-arch .arch-engine h3 {
+  font-family: "Oswald", sans-serif;
+  font-size: clamp(1.45rem, 3vw, 2.1rem);
+  margin: 6px 0 10px;
+}
+
+.guardian-arch .arch-engine p {
+  color: #d4d0c7;
+  font-size: 0.88rem;
+  max-width: 700px;
+  margin: auto;
+}
+
+.guardian-arch .arch-engine-pills {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 18px;
+}
+
+.guardian-arch .arch-engine-pills span {
+  border: 1px solid #77716a;
+  padding: 5px 10px;
+  font-size: 0.7rem;
+  font-weight: bold;
+}
+
+.guardian-arch .arch-output-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.guardian-arch .arch-output-card {
+  border: 1px solid var(--arch-line);
+  padding: 20px;
+  background: var(--arch-eggshell);
+}
+
+.guardian-arch .arch-output-card h4 {
+  font-family: "Oswald", sans-serif;
+  font-size: 1.25rem;
+  margin-bottom: 6px;
+}
+
+.guardian-arch .arch-output-card p {
+  font-size: 0.82rem;
+  color: var(--arch-muted);
+}
+
+.guardian-arch .arch-output-card.alert-output {
+  border-left: 5px solid var(--arch-red);
+}
+
+.guardian-arch .arch-output-card.log-output {
+  border-left: 5px solid var(--arch-ink);
+}
+
+.guardian-arch .arch-note {
+  border-left: 4px solid var(--arch-red);
+  padding: 12px 16px;
+  margin-top: 20px;
+  background: var(--arch-eggshell);
+  font-size: 0.82rem;
+  color: var(--arch-muted);
+}
+
+/* ================================
+   SPEED ALERT FLOW DIAGRAM
+================================ */
+
+.guardian-arch .speed-flow {
+  display: grid;
+  gap: 0;
+  max-width: 850px;
+  margin: 0 auto;
+}
+
+.guardian-arch .speed-step {
+  display: grid;
+  grid-template-columns: 48px minmax(0, 1fr);
+  gap: 15px;
+  align-items: start;
+  border: 1px solid var(--arch-line);
+  background: var(--arch-cream);
+  padding: 17px;
+}
+
+.guardian-arch .speed-step-number {
+  width: 42px;
+  height: 42px;
+  display: grid;
+  place-items: center;
+  background: var(--arch-red);
+  color: white;
+  font-family: "Oswald", sans-serif;
+  font-size: 1.25rem;
+  font-weight: bold;
+}
+
+.guardian-arch .speed-step h4 {
+  font-family: "Oswald", sans-serif;
+  font-size: 1.2rem;
+  margin-bottom: 4px;
+}
+
+.guardian-arch .speed-step p {
+  font-size: 0.83rem;
+  color: var(--arch-muted);
+}
+
+.guardian-arch .speed-arrow {
+  text-align: center;
+  color: var(--arch-red);
+  font-size: 1.5rem;
+  font-weight: bold;
+  line-height: 1.6;
+}
+
+.guardian-arch .speed-formula {
+  background: var(--arch-ink);
+  color: var(--arch-cream);
+  text-align: center;
+  padding: 22px 16px;
+  border: 2px solid var(--arch-red);
+}
+
+.guardian-arch .speed-formula .formula-label {
+  display: block;
+  color: #e9a9b0;
+  font-size: 0.7rem;
+  letter-spacing: 1.4px;
+  font-weight: bold;
+  text-transform: uppercase;
+  margin-bottom: 10px;
+}
+
+.guardian-arch .speed-formula .formula {
+  font-family: "Oswald", sans-serif;
+  font-size: clamp(1.2rem, 3.5vw, 2rem);
+  overflow-wrap: anywhere;
+}
+
+.guardian-arch .speed-formula p {
+  color: #d4d0c7;
+  font-size: 0.78rem;
+  margin-top: 8px;
+}
+
+.guardian-arch .speed-decision {
+  border: 2px solid var(--arch-ink);
+  background: var(--arch-eggshell);
+  padding: 22px;
+  text-align: center;
+}
+
+.guardian-arch .speed-decision h4 {
+  font-family: "Oswald", sans-serif;
+  font-size: 1.35rem;
+  margin-bottom: 8px;
+}
+
+.guardian-arch .speed-branches {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+  margin-top: 18px;
+}
+
+.guardian-arch .speed-branch {
+  padding: 20px;
+  border: 1px solid var(--arch-line);
+  background: var(--arch-cream);
+}
+
+.guardian-arch .speed-branch h4 {
+  font-family: "Oswald", sans-serif;
+  font-size: 1.15rem;
+  margin-bottom: 7px;
+}
+
+.guardian-arch .speed-branch p {
+  font-size: 0.8rem;
+  color: var(--arch-muted);
+}
+
+.guardian-arch .speed-branch.trigger {
+  border-top: 5px solid var(--arch-red);
+}
+
+.guardian-arch .speed-branch.normal {
+  border-top: 5px solid var(--arch-ink);
+}
+
+.guardian-arch .speed-fallback {
+  background: #e5e0d5;
+  border-left: 5px solid #625f59;
+  padding: 16px;
+  margin-top: 14px;
+  font-size: 0.82rem;
+}
+
+/* Responsive layout */
+
+@media (max-width: 900px) {
+  .guardian-arch .arch-input-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 600px) {
+  .guardian-arch .arch-panel {
+    padding: 16px;
+  }
+
+      .guardian-arch .arch-input-grid,
+      .guardian-arch .arch-output-grid,
+      .guardian-arch .speed-branches {
+        grid-template-columns: 1fr;
+      }
+
+      .guardian-arch .arch-input-card {
+        padding: 16px;
+      }
+
+      .guardian-arch .speed-step {
+        grid-template-columns: 38px minmax(0, 1fr);
+        gap: 11px;
+        padding: 14px;
+      }
+
+      .guardian-arch .speed-step-number {
+        width: 36px;
+        height: 36px;
+      }
+    }
+
+    /* Roadmap */
+    .roadmap {
+      display: grid;
+      gap: 18px;
+      margin-top: 30px;
+    }
+
+    .phase {
+      background: var(--eggshell);
+      border: 1px solid var(--line);
+      padding: 28px;
+    }
+
+    .phase-top {
+      display: flex;
+      justify-content: space-between;
+      gap: 20px;
+      align-items: baseline;
+      border-bottom: 1px solid var(--line);
+      padding-bottom: 14px;
+      margin-bottom: 18px;
+    }
+
+    .phase h3 {
+      font-size: 1.75rem;
+    }
+
+    .weeks {
+      color: var(--crimson);
+      font-size: 0.75rem;
+      font-weight: bold;
+      letter-spacing: 1px;
+      white-space: nowrap;
+      text-transform: uppercase;
+    }
+
+    .phase ul {
+      padding-left: 20px;
+    }
+
+    .phase li + li {
+      margin-top: 8px;
+    }
+
+    .week-one {
+      margin-top: 22px;
+      padding: 26px;
+      border: 2px solid var(--crimson);
+      background: var(--pearl);
+    }
+
+    .week-one h3 {
+      color: var(--crimson);
+      font-size: 1.55rem;
+      margin-bottom: 12px;
+    }
+
+    /* People */
+    .people-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 14px;
+      margin-top: 30px;
+    }
+
+    .person-card {
+      background: var(--eggshell);
+      border: 1px solid var(--line);
+      padding: 25px;
+      min-height: 190px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .person-role {
+      color: var(--crimson);
+      font-size: 0.72rem;
+      font-weight: bold;
+      letter-spacing: 1.4px;
+      text-transform: uppercase;
+      margin-bottom: 16px;
+    }
+
+    .person-card h3 {
+      font-size: 1.35rem;
+    }
+
+    .person-id {
+      color: var(--muted);
+      font-size: 0.78rem;
+      margin-top: 8px;
+    }
+
+    footer {
+      background: var(--noir);
+      color: var(--pearl);
+      padding: 45px 28px;
+    }
+
+    .footer-inner {
+      max-width: 1200px;
+      margin: auto;
+      display: flex;
+      justify-content: space-between;
+      gap: 30px;
+      align-items: center;
+    }
+
+    .footer-title {
+      font-family: "Oswald", sans-serif;
+      font-size: 1.5rem;
+      letter-spacing: 1px;
+    }
+
+    .footer-copy {
+      color: #c9c5bc;
+      font-size: 0.78rem;
+      max-width: 650px;
+      margin-top: 6px;
+    }
+
+    .contact-link {
+      display: inline-block;
+      border: 1px solid var(--pearl);
+      color: var(--pearl);
+      padding: 11px 16px;
+      font-size: 0.78rem;
+      font-weight: bold;
+      text-transform: uppercase;
+      letter-spacing: 0.6px;
+    }
+
+    .contact-link:hover {
+      background: var(--pearl);
+      color: var(--noir);
+    }
+
+
+    /* Unavailable resource overlay */
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      z-index: 3000;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+      background: rgba(17, 17, 17, 0.72);
+      backdrop-filter: blur(3px);
+    }
+
+    .modal-backdrop.show {
+      display: flex;
+    }
+
+    .modal {
+      width: min(520px, 100%);
+      background: var(--eggshell);
+      color: var(--black);
+      border: 3px solid var(--crimson);
+      box-shadow: 10px 10px 0 var(--noir);
+      padding: 34px;
+      position: relative;
+    }
+
+    .modal-label {
+      color: var(--crimson);
+      font-size: 0.72rem;
+      font-weight: bold;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      margin-bottom: 10px;
+    }
+
+    .modal h2 {
+      font-size: 2rem;
+      margin-bottom: 12px;
+    }
+
+    .modal p {
+      color: var(--muted);
+      margin-bottom: 24px;
+    }
+
+    .modal-close {
+      border: 2px solid var(--noir);
+      background: var(--noir);
+      color: var(--pearl);
+      padding: 11px 18px;
+      font-family: Verdana, Geneva, sans-serif;
+      font-weight: bold;
+      cursor: pointer;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .modal-close:hover {
+      background: var(--crimson);
+      border-color: var(--crimson);
+    }
+
+    .resource-button.status-red .arrow { color: #a51d2d; }
+    .resource-button.status-green .arrow { color: #24734a; }
+    .resource-button.status-blue .arrow { color: #2459a6; }
+
+    .resource-button.status-red:hover,
+    .resource-button.status-green:hover,
+    .resource-button.status-blue:hover {
+      color: var(--pearl);
+    }
+
+    .resource-button.status-red:hover { background: #a51d2d; border-color: #a51d2d; }
+    .resource-button.status-green:hover { background: #24734a; border-color: #24734a; }
+    .resource-button.status-blue:hover { background: #2459a6; border-color: #2459a6; }
+
+    @media (max-width: 900px) {
+      .resource-grid,
+      .people-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      nav {
+        align-items: flex-start;
+        padding-top: 14px;
+        padding-bottom: 14px;
+        flex-direction: column;
+      }
+
+      .nav-links {
+        gap: 14px;
+      }
+    }
+
+    @media (max-width: 600px) {
+      .hero {
+        padding-top: 62px;
+      }
+
+      .resource-grid,
+      .people-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .phase-top,
+      .footer-inner {
+        flex-direction: column;
+      }
+
+      .goal-box,
+      .phase,
+      .person-card {
+        padding: 22px;
+      }
+
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="nav-wrap">
+    <nav>
+      <a class="nav-brand" href="#home">G.U.A.R.D.I.A.N.</a>
+      <ul class="nav-links">
+        <li><a href="#resources">Resources</a></li>
+        <li><a href="#goal">Goal</a></li>
+        <li><a href="#architecture">Architecture</a></li>
+        <li><a href="#roadmap">Weekly Plan</a></li>
+        <li><a href="#team">Developers</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+    </nav>
+  </div>
+
+  <main>
+    <header class="hero" id="home">
+      <div class="eyebrow">CSE499B · Senior Design II · Group 6 · Section 14</div>
+      <h1>G.U.A.R.D.I.A.N.</h1>
+      <p class="hero-subtitle">
+        Guarded Unified AI for Real-time Driver Intelligence, Alerting, and Networked Security
+        <br><br>
+        A Secure Edge-AI Driver Monitoring and Fleet Management System for Bangladesh Transportation Precautions & Safety
+      </p>
+      <div class="hero-rule"></div>
+    </header>
+
+    <section class="resources" id="resources">
+      <div class="resources-inner">
+        <div class="section-heading">
+          <div class="section-kicker">Project Hub</div>
+          <h2>Project Resources</h2>
+        </div>
+
+        <div class="resource-grid">
+          <a class="resource-button" href="Frontend/home.html" aria-label="Frontend Design">
+            <span>Interface / Frontend Design</span>
+            <span class="arrow">→</span>
+          </a>
+
+          <a class="resource-button" href="Dataset/Facial_Expressions" aria-label="Face Detection Dataset">
+            <span>Face Detection Dataset</span>
+            <span class="arrow">→</span>
+          </a>
+
+          <a class="resource-button" href="Dataset/Behavior_Dataset" aria-label="Body Behavior Dataset">
+            <span>Body Motion &amp; Behavior Dataset</span>
+            <span class="arrow">→</span>
+          </a>
+
+          <a class="resource-button" href="database.html" aria-label="Database ERD">
+            <span>Database ERD</span>
+            <span class="arrow">→</span>
+          </a>
+
+          <a class="resource-button" href="ThroughVideo/showcase.html" aria-label="Face Detection System">
+            <span>Face Detection System</span>
+            <span class="arrow">→</span>
+          </a>
+
+          <a class="resource-button status-blue missing-link" href="#" data-resource="GPS Tracker &amp; Acceleration Measurement" aria-label="GPS and Sensors">
+            <span>GPS &amp; Sensor System</span>
+            <span class="arrow">→</span>
+          </a>
+
+          <a class="resource-button status-red missing-link" href="#" data-resource="Host Link to Actual Prototype" aria-label="Hosted Live Demo">
+            <span>Host Link to Actual Prototype</span>
+            <span class="arrow">→</span>
+          </a>
+
+          <a class="resource-button status-green" href="https://github.com/Muhtadina/G.U.A.R.D.I.A.N." target="_blank" rel="noopener noreferrer" aria-label="GitHub Repository">
+            <span>GitHub Repository</span>
+            <span class="arrow">↗</span>
+          </a>
+
+          <a class="resource-button status-blue missing-link" href="#" data-resource="Medium Article" aria-label="Medium Article">
+            <span>Medium Article <small>(Coming Soon)</small></span>
+            <span class="arrow">→</span>
+          </a>
+
+          <a class="resource-button" href="mailto:muhtadinaserniabat.official@gmail.com?subject=G.U.A.R.D.I.A.N.%20Project" aria-label="Contact Team">
+            <span>Contact Team</span>
+            <span class="arrow">→</span>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="goal">
+      <div class="section-heading">
+        <div class="section-kicker">The Project</div>
+        <h2>Main Goal</h2>
+      </div>
+
+      <div class="goal-box">
+        <strong>G.U.A.R.D.I.A.N.</strong> aims to build a secure, edge-AI driver monitoring and fleet
+        management system for Bangladesh Transportation. The system is designed to identify observable
+        risky driver states and behavior in real time, relate them to vehicle motion, support timely
+        intervention, minimize continuous raw-video transmission, and securely synchronize relevant metadata.
+      </div>
+</br>
+      <div class="section-heading">
+        <h2>Behind the Data Collection</h2>
+      </div>
+
+      <div class="goal-box">
+        These are the people who spend hours behind the wheel, carrying hundreds of passengers through Bangladesh's roads. 
+        GUARDIAN needs to be built around their real working conditions rather than around assumptions made from a laboratory.
+      </div>    
+    </section>
+
+
+    
+<!-- G.U.A.R.D.I.A.N. ARCHITECTURE -->
+<section class="section guardian-arch" id="architecture">
+  <div class="section-heading">
+    <div class="section-kicker">System Design</div>
+    <h2>System Architecture</h2>
+  </div>
+
+  <p class="arch-intro">
+    G.U.A.R.D.I.A.N. combines driver-facing computer vision,
+    vehicle movement, and road-speed context to identify potential
+    safety risks, issue timely warnings, and record relevant events.
+    The core monitoring and warning path is designed to operate locally.
+  </p>
+
+  <!-- DIAGRAM 01: OVERALL ARCHITECTURE -->
+  <div class="arch-panel">
+    <div class="arch-panel-heading">
+      <h3>01 / Multimodal Risk Assessment</h3>
+      <span class="arch-tag">System Overview</span>
+    </div>
+
+    <div class="arch-input-grid">
+      <article class="arch-input-card">
+        <div class="arch-module-number">01</div>
+        <h4>Facial Monitoring</h4>
+        <p>
+          Face landmarks, eye closure, blink patterns, yawning,
+          and validated fatigue-related indicators.
+        </p>
+      </article>
+
+      <article class="arch-input-card">
+        <div class="arch-module-number">02</div>
+        <h4>Body &amp; Pose</h4>
+        <p>
+          Head and torso movement, posture changes, and
+          unusual movement patterns over time.
+        </p>
+      </article>
+
+      <article class="arch-input-card">
+        <div class="arch-module-number">03</div>
+        <h4>GPS &amp; Road Context</h4>
+        <p>
+          Position, GPS-derived speed, road-segment matching,
+          and verified road-specific speed limits.
+        </p>
+      </article>
+
+      <article class="arch-input-card">
+        <div class="arch-module-number">04</div>
+        <h4>Vehicle Motion</h4>
+        <p>
+          Vehicle speed, acceleration, and optional telemetry
+          from compatible vehicle interfaces.
+        </p>
+      </article>
+    </div>
+
+    <div class="arch-connector" aria-hidden="true">
+      <span class="arch-connector-line"></span>
+      <span class="arch-connector-arrow">↓</span>
+    </div>
+
+    <div class="arch-engine">
+      <span class="arch-label">Local Processing Layer</span>
+      <h3>Risk Assessment Engine</h3>
+      <p>
+        Evaluates signals over time, checks data quality,
+        applies configurable safety rules, and combines
+        relevant evidence without treating a single noisy
+        measurement as a confirmed risk.
+      </p>
+
+      <div class="arch-engine-pills">
+        <span>Temporal Analysis</span>
+        <span>Threshold Checks</span>
+        <span>Sensor Validation</span>
+        <span>Risk-Level Logic</span>
+      </div>
+    </div>
+
+    <div class="arch-connector" aria-hidden="true">
+      <span class="arch-connector-line"></span>
+      <span class="arch-connector-arrow">↓</span>
+    </div>
+
+    <div class="arch-output-grid">
+      <article class="arch-output-card alert-output">
+        <span class="arch-label">Output A</span>
+        <h4>Driver Alert System</h4>
+        <p>
+          Audible, spoken, or visual warnings for detected
+          fatigue indicators and sustained overspeed events.
+        </p>
+      </article>
+
+      <article class="arch-output-card log-output">
+        <span class="arch-label">Output B</span>
+        <h4>Event Logging &amp; Fleet Data</h4>
+        <p>
+          Timestamped events, risk indicators, and relevant
+          metadata for later review and authorized fleet monitoring.
+        </p>
+      </article>
+    </div>
+
+    <div class="arch-note">
+      <strong>Design principle:</strong>
+      basic driver alerts should not depend on an active internet
+      connection. Cloud synchronization is a separate function.
+      Automated vehicle control is outside the current warning-only
+      prototype and would require additional safety validation.
+    </div>
+  </div>
+  
+  
+  <!-- DIAGRAM 02: CAMERA INPUT & INTERFACE -->
+  <div class="arch-panel" id="camera-interface">
+    <div class="arch-panel-heading">
+      <h3>02 / Camera Input &amp; Interface</h3>
+      <span class="arch-tag">Computer Vision Pipeline</span>
+    </div>
+
+    <p class="arch-intro">
+      The camera interface captures and validates video frames before
+      forwarding them to the computer-vision pipeline. Keeping camera
+      handling separate allows compatible camera hardware to be replaced
+      without redesigning the core face and pose processing logic.
+    </p>
+
+    <div class="arch-input-grid">
+
+      <article class="arch-input-card">
+        <div class="arch-module-number">01</div>
+        <h4>Camera Source</h4>
+        <p>
+          Standard RGB webcam for the current prototype.
+          Compatible low-light or infrared cameras may be evaluated
+          in a later deployment stage.
+        </p>
+      </article>
+
+      <article class="arch-input-card">
+        <div class="arch-module-number">02</div>
+        <h4>Frame Capture</h4>
+        <p>
+          Open the camera device and capture video frames using OpenCV.
+          Configure the device index, resolution, and frame rate.
+        </p>
+      </article>
+
+      <article class="arch-input-card">
+        <div class="arch-module-number">03</div>
+        <h4>Frame Validation</h4>
+        <p>
+          Check whether frames are available and usable.
+          Handle camera disconnection, invalid frames, and
+          insufficient visual information.
+        </p>
+      </article>
+
+      <article class="arch-input-card">
+        <div class="arch-module-number">04</div>
+        <h4>Vision Pipeline</h4>
+        <p>
+          Convert frames to the required image format and pass them
+          to the Face Landmarker and Pose Landmarker for feature
+          extraction and subsequent risk assessment.
+        </p>
+      </article>
+
+    </div>
+
+    <div class="arch-note">
+      <strong>Monitoring availability:</strong>
+      If the camera fails or the driver's face or body cannot be
+      detected reliably, flag the visual monitoring state as unavailable
+      and log the event. Missing or unreliable visual data must not be
+      interpreted as evidence that the driver is safe.
+    </div>
+
+    <div class="arch-note">
+      <strong>Hardware flexibility:</strong>
+      Camera replacement may require adjustments to device configuration,
+      frame capture, image conversion, or low-light handling. The vision
+      pipeline can remain unchanged when the replacement provides
+      compatible input, but detection performance must be tested again.
+    </div>
+  </div>
+
+
+  <!-- DIAGRAM 02: SPEED ALERT WORKFLOW -->
+  <div class="arch-panel">
+    <div class="arch-panel-heading">
+      <h3>03 / How the Speed Alert Works</h3>
+      <span class="arch-tag">Decision Workflow</span>
+    </div>
+
+    <p class="arch-intro">
+      GPS identifies the vehicle's position and estimates its speed.
+      The system matches the position to a road segment, retrieves
+      a verified speed limit, and checks whether excess speed
+      persists before triggering an alert.
+    </p>
+
+    <div class="speed-flow">
+
+      <article class="speed-step">
+        <div class="speed-step-number">1</div>
+        <div>
+          <h4>Read GPS &amp; Speed Data</h4>
+          <p>
+            Collect timestamp, latitude, longitude, GPS-derived
+            speed, and available accuracy information.
+          </p>
+        </div>
+      </article>
+
+      <div class="speed-arrow" aria-hidden="true">↓</div>
+
+      <article class="speed-step">
+        <div class="speed-step-number">2</div>
+        <div>
+          <h4>Validate the Measurement</h4>
+          <p>
+            Check whether the GPS data is recent and reliable.
+            If available, compare it with a compatible vehicle
+            speed reading and flag significant disagreement.
+          </p>
+        </div>
+      </article>
+
+      <div class="speed-arrow" aria-hidden="true">↓</div>
+
+      <article class="speed-step">
+        <div class="speed-step-number">3</div>
+        <div>
+          <h4>Identify the Road Segment</h4>
+          <p>
+            Match the position to a road and retrieve the
+            verified speed limit for the relevant vehicle class.
+            Do not assume an unverified map value is authoritative.
+          </p>
+        </div>
+      </article>
+
+      <div class="speed-arrow" aria-hidden="true">↓</div>
+
+      <div class="speed-formula">
+        <span class="formula-label">Step 4 / Calculate Excess Speed</span>
+        <div class="formula">
+          Excess Speed = Measured Speed − Road Speed Limit
+        </div>
+        <p>
+          Both speeds must use the same unit, such as km/h.
+        </p>
+      </div>
+
+      <div class="speed-arrow" aria-hidden="true">↓</div>
+
+      <div class="speed-decision">
+        <span class="arch-label">Step 5 / Decision Gate</span>
+        <h4>Is the Excess Speed Above the Configured Margin?</h4>
+        <p>
+          Check measurement validity, the configured margin,
+          and whether the condition persists for the required duration.
+        </p>
+
+        <div class="speed-branches">
+          <article class="speed-branch trigger">
+            <span class="arch-label">Yes + Sustained</span>
+            <h4>Trigger Speed Warning</h4>
+            <p>
+              Play an appropriate audible or spoken warning,
+              record the event, and avoid repeatedly playing
+              the same alert every processing cycle.
+            </p>
+          </article>
+
+          <article class="speed-branch normal">
+            <span class="arch-label">No</span>
+            <h4>Continue Monitoring</h4>
+            <p>
+              Continue reading measurements and checking the
+              road segment. Clear an existing warning only after
+              the configured recovery condition is met.
+            </p>
+          </article>
+        </div>
+
+        <div class="speed-fallback">
+          <strong>Invalid or uncertain data?</strong>
+          Do not issue a road-limit-based warning using a guessed
+          speed limit. Mark the result as unavailable, record the
+          data-quality issue, and continue monitoring when reliable
+          readings return.
+        </div>
+      </div>
+    </div>
+
+    <div class="arch-note">
+      <strong>Calibration note:</strong>
+      a 5–8 km/h excess-speed margin may be tested as an initial
+      prototype setting, not treated as a legally approved tolerance
+      or proven measurement accuracy. Tune the margin and persistence
+      duration against reference speed measurements and controlled tests.
+    </div>
+  </div>
+</section>
+
+
+
+
+    <section class="section" id="roadmap">
+      <div class="section-heading">
+        <div class="section-kicker">Senior Design II</div>
+        <h2>10-Week Plan</h2>
+      </div>
+
+      <div class="roadmap">
+
+        <article class="phase">
+          <div class="phase-top">
+            <h3>Phase 01 — Foundation &amp; Data Collection</h3>
+            <div class="weeks">Weeks 1–2</div>
+          </div>
+          <ul>
+            <li>Finalize face detector.</li>
+            <li>Submit NSU IRB request.</li>
+            <li>Begin BRTC/BSPMS institutional contact.</li>
+            <li>Arrange mini camera and collect 3–5 driver recordings and metadata.</li>
+          </ul>
+        </article>
+
+        <article class="phase">
+          <div class="phase-top">
+            <h3>Phase 02 — Baseline Models &amp; Dataset</h3>
+            <div class="weeks">Weeks 2–4</div>
+          </div>
+          <ul>
+            <li>Train drowsiness and emotion models using existing YawDD, FER2013, RAVDESS, and WESAD data.</li>
+            <li>Proceed without depending on real-world data collection.</li>
+            <li>Create an augmented dataset.</li>
+          </ul>
+        </article>
+
+        <article class="phase">
+          <div class="phase-top">
+            <h3>Phase 03 — Backend, Dashboard &amp; Fusion</h3>
+            <div class="weeks">Weeks 3–7</div>
+          </div>
+          <ul>
+            <li>Build dashboard skeleton.</li>
+            <li>Build backend structure.</li>
+            <li>Develop moderator interface.</li>
+            <li>Integrate vehicle motion sensors.</li>
+            <li>Build the motion-residual fusion model using real or simulated telemetry as available.</li>
+          </ul>
+        </article>
+
+        <article class="phase">
+          <div class="phase-top">
+            <h3>Phase 04 — Deployment, Validation &amp; Finalization</h3>
+            <div class="weeks">Weeks 7–10</div>
+          </div>
+          <ul>
+            <li>Complete dashboard frontend.</li>
+            <li>Deploy and test on-device inference.</li>
+            <li>Conduct accuracy testing and end-to-end system integration.</li>
+            <li>Finalize report, demo rehearsal, and pitch preparation.</li>
+          </ul>
+        </article>
+
+      </div>
+
+      <div class="week-one">
+        <h3>Week 01 — Facial landmark &amp; EAR work</h3>
+        <ul>
+          <li>Moved EAR calculation outside the landmark-building loop.</li>
+          <li>Collected all face landmarks first.</li>
+          <li>Verified the existing MediaPipe eye landmark indices.</li>
+          <li>Calculated EAR only after all landmarks were available, preventing the IndexError.</li>
+          <li><code>feature_extractor.py</code> remained logically correct and unchanged.</li>
+        </ul>
+      </div>
+
+      <div class="week-one">
+        <h3>Week 02 — Building Interface & Planning ERD</h3>
+        <ul>
+          <li>Drafted an interface using html, css and vanilla js</li>
+          <li>Built a draft ERD based on drafted interface and functionalities</li>
+          <li>Serialized the collected online Dataset and Divided them into 2 sections: Face Expression and Body Motion/Behavior</li>
+          <li>UI Designing the Dashboard & Live Stream of the stackholder: <code>moderator</code></li>
+        </ul>
+      </div>
+
+      <div class="week-one">
+        <h3>Week 03 — Posture Landmark &amp; Pose Detection</h3>
+        <ul>
+          <li>Created <code>pose_detection</code> for detecting posture and shoulder angle</li>
+          <li>Shoulder Angle Calculation Function displays</li>
+          <li>Facial Expression Dataset collection session on going</li>
+        </ul>
+      </div>
+
+      <div class="week-one">
+        <h3>Week 04 — Hardware Implementation &amp; Data Collection Initiatives</h3>
+        <ul>
+          <li><code>DAY 1: 20 Oct</code> - Collected Data of 1 driver from SHIKOR Poribohon, period of 15 mins</li>
+          <li>An Agreement was arranged with Bus Agencies: <code>Hanif Poribohon</code>, and <code>Tisha Poribohon</code></li>
+          <li></li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="section" id="team">
+      <div class="section-heading">
+        <div class="section-kicker">Team</div>
+        <h2>Developers &amp; Supervisor</h2>
+      </div>
+
+      <div class="people-grid">
+        <article class="person-card">
+          <div>
+            <div class="person-role">Developer</div>
+            <h3>Muhtadina Serniabat Tasin</h3>
+          </div>
+          <div class="person-id">2232160642</br>muhtadina.tasin@northsouth.edu</div>
+          <div class="person-id">Department of Electrical and Computer Engineering · North South University</div>
+        </article>
+
+        <article class="person-card">
+          <div>
+            <div class="person-role">Developer</div>
+            <h3>Farhana Afrin Nahin</h3>
+          </div>
+          <div class="person-id">2221056042</br>farhana.nahin@northsouth.edu</div>
+          <div class="person-id">Department of Electrical and Computer Engineering · North South University</div>
+        </article>
+
+        <article class="person-card">
+          <div>
+            <div class="person-role">Developer</div>
+            <h3>Abtahi Saif</h3>
+          </div>
+          <div class="person-id">2221072642</br>abtahi.saif@northsouth.edu</div>
+          <div class="person-id">Department of Electrical and Computer Engineering · North South University</div>
+        </article>
+
+        <article class="person-card">
+          <div>
+            <div class="person-role">Supervisor</div>
+            <h3>Mr. Abu Obaidah [AbO]</h3>
+            <div class="person-id">Senior Lecturer</div>
+            <div class="person-id">Department of Electrical and Computer Engineering · North South University</div>
+            <div class="person-id"><a href="https://ece.northsouth.edu/people/abu-obaidah/">Click here to view Profile</div>
+          </div>
+        </article>
+      </div>
+    </section>
+  </main>
+
+  <footer id="contact">
+    <div class="footer-inner">
+      <div>
+        <div class="footer-title">G.U.A.R.D.I.A.N.</div>
+        <div class="footer-copy">
+          CSE499B · Senior Design II · Group 6 · Section 16
+        </div>
+      </div>
+
+      <!-- Replace YOUR_EMAIL_HERE with the actual email address later. -->
+      <a class="contact-link" href="mailto:muhtadinaserniabat.official@gmail.com?subject=G.U.A.R.D.I.A.N.%20Project">
+        Contact the Team
+      </a>
+    </div>
+  </footer>
+
+
+  <div class="modal-backdrop" id="unavailableModal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+    <div class="modal">
+      <div class="modal-label">Resource unavailable</div>
+      <h2 id="modalTitle">Not available for the moment.</h2>
+      <p id="modalMessage">
+        This part of the G.U.A.R.D.I.A.N. project is not currently hosted or published.
+        It may still be under development, or the link may take more time to become available.
+      </p>
+      <button class="modal-close" id="modalClose" type="button">Close</button>
+    </div>
+  </div>
+
+  <script>
+    const modal = document.getElementById("unavailableModal");
+    const modalTitle = document.getElementById("modalTitle");
+    const modalMessage = document.getElementById("modalMessage");
+    const modalClose = document.getElementById("modalClose");
+
+    document.querySelectorAll(".missing-link").forEach(link => {
+      link.addEventListener("click", event => {
+        event.preventDefault();
+
+        const resource = link.dataset.resource || "This resource";
+        modalTitle.textContent = resource;
+        modalMessage.textContent =
+          "This resource is not available for the moment. It may still be under development, " +
+          "or the actual link may take more time to become available.";
+        modal.classList.add("show");
+      });
+    });
+
+    function closeModal() {
+      modal.classList.remove("show");
+    }
+
+    modalClose.addEventListener("click", closeModal);
+
+    modal.addEventListener("click", event => {
+      if (event.target === modal) closeModal();
+    });
+
+    document.addEventListener("keydown", event => {
+      if (event.key === "Escape") closeModal();
+    });
+  </script>
+
+</body>
+</html>
