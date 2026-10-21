@@ -239,6 +239,373 @@
       color: var(--crimson);
     }
 
+    /* ================================
+   G.U.A.R.D.I.A.N. ARCHITECTURE
+================================ */
+
+.guardian-arch {
+  --arch-cream: #f7f4eb;
+  --arch-eggshell: #ebe5d7;
+  --arch-ink: #191919;
+  --arch-red: #8e1d2d;
+  --arch-line: #c9c2b4;
+  --arch-muted: #625f59;
+}
+
+.guardian-arch .arch-intro {
+  max-width: 820px;
+  color: var(--arch-muted);
+  margin-top: -12px;
+  margin-bottom: 32px;
+}
+
+.guardian-arch .arch-panel {
+  border: 1px solid var(--arch-line);
+  background: var(--arch-cream);
+  padding: clamp(18px, 3vw, 32px);
+  margin-top: 24px;
+}
+
+.guardian-arch .arch-panel-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 24px;
+}
+
+.guardian-arch .arch-panel-heading h3 {
+  font-size: clamp(1.35rem, 2.5vw, 1.8rem);
+}
+
+.guardian-arch .arch-label {
+  display: inline-block;
+  color: var(--arch-red);
+  font-size: 0.7rem;
+  font-weight: bold;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+}
+
+.guardian-arch .arch-tag {
+  display: inline-block;
+  border: 1px solid var(--arch-line);
+  padding: 4px 9px;
+  font-size: 0.68rem;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+}
+
+/* Four input modules */
+
+.guardian-arch .arch-input-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.guardian-arch .arch-input-card {
+  background: var(--arch-eggshell);
+  border: 1px solid var(--arch-line);
+  border-top: 4px solid var(--arch-red);
+  padding: 18px 15px;
+  min-width: 0;
+}
+
+.guardian-arch .arch-module-number {
+  font-family: "Oswald", sans-serif;
+  font-size: 1.8rem;
+  color: var(--arch-red);
+  line-height: 1;
+  margin-bottom: 14px;
+}
+
+.guardian-arch .arch-input-card h4 {
+  font-family: "Oswald", sans-serif;
+  font-size: 1.2rem;
+  line-height: 1.2;
+  margin-bottom: 9px;
+}
+
+.guardian-arch .arch-input-card p {
+  color: var(--arch-muted);
+  font-size: 0.8rem;
+  line-height: 1.6;
+  overflow-wrap: anywhere;
+}
+
+.guardian-arch .arch-connector {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 12px 0;
+  color: var(--arch-red);
+}
+
+.guardian-arch .arch-connector-line {
+  width: 2px;
+  height: 22px;
+  background: var(--arch-red);
+}
+
+.guardian-arch .arch-connector-arrow {
+  font-size: 1.4rem;
+  line-height: 1;
+}
+
+.guardian-arch .arch-engine {
+  background: var(--arch-ink);
+  color: var(--arch-cream);
+  border: 3px solid var(--arch-red);
+  padding: 24px;
+  text-align: center;
+}
+
+.guardian-arch .arch-engine .arch-label {
+  color: #e9a9b0;
+}
+
+.guardian-arch .arch-engine h3 {
+  font-family: "Oswald", sans-serif;
+  font-size: clamp(1.45rem, 3vw, 2.1rem);
+  margin: 6px 0 10px;
+}
+
+.guardian-arch .arch-engine p {
+  color: #d4d0c7;
+  font-size: 0.88rem;
+  max-width: 700px;
+  margin: auto;
+}
+
+.guardian-arch .arch-engine-pills {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 18px;
+}
+
+.guardian-arch .arch-engine-pills span {
+  border: 1px solid #77716a;
+  padding: 5px 10px;
+  font-size: 0.7rem;
+  font-weight: bold;
+}
+
+.guardian-arch .arch-output-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.guardian-arch .arch-output-card {
+  border: 1px solid var(--arch-line);
+  padding: 20px;
+  background: var(--arch-eggshell);
+}
+
+.guardian-arch .arch-output-card h4 {
+  font-family: "Oswald", sans-serif;
+  font-size: 1.25rem;
+  margin-bottom: 6px;
+}
+
+.guardian-arch .arch-output-card p {
+  font-size: 0.82rem;
+  color: var(--arch-muted);
+}
+
+.guardian-arch .arch-output-card.alert-output {
+  border-left: 5px solid var(--arch-red);
+}
+
+.guardian-arch .arch-output-card.log-output {
+  border-left: 5px solid var(--arch-ink);
+}
+
+.guardian-arch .arch-note {
+  border-left: 4px solid var(--arch-red);
+  padding: 12px 16px;
+  margin-top: 20px;
+  background: var(--arch-eggshell);
+  font-size: 0.82rem;
+  color: var(--arch-muted);
+}
+
+/* ================================
+   SPEED ALERT FLOW DIAGRAM
+================================ */
+
+.guardian-arch .speed-flow {
+  display: grid;
+  gap: 0;
+  max-width: 850px;
+  margin: 0 auto;
+}
+
+.guardian-arch .speed-step {
+  display: grid;
+  grid-template-columns: 48px minmax(0, 1fr);
+  gap: 15px;
+  align-items: start;
+  border: 1px solid var(--arch-line);
+  background: var(--arch-cream);
+  padding: 17px;
+}
+
+.guardian-arch .speed-step-number {
+  width: 42px;
+  height: 42px;
+  display: grid;
+  place-items: center;
+  background: var(--arch-red);
+  color: white;
+  font-family: "Oswald", sans-serif;
+  font-size: 1.25rem;
+  font-weight: bold;
+}
+
+.guardian-arch .speed-step h4 {
+  font-family: "Oswald", sans-serif;
+  font-size: 1.2rem;
+  margin-bottom: 4px;
+}
+
+.guardian-arch .speed-step p {
+  font-size: 0.83rem;
+  color: var(--arch-muted);
+}
+
+.guardian-arch .speed-arrow {
+  text-align: center;
+  color: var(--arch-red);
+  font-size: 1.5rem;
+  font-weight: bold;
+  line-height: 1.6;
+}
+
+.guardian-arch .speed-formula {
+  background: var(--arch-ink);
+  color: var(--arch-cream);
+  text-align: center;
+  padding: 22px 16px;
+  border: 2px solid var(--arch-red);
+}
+
+.guardian-arch .speed-formula .formula-label {
+  display: block;
+  color: #e9a9b0;
+  font-size: 0.7rem;
+  letter-spacing: 1.4px;
+  font-weight: bold;
+  text-transform: uppercase;
+  margin-bottom: 10px;
+}
+
+.guardian-arch .speed-formula .formula {
+  font-family: "Oswald", sans-serif;
+  font-size: clamp(1.2rem, 3.5vw, 2rem);
+  overflow-wrap: anywhere;
+}
+
+.guardian-arch .speed-formula p {
+  color: #d4d0c7;
+  font-size: 0.78rem;
+  margin-top: 8px;
+}
+
+.guardian-arch .speed-decision {
+  border: 2px solid var(--arch-ink);
+  background: var(--arch-eggshell);
+  padding: 22px;
+  text-align: center;
+}
+
+.guardian-arch .speed-decision h4 {
+  font-family: "Oswald", sans-serif;
+  font-size: 1.35rem;
+  margin-bottom: 8px;
+}
+
+.guardian-arch .speed-branches {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+  margin-top: 18px;
+}
+
+.guardian-arch .speed-branch {
+  padding: 20px;
+  border: 1px solid var(--arch-line);
+  background: var(--arch-cream);
+}
+
+.guardian-arch .speed-branch h4 {
+  font-family: "Oswald", sans-serif;
+  font-size: 1.15rem;
+  margin-bottom: 7px;
+}
+
+.guardian-arch .speed-branch p {
+  font-size: 0.8rem;
+  color: var(--arch-muted);
+}
+
+.guardian-arch .speed-branch.trigger {
+  border-top: 5px solid var(--arch-red);
+}
+
+.guardian-arch .speed-branch.normal {
+  border-top: 5px solid var(--arch-ink);
+}
+
+.guardian-arch .speed-fallback {
+  background: #e5e0d5;
+  border-left: 5px solid #625f59;
+  padding: 16px;
+  margin-top: 14px;
+  font-size: 0.82rem;
+}
+
+/* Responsive layout */
+
+@media (max-width: 900px) {
+  .guardian-arch .arch-input-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 600px) {
+  .guardian-arch .arch-panel {
+    padding: 16px;
+  }
+
+      .guardian-arch .arch-input-grid,
+      .guardian-arch .arch-output-grid,
+      .guardian-arch .speed-branches {
+        grid-template-columns: 1fr;
+      }
+
+      .guardian-arch .arch-input-card {
+        padding: 16px;
+      }
+
+      .guardian-arch .speed-step {
+        grid-template-columns: 38px minmax(0, 1fr);
+        gap: 11px;
+        padding: 14px;
+      }
+
+      .guardian-arch .speed-step-number {
+        width: 36px;
+        height: 36px;
+      }
+    }
+
     /* Roadmap */
     .roadmap {
       display: grid;
@@ -493,6 +860,7 @@
       .person-card {
         padding: 22px;
       }
+
     }
   </style>
 </head>
@@ -505,6 +873,7 @@
       <ul class="nav-links">
         <li><a href="#resources">Resources</a></li>
         <li><a href="#goal">Goal</a></li>
+        <li><a href="#architecture">Architecture</a></li>
         <li><a href="#roadmap">Weekly Plan</a></li>
         <li><a href="#team">Developers</a></li>
         <li><a href="#contact">Contact</a></li>
@@ -607,6 +976,246 @@
         GUARDIAN needs to be built around their real working conditions rather than around assumptions made from a laboratory.
       </div>    
     </section>
+
+
+    
+<!-- G.U.A.R.D.I.A.N. ARCHITECTURE -->
+<section class="section guardian-arch" id="architecture">
+  <div class="section-heading">
+    <div class="section-kicker">System Design</div>
+    <h2>System Architecture</h2>
+  </div>
+
+  <p class="arch-intro">
+    G.U.A.R.D.I.A.N. combines driver-facing computer vision,
+    vehicle movement, and road-speed context to identify potential
+    safety risks, issue timely warnings, and record relevant events.
+    The core monitoring and warning path is designed to operate locally.
+  </p>
+
+  <!-- DIAGRAM 01: OVERALL ARCHITECTURE -->
+  <div class="arch-panel">
+    <div class="arch-panel-heading">
+      <h3>01 / Multimodal Risk Assessment</h3>
+      <span class="arch-tag">System Overview</span>
+    </div>
+
+    <div class="arch-input-grid">
+      <article class="arch-input-card">
+        <div class="arch-module-number">01</div>
+        <h4>Facial Monitoring</h4>
+        <p>
+          Face landmarks, eye closure, blink patterns, yawning,
+          and validated fatigue-related indicators.
+        </p>
+      </article>
+
+      <article class="arch-input-card">
+        <div class="arch-module-number">02</div>
+        <h4>Body &amp; Pose</h4>
+        <p>
+          Head and torso movement, posture changes, and
+          unusual movement patterns over time.
+        </p>
+      </article>
+
+      <article class="arch-input-card">
+        <div class="arch-module-number">03</div>
+        <h4>GPS &amp; Road Context</h4>
+        <p>
+          Position, GPS-derived speed, road-segment matching,
+          and verified road-specific speed limits.
+        </p>
+      </article>
+
+      <article class="arch-input-card">
+        <div class="arch-module-number">04</div>
+        <h4>Vehicle Motion</h4>
+        <p>
+          Vehicle speed, acceleration, and optional telemetry
+          from compatible vehicle interfaces.
+        </p>
+      </article>
+    </div>
+
+    <div class="arch-connector" aria-hidden="true">
+      <span class="arch-connector-line"></span>
+      <span class="arch-connector-arrow">↓</span>
+    </div>
+
+    <div class="arch-engine">
+      <span class="arch-label">Local Processing Layer</span>
+      <h3>Risk Assessment Engine</h3>
+      <p>
+        Evaluates signals over time, checks data quality,
+        applies configurable safety rules, and combines
+        relevant evidence without treating a single noisy
+        measurement as a confirmed risk.
+      </p>
+
+      <div class="arch-engine-pills">
+        <span>Temporal Analysis</span>
+        <span>Threshold Checks</span>
+        <span>Sensor Validation</span>
+        <span>Risk-Level Logic</span>
+      </div>
+    </div>
+
+    <div class="arch-connector" aria-hidden="true">
+      <span class="arch-connector-line"></span>
+      <span class="arch-connector-arrow">↓</span>
+    </div>
+
+    <div class="arch-output-grid">
+      <article class="arch-output-card alert-output">
+        <span class="arch-label">Output A</span>
+        <h4>Driver Alert System</h4>
+        <p>
+          Audible, spoken, or visual warnings for detected
+          fatigue indicators and sustained overspeed events.
+        </p>
+      </article>
+
+      <article class="arch-output-card log-output">
+        <span class="arch-label">Output B</span>
+        <h4>Event Logging &amp; Fleet Data</h4>
+        <p>
+          Timestamped events, risk indicators, and relevant
+          metadata for later review and authorized fleet monitoring.
+        </p>
+      </article>
+    </div>
+
+    <div class="arch-note">
+      <strong>Design principle:</strong>
+      basic driver alerts should not depend on an active internet
+      connection. Cloud synchronization is a separate function.
+      Automated vehicle control is outside the current warning-only
+      prototype and would require additional safety validation.
+    </div>
+  </div>
+
+  <!-- DIAGRAM 02: SPEED ALERT WORKFLOW -->
+  <div class="arch-panel">
+    <div class="arch-panel-heading">
+      <h3>02 / How the Speed Alert Works</h3>
+      <span class="arch-tag">Decision Workflow</span>
+    </div>
+
+    <p class="arch-intro">
+      GPS identifies the vehicle's position and estimates its speed.
+      The system matches the position to a road segment, retrieves
+      a verified speed limit, and checks whether excess speed
+      persists before triggering an alert.
+    </p>
+
+    <div class="speed-flow">
+
+      <article class="speed-step">
+        <div class="speed-step-number">1</div>
+        <div>
+          <h4>Read GPS &amp; Speed Data</h4>
+          <p>
+            Collect timestamp, latitude, longitude, GPS-derived
+            speed, and available accuracy information.
+          </p>
+        </div>
+      </article>
+
+      <div class="speed-arrow" aria-hidden="true">↓</div>
+
+      <article class="speed-step">
+        <div class="speed-step-number">2</div>
+        <div>
+          <h4>Validate the Measurement</h4>
+          <p>
+            Check whether the GPS data is recent and reliable.
+            If available, compare it with a compatible vehicle
+            speed reading and flag significant disagreement.
+          </p>
+        </div>
+      </article>
+
+      <div class="speed-arrow" aria-hidden="true">↓</div>
+
+      <article class="speed-step">
+        <div class="speed-step-number">3</div>
+        <div>
+          <h4>Identify the Road Segment</h4>
+          <p>
+            Match the position to a road and retrieve the
+            verified speed limit for the relevant vehicle class.
+            Do not assume an unverified map value is authoritative.
+          </p>
+        </div>
+      </article>
+
+      <div class="speed-arrow" aria-hidden="true">↓</div>
+
+      <div class="speed-formula">
+        <span class="formula-label">Step 4 / Calculate Excess Speed</span>
+        <div class="formula">
+          Excess Speed = Measured Speed − Road Speed Limit
+        </div>
+        <p>
+          Both speeds must use the same unit, such as km/h.
+        </p>
+      </div>
+
+      <div class="speed-arrow" aria-hidden="true">↓</div>
+
+      <div class="speed-decision">
+        <span class="arch-label">Step 5 / Decision Gate</span>
+        <h4>Is the Excess Speed Above the Configured Margin?</h4>
+        <p>
+          Check measurement validity, the configured margin,
+          and whether the condition persists for the required duration.
+        </p>
+
+        <div class="speed-branches">
+          <article class="speed-branch trigger">
+            <span class="arch-label">Yes + Sustained</span>
+            <h4>Trigger Speed Warning</h4>
+            <p>
+              Play an appropriate audible or spoken warning,
+              record the event, and avoid repeatedly playing
+              the same alert every processing cycle.
+            </p>
+          </article>
+
+          <article class="speed-branch normal">
+            <span class="arch-label">No</span>
+            <h4>Continue Monitoring</h4>
+            <p>
+              Continue reading measurements and checking the
+              road segment. Clear an existing warning only after
+              the configured recovery condition is met.
+            </p>
+          </article>
+        </div>
+
+        <div class="speed-fallback">
+          <strong>Invalid or uncertain data?</strong>
+          Do not issue a road-limit-based warning using a guessed
+          speed limit. Mark the result as unavailable, record the
+          data-quality issue, and continue monitoring when reliable
+          readings return.
+        </div>
+      </div>
+    </div>
+
+    <div class="arch-note">
+      <strong>Calibration note:</strong>
+      a 5–8 km/h excess-speed margin may be tested as an initial
+      prototype setting, not treated as a legally approved tolerance
+      or proven measurement accuracy. Tune the margin and persistence
+      duration against reference speed measurements and controlled tests.
+    </div>
+  </div>
+</section>
+
+
+
 
     <section class="section" id="roadmap">
       <div class="section-heading">
@@ -804,3 +1413,4 @@
 
 </body>
 </html>
+
