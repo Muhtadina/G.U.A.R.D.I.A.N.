@@ -1,0 +1,11 @@
+
+{
+  "name": "GPS NEO-6M",
+  "author": "G.U.A.R.D.I.A.N.",
+  "pins": [
+    "VCC",
+    "GND",
+    "TX",
+    "RX"
+  ]
+}
