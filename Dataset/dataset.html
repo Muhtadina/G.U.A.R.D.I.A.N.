@@ -1,0 +1,821 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>G.U.A.R.D.I.A.N. | Dataset Development</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+:root {
+  --chalk: #f2f0e8;
+  --eggshell: #ebe5d7;
+  --pearl: #f7f4eb;
+  --black: #111111;
+  --noir: #191919;
+  --crimson: #8e1d2d;
+  --crimson-dark: #651421;
+  --ink: #171717;
+  --muted: #625f59;
+  --line: #c9c2b4;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--chalk);
+  color: var(--black);
+  font-family: Verdana, Geneva, sans-serif;
+  line-height: 1.7;
+}
+
+a { color: inherit; text-decoration: none; }
+
+.nav-wrap {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  background: var(--crimson);
+  border-bottom: 3px solid var(--crimson-dark);
+}
+
+nav {
+  max-width: 1200px;
+  min-height: 62px;
+  margin: auto;
+  padding: 0 28px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.nav-brand {
+  color: var(--pearl);
+  font-family: Oswald, sans-serif;
+  font-size: 1.3rem;
+  font-weight: 600;
+  letter-spacing: 1.5px;
+}
+
+.nav-links {
+  display: flex;
+  gap: 22px;
+  list-style: none;
+  flex-wrap: wrap;
+}
+
+.nav-links a {
+  color: var(--pearl);
+  font-size: .76rem;
+  font-weight: bold;
+  text-transform: uppercase;
+}
+
+.nav-links a:hover { text-decoration: underline; }
+
+h1, h2, h3, h4 {
+  font-family: Oswald, sans-serif;
+  font-weight: 600;
+  line-height: 1.15;
+}
+
+.hero {
+  max-width: 1200px;
+  margin: auto;
+  padding: 85px 28px 65px;
+}
+
+.eyebrow, .kicker {
+  color: var(--crimson);
+  font-size: .75rem;
+  font-weight: bold;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+
+.hero h1 {
+  font-size: clamp(3rem, 8vw, 6rem);
+  margin: 15px 0;
+  letter-spacing: 1px;
+}
+
+.hero p {
+  max-width: 850px;
+  color: var(--muted);
+  font-size: 1.03rem;
+}
+
+.hero-rule {
+  height: 5px;
+  width: 110px;
+  background: var(--crimson);
+  margin-top: 30px;
+}
+
+.section {
+  max-width: 1200px;
+  margin: auto;
+  padding: 65px 28px;
+}
+
+.section-heading { margin-bottom: 30px; }
+
+.section-heading h2 {
+  font-size: clamp(2rem, 4vw, 3.4rem);
+  margin-top: 7px;
+}
+
+.section-intro {
+  max-width: 850px;
+  color: var(--muted);
+  margin-top: 14px;
+}
+
+.dark-section {
+  background: var(--noir);
+  color: var(--pearl);
+}
+
+.dark-inner {
+  max-width: 1200px;
+  margin: auto;
+  padding: 70px 28px;
+}
+
+.dark-section .kicker { color: #d8b9b9; }
+.dark-section h2 { color: var(--pearl); }
+
+/* Baseline */
+
+.baseline {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 30px;
+  align-items: stretch;
+  margin-top: 32px;
+}
+
+.baseline-main {
+  background: var(--eggshell);
+  padding: 35px;
+  border-left: 7px solid var(--crimson);
+}
+
+.baseline-number {
+  font-family: Oswald, sans-serif;
+  color: var(--crimson);
+  font-size: 5rem;
+  line-height: 1.1;
+}
+
+.baseline-main h3 {
+  font-size: 1.7rem;
+  margin: 12px 0;
+}
+
+.baseline-main p { color: var(--muted); }
+
+.baseline-side {
+  background: var(--pearl);
+  border: 1px solid var(--line);
+  padding: 30px;
+}
+
+.baseline-side h3 {
+  font-size: 1.5rem;
+  margin-bottom: 18px;
+}
+
+.fact {
+  padding: 13px 0;
+  border-bottom: 1px solid var(--line);
+}
+
+.fact:last-child { border: none; }
+
+.fact strong {
+  display: block;
+  font-size: .78rem;
+  color: var(--crimson);
+  text-transform: uppercase;
+  letter-spacing: .8px;
+}
+
+.fact span {
+  font-size: .88rem;
+  color: var(--ink);
+}
+
+/* Why */
+
+.why-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  margin-top: 32px;
+}
+
+.why-card {
+  border: 1px solid #48433e;
+  padding: 27px;
+  min-height: 220px;
+}
+
+.why-card .number {
+  font-family: Oswald, sans-serif;
+  color: #d4a4a4;
+  font-size: 2.3rem;
+}
+
+.why-card h3 {
+  font-size: 1.4rem;
+  margin: 12px 0;
+}
+
+.why-card p {
+  color: #d1ccc3;
+  font-size: .87rem;
+}
+
+/* Pipeline */
+
+.pipeline {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 12px;
+  margin-top: 35px;
+}
+
+.pipeline-card {
+  background: var(--eggshell);
+  border: 1px solid var(--line);
+  padding: 22px 18px;
+  min-height: 205px;
+  position: relative;
+}
+
+.pipeline-card .step {
+  color: var(--crimson);
+  font-size: .73rem;
+  font-weight: bold;
+  letter-spacing: 1px;
+}
+
+.pipeline-card h3 {
+  font-size: 1.3rem;
+  margin: 14px 0;
+}
+
+.pipeline-card p {
+  font-size: .8rem;
+  color: var(--muted);
+}
+
+.pipeline-note {
+  margin-top: 25px;
+  padding: 22px;
+  border: 2px solid var(--crimson);
+  background: var(--pearl);
+  font-size: .9rem;
+}
+
+/* Modalities */
+
+.modality-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 15px;
+  margin-top: 30px;
+}
+
+.modality {
+  background: var(--eggshell);
+  padding: 27px;
+  border-top: 5px solid var(--crimson);
+}
+
+.modality h3 {
+  font-size: 1.5rem;
+  margin-bottom: 12px;
+}
+
+.modality p {
+  color: var(--muted);
+  font-size: .85rem;
+}
+
+.modality .features {
+  margin-top: 17px;
+  padding-top: 15px;
+  border-top: 1px solid var(--line);
+  font-size: .8rem;
+}
+
+/* Sources */
+
+.source-list {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+  margin-top: 25px;
+}
+
+.source {
+  background: var(--eggshell);
+  padding: 22px;
+  border: 1px solid var(--line);
+}
+
+.source h3 {
+  font-size: 1.35rem;
+  margin-bottom: 7px;
+}
+
+.source p {
+  font-size: .82rem;
+  color: var(--muted);
+}
+
+.source-tag {
+  display: inline-block;
+  margin-top: 12px;
+  color: var(--crimson);
+  font-size: .7rem;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+/* Outcome */
+
+.outcome {
+  background: var(--eggshell);
+  border-left: 7px solid var(--crimson);
+  padding: 35px;
+  max-width: 1000px;
+  font-size: .96rem;
+}
+
+.outcome strong { color: var(--crimson); }
+
+footer {
+  background: var(--noir);
+  color: var(--pearl);
+  padding: 40px 28px;
+}
+
+.footer-inner {
+  max-width: 1200px;
+  margin: auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 25px;
+}
+
+.footer-title {
+  font-family: Oswald, sans-serif;
+  font-size: 1.5rem;
+}
+
+.footer-copy {
+  color: #c9c5bc;
+  font-size: .76rem;
+}
+
+.back-link {
+  border: 1px solid var(--pearl);
+  padding: 10px 16px;
+  font-size: .76rem;
+  font-weight: bold;
+  text-transform: uppercase;
+}
+
+.back-link:hover {
+  background: var(--pearl);
+  color: var(--noir);
+}
+
+@media(max-width: 900px) {
+  .pipeline { grid-template-columns: repeat(2, 1fr); }
+  .why-grid { grid-template-columns: 1fr 1fr; }
+  nav { flex-direction: column; align-items: flex-start; padding: 14px 22px; }
+}
+
+@media(max-width: 600px) {
+  .baseline, .why-grid, .modality-grid,
+  .source-list, .pipeline { grid-template-columns: 1fr; }
+
+  .hero { padding-top: 55px; }
+  .baseline-number { font-size: 4rem; }
+  .footer-inner { flex-direction: column; align-items: flex-start; }
+}
+</style>
+</head>
+
+<body>
+
+<div class="nav-wrap">
+  <nav>
+    <a class="nav-brand" href="index.html">G.U.A.R.D.I.A.N.</a>
+    <ul class="nav-links">
+      <li><a href="index.html">Project Home</a></li>
+      <li><a href="#overview">Overview</a></li>
+      <li><a href="#why">Why</a></li>
+      <li><a href="#methodology">Methodology</a></li>
+      <li><a href="#modalities">Data Types</a></li>
+      <li><a href="#sources">Sources</a></li>
+    </ul>
+  </nav>
+</div>
+
+<main>
+
+<!-- HERO -->
+
+<header class="hero">
+  <div class="eyebrow">G.U.A.R.D.I.A.N. · Research & Development</div>
+  <h1>DATASET DEVELOPMENT</h1>
+  <p>
+    Building a real-world foundation for multimodal driver monitoring
+    through data collection, feature extraction, annotation and
+    controlled augmentation.
+  </p>
+  <div class="hero-rule"></div>
+</header>
+
+<!-- 01 OVERVIEW -->
+
+<section class="section" id="overview">
+
+  <div class="section-heading">
+    <div class="kicker">01 / Current Progress</div>
+    <h2>Establishing Our Real-World Baseline</h2>
+    <p class="section-intro">
+      The project has initiated its own real-world driver video
+      collection to establish a practical baseline for the
+      development and evaluation of G.U.A.R.D.I.A.N.'s
+      computer vision pipeline.
+    </p>
+  </div>
+
+  <div class="baseline">
+
+    <div class="baseline-main">
+      <div class="baseline-number">05</div>
+      <h3>Real-World Video Recordings</h3>
+      <p>
+        Five driver video recordings have been collected as
+        the initial real-world data foundation. These recordings
+        will be inspected, processed and annotated to identify
+        usable facial and body-behavior observations.
+      </p>
+    </div>
+
+    <div class="baseline-side">
+      <h3>Collection Status</h3>
+
+      <div class="fact">
+        <strong>Data Type</strong>
+        <span>Real-world driver video recordings</span>
+      </div>
+
+      <div class="fact">
+        <strong>Current Collection</strong>
+        <span>5 recordings</span>
+      </div>
+
+      <div class="fact">
+        <strong>Primary Purpose</strong>
+        <span>Baseline development and domain-specific observations</span>
+      </div>
+
+      <div class="fact">
+        <strong>Next Stage</strong>
+        <span>Preprocessing, annotation and feature extraction</span>
+      </div>
+    </div>
+
+  </div>
+
+</section>
+
+<!-- 02 WHY -->
+
+<section class="dark-section" id="why">
+<div class="dark-inner">
+
+  <div class="section-heading">
+    <div class="kicker">02 / Research Motivation</div>
+    <h2>Why Do We Need Our Own Dataset?</h2>
+    <p class="section-intro">
+      Existing public datasets provide valuable training resources.
+      However, models developed exclusively on external datasets
+      may not adequately represent the conditions of real-world
+      transportation in Bangladesh.
+    </p>
+  </div>
+
+  <div class="why-grid">
+
+    <article class="why-card">
+      <div class="number">01</div>
+      <h3>Domain Adaptation</h3>
+      <p>
+        Differences in camera placement, lighting, recording
+        environments and driver characteristics can affect
+        model performance. Real-world recordings help us
+        investigate these differences.
+      </p>
+    </article>
+
+    <article class="why-card">
+      <div class="number">02</div>
+      <h3>Behavioral Diversity</h3>
+      <p>
+        Natural driving behavior cannot be fully represented
+        through controlled or publicly available recordings.
+        Real-world observations help broaden our understanding
+        of driver behavior.
+      </p>
+    </article>
+
+    <article class="why-card">
+      <div class="number">03</div>
+      <h3>Reliable Evaluation</h3>
+      <p>
+        Independent real-world recordings are necessary to
+        investigate whether the developed models can perform
+        beyond their original training datasets.
+      </p>
+    </article>
+
+  </div>
+
+</div>
+</section>
+
+<!-- 03 HOW -->
+
+<section class="section" id="methodology">
+
+  <div class="section-heading">
+    <div class="kicker">03 / Dataset Methodology</div>
+    <h2>How Are We Building the Dataset?</h2>
+    <p class="section-intro">
+      The collected recordings will pass through a structured
+      processing pipeline before being integrated into
+      model development.
+    </p>
+  </div>
+
+  <div class="pipeline">
+
+    <article class="pipeline-card">
+      <div class="step">STEP 01</div>
+      <h3>Collection</h3>
+      <p>
+        Gather real-world driver recordings and document
+        recording conditions and available metadata.
+      </p>
+    </article>
+
+    <article class="pipeline-card">
+      <div class="step">STEP 02</div>
+      <h3>Preprocessing</h3>
+      <p>
+        Extract relevant video frames, standardize input
+        dimensions and inspect recording quality.
+      </p>
+    </article>
+
+    <article class="pipeline-card">
+      <div class="step">STEP 03</div>
+      <h3>Annotation</h3>
+      <p>
+        Identify observable events and label facial,
+        behavioral and temporal observations.
+      </p>
+    </article>
+
+    <article class="pipeline-card">
+      <div class="step">STEP 04</div>
+      <h3>Augmentation</h3>
+      <p>
+        Apply controlled transformations to training
+        samples to increase data diversity.
+      </p>
+    </article>
+
+    <article class="pipeline-card">
+      <div class="step">STEP 05</div>
+      <h3>Integration</h3>
+      <p>
+        Organize the resulting data for model training,
+        validation and independent evaluation.
+      </p>
+    </article>
+
+  </div>
+
+  <div class="pipeline-note">
+    <strong>Data integrity:</strong>
+    Original recordings will be preserved. Augmented samples
+    will be generated only after the dataset partitions are
+    established, preventing augmented versions of training
+    samples from leaking into independent evaluation data.
+  </div>
+
+</section>
+
+<!-- 04 MULTIMODAL -->
+
+<section class="section" id="modalities">
+
+  <div class="section-heading">
+    <div class="kicker">04 / Multimodal Architecture</div>
+    <h2>What Are We Extracting?</h2>
+    <p class="section-intro">
+      G.U.A.R.D.I.A.N. combines multiple information sources
+      rather than relying on facial expressions alone.
+      Each modality contributes different evidence to the
+      overall driver-risk assessment.
+    </p>
+  </div>
+
+  <div class="modality-grid">
+
+    <article class="modality">
+      <h3>Facial Features</h3>
+      <p>
+        Facial landmarks and temporal facial observations
+        are used to identify indicators associated with
+        drowsiness and driver attention.
+      </p>
+      <div class="features">
+        <strong>Features:</strong><br>
+        Eye Aspect Ratio (EAR)<br>
+        Mouth Aspect Ratio (MAR)<br>
+        Head orientation<br>
+        Eye closure duration
+      </div>
+    </article>
+
+    <article class="modality">
+      <h3>Body Behavior</h3>
+      <p>
+        Pose estimation and movement analysis help identify
+        unusual posture and changes in body behavior
+        that may indicate driving risks.
+      </p>
+      <div class="features">
+        <strong>Features:</strong><br>
+        Shoulder alignment<br>
+        Torso orientation<br>
+        Arm movement<br>
+        Postural changes
+      </div>
+    </article>
+
+    <article class="modality">
+      <h3>Vehicle Telemetry</h3>
+      <p>
+        GPS and available sensor information provide
+        contextual evidence about vehicle movement
+        and driving conditions.
+      </p>
+      <div class="features">
+        <strong>Features:</strong><br>
+        GPS speed<br>
+        Vehicle location<br>
+        Acceleration (if available)<br>
+        Speed-limit comparison
+      </div>
+    </article>
+
+  </div>
+
+</section>
+
+<!-- 05 DATA SOURCES -->
+
+<section class="section" id="sources">
+
+  <div class="section-heading">
+    <div class="kicker">05 / Data Sources</div>
+    <h2>Combining Real-World & Existing Datasets</h2>
+    <p class="section-intro">
+      The development strategy combines collected real-world
+      observations with relevant existing research datasets
+      to support different aspects of model development.
+    </p>
+  </div>
+
+  <div class="source-list">
+
+    <article class="source">
+      <h3>Real-World Driver Recordings</h3>
+      <p>
+        Internally collected recordings serving as the
+        initial baseline for real-world preprocessing,
+        annotation and domain-specific evaluation.
+      </p>
+      <span class="source-tag">Collected · 5 recordings</span>
+    </article>
+
+    <article class="source">
+      <h3>YawDD</h3>
+      <p>
+        Yawning Detection Dataset, containing in-car
+        videos of drivers yawning, talking and singing.
+        Relevant to facial and drowsiness-related analysis.
+      </p>
+      <span class="source-tag">External research dataset</span>
+    </article>
+
+    <article class="source">
+      <h3>FER2013 / RAVDESS</h3>
+      <p>
+        Facial expression and emotional-expression
+        resources that may support the development
+        of facial behavior recognition components.
+      </p>
+      <span class="source-tag">External research datasets</span>
+    </article>
+
+    <article class="source">
+      <h3>WESAD</h3>
+      <p>
+        Wearable Stress and Affect Detection dataset.
+        Provides physiological and motion-related
+        observations relevant to stress research.
+      </p>
+      <span class="source-tag">External research dataset</span>
+    </article>
+
+  </div>
+
+  <p class="section-intro" style="margin-top:20px; font-size:.78rem;">
+    Note: External datasets are complementary resources.
+    Their labels and modalities will be assessed for compatibility
+    before integration. Not every dataset directly supports
+    every G.U.A.R.D.I.A.N. detection task.
+  </p>
+
+</section>
+
+<!-- 06 OUTCOME -->
+
+<section class="section">
+
+  <div class="section-heading">
+    <div class="kicker">06 / Expected Outcome</div>
+    <h2>From Raw Data to Driver Intelligence</h2>
+  </div>
+
+  <div class="outcome">
+    The objective is to develop a structured and increasingly
+    diverse dataset that supports the training of
+    <strong>reliable multimodal driver-monitoring models</strong>.
+
+    Through real-world collection, feature extraction,
+    annotation and controlled augmentation, G.U.A.R.D.I.A.N.
+    aims to improve the relevance of its training data while
+    preserving independent evaluation for meaningful
+    performance assessment.
+
+    <br><br>
+
+    <strong>Our focus is not simply generating more data.
+    It is generating more useful, representative and
+    scientifically defensible training data.</strong>
+  </div>
+
+</section>
+
+</main>
+
+<footer>
+  <div class="footer-inner">
+    <div>
+      <div class="footer-title">G.U.A.R.D.I.A.N.</div>
+      <div class="footer-copy">
+        CSE499B · Senior Design II · Group 6
+      </div>
+    </div>
+
+    <a class="back-link" href="index.html">
+      ← Back to Project Home
+    </a>
+  </div>
+</footer>
+
+</body>
+</html>
