@@ -417,6 +417,134 @@ footer {
   .baseline-number { font-size: 4rem; }
   .footer-inner { flex-direction: column; align-items: flex-start; }
 }
+
+/* 07 / Data architecture */
+.architecture-block { margin-top: 34px; }
+.architecture-subhead {
+  display:flex; align-items:center; justify-content:space-between;
+  gap:16px; margin: 34px 0 16px;
+}
+.architecture-subhead h3 { font-size:1.65rem; }
+.architecture-subhead span {
+  color:var(--crimson); font-size:.7rem; font-weight:bold;
+  letter-spacing:1px; text-transform:uppercase;
+}
+.data-flow {
+  display:grid; grid-template-columns:repeat(5,1fr); gap:10px;
+  align-items:stretch; margin-top:20px;
+}
+.data-flow-step {
+  background:var(--eggshell); border:1px solid var(--line);
+  padding:20px 16px; min-height:155px; position:relative;
+}
+.data-flow-step:not(:last-child)::after {
+  content:"›"; position:absolute; right:-10px; top:45%;
+  z-index:2; color:var(--crimson); font-size:1.6rem;
+  font-weight:bold; line-height:1;
+}
+.data-flow-step .step-no {
+  color:var(--crimson); font-size:.7rem; font-weight:bold;
+  letter-spacing:1px;
+}
+.data-flow-step h4 { font-size:1.08rem; margin:10px 0 8px; }
+.data-flow-step p { color:var(--muted); font-size:.76rem; }
+.csv-wrap {
+  overflow-x:auto; border:1px solid var(--line);
+  background:var(--pearl); margin-top:18px;
+}
+.csv-table { width:100%; border-collapse:collapse; min-width:850px; }
+.csv-table th {
+  background:var(--noir); color:var(--pearl); text-align:left;
+  padding:13px 12px; font-size:.7rem; letter-spacing:.4px;
+  white-space:nowrap;
+}
+.csv-table td {
+  padding:12px; border-bottom:1px solid var(--line);
+  font-size:.76rem; white-space:nowrap;
+}
+.csv-table tr:last-child td { border-bottom:0; }
+.csv-table code {
+  color:var(--crimson-dark); font-family:Consolas,monospace;
+  font-size:.75rem;
+}
+.table-caption {
+  color:var(--muted); font-size:.75rem; margin-top:10px;
+}
+.schema-note {
+  margin-top:18px; padding:20px 22px;
+  background:var(--eggshell); border-left:5px solid var(--crimson);
+  color:var(--ink); font-size:.83rem;
+}
+.schema-note strong { color:var(--crimson); }
+.erd-shell {
+  background:var(--noir); color:var(--pearl);
+  padding:26px; margin-top:20px;
+}
+.erd-top {
+  display:grid; grid-template-columns:1fr 1fr; gap:14px;
+  max-width:720px; margin:0 auto 18px;
+}
+.erd-entity {
+  background:#242424; border:1px solid #625b55;
+  min-width:0;
+}
+.erd-entity.primary { border:2px solid #c58b91; }
+.erd-entity h4 {
+  background:var(--crimson); color:#fff;
+  padding:10px 13px; font-size:1rem; letter-spacing:.3px;
+}
+.erd-entity ul { list-style:none; padding:10px 13px 13px; }
+.erd-entity li {
+  color:#e2ddd4; font-family:Consolas,monospace;
+  font-size:.72rem; padding:4px 0;
+  border-bottom:1px solid #393632;
+}
+.erd-entity li:last-child { border:0; }
+.erd-entity .key { color:#e6b8bd; font-weight:bold; }
+.erd-link {
+  text-align:center; color:#e6b8bd; font-size:.72rem;
+  font-weight:bold; letter-spacing:.4px; padding:4px 8px 14px;
+}
+.erd-middle {
+  display:grid; grid-template-columns:repeat(3,1fr); gap:14px;
+}
+.erd-bottom {
+  display:grid; grid-template-columns:repeat(2,1fr); gap:14px;
+  max-width:720px; margin:0 auto;
+}
+.erd-legend {
+  display:flex; flex-wrap:wrap; gap:16px; margin-top:20px;
+  color:#d1ccc3; font-size:.72rem;
+}
+.erd-legend b { color:#e6b8bd; }
+.erd-explanation {
+  display:grid; grid-template-columns:repeat(2,1fr);
+  gap:12px; margin-top:18px;
+}
+.erd-explanation article {
+  background:var(--eggshell); padding:18px;
+  border-top:4px solid var(--crimson);
+}
+.erd-explanation h4 { font-size:1.05rem; margin-bottom:7px; }
+.erd-explanation p { color:var(--muted); font-size:.78rem; }
+.architecture-warning {
+  margin-top:20px; padding:20px 22px;
+  border:2px solid var(--crimson); background:var(--pearl);
+  font-size:.84rem;
+}
+.architecture-warning strong { color:var(--crimson); }
+@media(max-width:900px) {
+  .data-flow { grid-template-columns:repeat(2,1fr); }
+  .data-flow-step:not(:last-child)::after { display:none; }
+  .erd-middle { grid-template-columns:repeat(2,1fr); }
+}
+@media(max-width:600px) {
+  .data-flow, .erd-top, .erd-middle, .erd-bottom,
+  .erd-explanation { grid-template-columns:1fr; }
+  .erd-shell { padding:16px; }
+  .architecture-subhead { align-items:flex-start; flex-direction:column; }
+}
+
 </style>
 </head>
 
@@ -432,6 +560,7 @@ footer {
       <li><a href="#methodology">Methodology</a></li>
       <li><a href="#modalities">Data Types</a></li>
       <li><a href="#sources">Sources</a></li>
+      <li><a href="#data-architecture">Data Architecture</a></li>
     </ul>
   </nav>
 </div>
@@ -770,6 +899,236 @@ footer {
   </p>
 
 </section>
+
+
+<!-- 07 DATA STRUCTURING & DATABASE ARCHITECTURE -->
+
+<section class="section" id="data-architecture">
+
+  <div class="section-heading">
+    <div class="kicker">07 / Data Structuring &amp; Database Architecture</div>
+    <h2>How Will Raw Recordings Become Model-Ready Data?</h2>
+    <p class="section-intro">
+      The dataset must be more than a collection of video files. Each usable
+      observation needs a traceable source, timestamp, extracted features
+      and clearly defined annotations. The following workflow and schema
+      describe the proposed structure for organizing that information.
+    </p>
+  </div>
+
+  <div class="architecture-block">
+    <div class="architecture-subhead">
+      <h3>7.1 &nbsp; CSV Generation Workflow</h3>
+      <span>Proposed processing flow</span>
+    </div>
+
+    <div class="data-flow">
+      <article class="data-flow-step">
+        <div class="step-no">INPUT 01</div>
+        <h4>Original Recordings</h4>
+        <p>Retain each source video with a unique session ID and available recording metadata.</p>
+      </article>
+      <article class="data-flow-step">
+        <div class="step-no">PROCESS 02</div>
+        <h4>Frame &amp; Time Extraction</h4>
+        <p>Extract selected frames or temporal windows while preserving timestamps and source references.</p>
+      </article>
+      <article class="data-flow-step">
+        <div class="step-no">PROCESS 03</div>
+        <h4>Feature Extraction</h4>
+        <p>Calculate validated facial and body measurements; align telemetry where available.</p>
+      </article>
+      <article class="data-flow-step">
+        <div class="step-no">PROCESS 04</div>
+        <h4>Annotation</h4>
+        <p>Attach event labels and reviewed state labels to the relevant frame or time window.</p>
+      </article>
+      <article class="data-flow-step">
+        <div class="step-no">OUTPUT 05</div>
+        <h4>Structured CSV</h4>
+        <p>Export organized records for inspection, preprocessing and model-development workflows.</p>
+      </article>
+    </div>
+
+    <div class="architecture-subhead">
+      <h3>Illustrative CSV Preview</h3>
+      <span>Example records · not measured data</span>
+    </div>
+
+    <div class="csv-wrap">
+      <table class="csv-table">
+        <thead>
+          <tr>
+            <th>session_id</th>
+            <th>timestamp_ms</th>
+            <th>EAR</th>
+            <th>MAR</th>
+            <th>head_yaw</th>
+            <th>torso_lean</th>
+            <th>facial_event</th>
+            <th>body_event</th>
+            <th>driver_state</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><code>S001</code></td><td>1200</td><td>0.28</td><td>0.12</td>
+            <td>4.5</td><td>2.1</td><td>none</td><td>normal</td><td>unclassified</td>
+          </tr>
+          <tr>
+            <td><code>S001</code></td><td>1400</td><td>0.11</td><td>0.15</td>
+            <td>5.2</td><td>2.4</td><td>eye_closure</td><td>normal</td><td>review_required</td>
+          </tr>
+          <tr>
+            <td><code>S001</code></td><td>1600</td><td>0.09</td><td>0.42</td>
+            <td>8.1</td><td>7.3</td><td>possible_yawn</td><td>leaning</td><td>review_required</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="table-caption">
+      Example values are illustrative only. Actual columns, units, sampling frequency and labels
+      will be finalized after feature validation and annotation guidelines are established.
+    </p>
+
+    <div class="schema-note">
+      <strong>Important distinction:</strong> A CSV row may represent a frame or a time window,
+      depending on the feature. Facial and body measurements should not be treated as verified
+      driver-state labels. Observable events (such as eye closure or leaning) and inferred states
+      (such as possible drowsiness or distraction) must remain separate fields.
+    </div>
+  </div>
+
+  <div class="architecture-block">
+    <div class="architecture-subhead">
+      <h3>7.2 &nbsp; Proposed Logical ERD</h3>
+      <span>Conceptual data model</span>
+    </div>
+    <p class="section-intro">
+      The proposed entity relationship structure keeps recordings, extracted
+      observations, annotations and augmented samples traceable to their
+      original source. It is a logical design, not a claim that all tables
+      have already been implemented in a live database.
+    </p>
+
+    <div class="erd-shell">
+      <div class="erd-top">
+        <article class="erd-entity">
+          <h4>DRIVER</h4>
+          <ul>
+            <li><span class="key">PK</span> driver_id</li>
+            <li>anonymized_code</li>
+            <li>consent_status</li>
+          </ul>
+        </article>
+        <article class="erd-entity primary">
+          <h4>RECORDING_SESSION</h4>
+          <ul>
+            <li><span class="key">PK</span> session_id</li>
+            <li><span class="key">FK</span> driver_id</li>
+            <li>recorded_at</li>
+            <li>camera_context</li>
+            <li>source_video_ref</li>
+          </ul>
+        </article>
+      </div>
+      <div class="erd-link">DRIVER 1 ───── N RECORDING_SESSION</div>
+
+      <div class="erd-middle">
+        <article class="erd-entity">
+          <h4>FRAME_RECORD</h4>
+          <ul>
+            <li><span class="key">PK</span> frame_id</li>
+            <li><span class="key">FK</span> session_id</li>
+            <li>timestamp_ms</li>
+            <li>frame_ref</li>
+          </ul>
+        </article>
+        <article class="erd-entity">
+          <h4>FACIAL_FEATURES</h4>
+          <ul>
+            <li><span class="key">PK</span> facial_id</li>
+            <li><span class="key">FK</span> frame_id</li>
+            <li>EAR / MAR</li>
+            <li>head_orientation</li>
+          </ul>
+        </article>
+        <article class="erd-entity">
+          <h4>BODY_FEATURES</h4>
+          <ul>
+            <li><span class="key">PK</span> body_id</li>
+            <li><span class="key">FK</span> frame_id</li>
+            <li>torso_orientation</li>
+            <li>pose_measurements</li>
+          </ul>
+        </article>
+      </div>
+      <div class="erd-link">RECORDING_SESSION 1 ─ N FRAME_RECORD &nbsp; · &nbsp; FRAME_RECORD 1 ─ 0..1 FEATURE RECORD PER MODALITY</div>
+
+      <div class="erd-bottom">
+        <article class="erd-entity">
+          <h4>ANNOTATION</h4>
+          <ul>
+            <li><span class="key">PK</span> annotation_id</li>
+            <li><span class="key">FK</span> session_id</li>
+            <li>start_time / end_time</li>
+            <li>facial_event / body_event</li>
+            <li>driver_state / reviewer</li>
+          </ul>
+        </article>
+        <article class="erd-entity">
+          <h4>AUGMENTATION_RECORD</h4>
+          <ul>
+            <li><span class="key">PK</span> augmentation_id</li>
+            <li><span class="key">FK</span> source_frame_id</li>
+            <li>transform_type</li>
+            <li>output_ref</li>
+            <li>dataset_partition</li>
+          </ul>
+        </article>
+      </div>
+      <div class="erd-link">SESSION 1 ─ N ANNOTATION &nbsp; · &nbsp; SOURCE FRAME 1 ─ N AUGMENTED DERIVATIVES</div>
+
+      <div class="erd-legend">
+        <span><b>PK</b> = Primary Key</span>
+        <span><b>FK</b> = Foreign Key</span>
+        <span>1 ─ N = One-to-many relationship</span>
+        <span>0..1 = Optional single related record</span>
+      </div>
+    </div>
+
+    <div class="erd-explanation">
+      <article>
+        <h4>Recording traceability</h4>
+        <p>Each session is linked to an anonymized driver code and its original source recording. This supports session-level separation and traceability without exposing unnecessary identity information.</p>
+      </article>
+      <article>
+        <h4>Separate feature modalities</h4>
+        <p>Facial and body measurements are stored independently and linked to their source frame. This avoids mixing distinct measurement types into one ambiguous record.</p>
+      </article>
+      <article>
+        <h4>Time-based annotations</h4>
+        <p>Labels can cover a time interval rather than a single frame. The annotation record therefore stores a session reference and start/end timestamps.</p>
+      </article>
+      <article>
+        <h4>Augmentation lineage</h4>
+        <p>Every generated sample should retain its source reference and transformation details, making it possible to identify derived data and audit the training pipeline.</p>
+      </article>
+    </div>
+
+    <div class="architecture-warning">
+      <strong>Design and evaluation safeguards:</strong>
+      Split original recordings by driver or recording session before augmentation.
+      Apply augmentation only to the training partition; keep validation and test
+      recordings independent. Five recordings are an initial pipeline baseline,
+      not sufficient evidence of generalization across drivers. GPS and other
+      telemetry should be stored as separately timestamped records if their
+      sampling rate differs from the video frame rate.
+    </div>
+  </div>
+
+</section>
+
 
 <!-- 06 OUTCOME -->
 
