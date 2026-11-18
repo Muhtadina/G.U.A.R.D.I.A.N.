@@ -213,6 +213,50 @@ h1, h2, h3, h4 {
   color: var(--ink);
 }
 
+  /*Button for Dataset*/
+  .dataset-action {
+    display: flex;
+    justify-content: center;
+    margin: 28px 0 40px;
+}
+
+.dataset-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 14px;
+    padding: 13px 24px;
+
+    background: #8e1d2d;
+    color: #fff;
+    border: 1px solid #8e1d2d;
+    border-radius: 3px;
+
+    font-family: 'Oswald', sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    letter-spacing: 1.2px;
+    text-transform: uppercase;
+    text-decoration: none;
+
+    transition: all 0.25s ease;
+}
+
+.dataset-btn:hover {
+    background: transparent;
+    color: #8e1d2d;
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px rgba(142, 29, 45, 0.15);
+}
+
+.btn-arrow {
+    font-size: 18px;
+    transition: transform 0.25s ease;
+}
+
+.dataset-btn:hover .btn-arrow {
+    transform: translate(3px, -3px);
+}
+  
 /* Why */
 
 .why-grid {
@@ -579,6 +623,12 @@ footer {
   </p>
   <div class="hero-rule"></div>
 </header>
+  <div class="dataset-action">
+    <a href="https://drive.google.com/drive/folders/1cJMvLAyh3kEzzbAzL_HoMNO9RmzbEqsa?usp=sharing" target="_blank" rel="noopener noreferrer" class="dataset-btn">
+        Explore Data Architecture
+        <span class="btn-arrow">↗</span>
+    </a>
+</div>
 
 <!-- 01 OVERVIEW -->
 
@@ -598,7 +648,7 @@ footer {
   <div class="baseline">
 
     <div class="baseline-main">
-      <div class="baseline-number">05</div>
+      <div class="baseline-number">07</div>
       <h3>Real-World Video Recordings</h3>
       <p>
         Five driver video recordings have been collected as
