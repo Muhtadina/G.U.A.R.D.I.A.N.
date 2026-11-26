@@ -1,0 +1,569 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="G.U.A.R.D.I.A.N. machine learning pipeline: facial expression recognition, temporal driver behavior analysis, and predictive vehicle intelligence.">
+  <title>Machine Learning Pipeline | G.U.A.R.D.I.A.N.</title>
+
+  <!-- Keep these fonts aligned with the existing G.U.A.R.D.I.A.N. portfolio. -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --ink: #171719;
+      --ink-soft: #242428;
+      --paper: #f1eee7;
+      --paper-dim: #ded9cf;
+      --white: #fffdf8;
+      --red: #a71930;
+      --red-bright: #c52b43;
+      --red-wash: rgba(167, 25, 48, .09);
+      --line: rgba(23, 23, 25, .18);
+      --muted: #66635f;
+      --green: #426b54;
+      --blue: #42627d;
+      --max: 1160px;
+      --radius: 4px;
+      --heading: "Oswald", Impact, sans-serif;
+      --body: "Inter", Verdana, sans-serif;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; scroll-padding-top: 90px; }
+    body {
+      margin: 0;
+      color: var(--ink);
+      background: var(--paper);
+      font-family: var(--body);
+      line-height: 1.65;
+    }
+    a { color: inherit; }
+    .wrap { width: min(var(--max), calc(100% - 44px)); margin-inline: auto; }
+    .eyebrow {
+      display: inline-flex; align-items: center; gap: 10px;
+      color: var(--red); font-size: .72rem; font-weight: 800;
+      letter-spacing: .17em; text-transform: uppercase;
+    }
+    .eyebrow::before { content: ""; width: 25px; height: 2px; background: currentColor; }
+    h1, h2, h3, h4, .display {
+      font-family: var(--heading); font-weight: 600;
+      line-height: 1.08; text-transform: uppercase; margin: 0;
+    }
+    h1 { font-size: clamp(3rem, 8vw, 6.7rem); letter-spacing: -.025em; }
+    h2 { font-size: clamp(2.1rem, 4.4vw, 3.6rem); letter-spacing: -.015em; }
+    h3 { font-size: 1.55rem; }
+    h4 { font-size: 1.13rem; }
+    p { margin: 0 0 1rem; }
+    .muted { color: var(--muted); }
+    .red { color: var(--red); }
+    .section { padding: 92px 0; border-top: 1px solid var(--line); }
+    .section-head { display: flex; justify-content: space-between; gap: 30px; align-items: end; margin-bottom: 38px; }
+    .section-head > div:first-child { max-width: 720px; }
+    .section-head p { max-width: 390px; margin: 0; color: var(--muted); font-size: .92rem; }
+    .tag {
+      display: inline-block; border: 1px solid currentColor; color: var(--red);
+      padding: 4px 9px; font-size: .65rem; font-weight: 800;
+      letter-spacing: .12em; text-transform: uppercase;
+    }
+    .topbar {
+      position: sticky; top: 0; z-index: 20; background: rgba(23,23,25,.96);
+      color: var(--white); border-bottom: 3px solid var(--red);
+      backdrop-filter: blur(10px);
+    }
+    .nav { min-height: 62px; display: flex; align-items: center; justify-content: space-between; gap: 22px; }
+    .brand { font-family: var(--heading); font-size: 1.1rem; letter-spacing: .08em; text-decoration: none; }
+    .brand span { color: #e34a5f; }
+    .nav-links { display: flex; flex-wrap: wrap; gap: 20px; }
+    .nav-links a { color: #e8e4dc; font-size: .72rem; font-weight: 700; letter-spacing: .08em; text-decoration: none; text-transform: uppercase; }
+    .nav-links a:hover { color: #ff8290; }
+
+    .hero {
+      position: relative; overflow: hidden; color: var(--white);
+      background: var(--ink); padding: 100px 0 76px;
+    }
+    .hero::after {
+      content: "ML"; position: absolute; right: -20px; bottom: -115px;
+      font: 700 clamp(15rem, 35vw, 32rem)/.8 var(--heading);
+      color: rgba(255,255,255,.035); pointer-events: none;
+    }
+    .hero-grid { position: relative; z-index: 1; display: grid; grid-template-columns: 1.3fr .7fr; gap: 55px; align-items: end; }
+    .hero .eyebrow { color: #f06a7b; }
+    .hero h1 { margin: 18px 0 22px; }
+    .hero h1 span { color: #e34a5f; }
+    .hero-copy { max-width: 690px; color: #d4d0c8; font-size: 1.03rem; }
+    .hero-note { border-left: 3px solid var(--red-bright); padding: 16px 20px; background: rgba(255,255,255,.055); }
+    .hero-note strong { display: block; font-family: var(--heading); font-size: 1.35rem; text-transform: uppercase; margin-bottom: 7px; }
+    .hero-note p { margin: 0; color: #d4d0c8; font-size: .85rem; }
+    .hero-meta { display: flex; flex-wrap: wrap; gap: 9px; margin-top: 28px; }
+    .hero-meta span { border: 1px solid rgba(255,255,255,.25); padding: 6px 10px; color: #e8e4dc; font-size: .68rem; letter-spacing: .08em; text-transform: uppercase; }
+
+    .overview-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 14px; }
+    .overview-card { padding: 23px; background: var(--white); border: 1px solid var(--line); border-top: 4px solid var(--red); }
+    .overview-card .number { color: var(--red); font: 600 2.5rem/1 var(--heading); }
+    .overview-card h3 { margin: 15px 0 9px; }
+    .overview-card p { color: var(--muted); font-size: .86rem; margin: 0; }
+
+    .flow-shell { background: var(--ink); color: var(--white); padding: 34px; }
+    .flow-title { display: flex; justify-content: space-between; gap: 20px; align-items: center; margin-bottom: 24px; }
+    .flow-title h3 { color: var(--white); }
+    .flow-title span { color: #f06a7b; font-size: .7rem; font-weight: 800; letter-spacing: .12em; text-transform: uppercase; }
+    .flow-row { display: grid; grid-template-columns: repeat(5,1fr); gap: 10px; align-items: stretch; }
+    .flow-node { position: relative; min-height: 125px; padding: 16px 13px; border: 1px solid rgba(255,255,255,.22); background: rgba(255,255,255,.045); }
+    .flow-node:not(:last-child)::after { content: "→"; position: absolute; right: -13px; top: 42%; z-index: 2; color: #f06a7b; font-size: 1.2rem; font-weight: 800; }
+    .flow-node b { display: block; font: 600 1.05rem var(--heading); text-transform: uppercase; margin-bottom: 8px; }
+    .flow-node small { color: #c9c5bd; font-size: .72rem; line-height: 1.5; display: block; }
+    .flow-foot { margin: 18px 0 0; color: #c9c5bd; font-size: .78rem; }
+
+    .pipeline-grid { display: grid; grid-template-columns: repeat(2,1fr); gap: 18px; }
+    .pipeline-card { background: var(--white); border: 1px solid var(--line); }
+    .pipeline-card.full { grid-column: 1 / -1; }
+    .card-top { padding: 25px 27px 21px; border-bottom: 1px solid var(--line); display: flex; justify-content: space-between; gap: 18px; align-items: start; }
+    .card-top p { color: var(--muted); font-size: .84rem; margin: 9px 0 0; max-width: 650px; }
+    .card-body { padding: 25px 27px 28px; }
+    .dataset-link { display: inline-flex; align-items: center; gap: 8px; margin-top: 14px; color: var(--red); font-size: .78rem; font-weight: 800; text-decoration-thickness: 1px; text-underline-offset: 4px; }
+    .steps { display: grid; gap: 8px; counter-reset: step; }
+    .step {
+      counter-increment: step; display: grid; grid-template-columns: 34px 1fr; gap: 12px;
+      align-items: start; padding: 12px; background: #f3f0e9; border-left: 2px solid var(--red);
+    }
+    .step::before { content: counter(step, decimal-leading-zero); font: 600 1.05rem var(--heading); color: var(--red); }
+    .step strong { display: block; font-size: .83rem; }
+    .step span { display: block; color: var(--muted); font-size: .75rem; margin-top: 2px; }
+    .model-list { display: grid; grid-template-columns: repeat(2,1fr); gap: 9px; margin-top: 18px; }
+    .model { border: 1px solid var(--line); padding: 12px; }
+    .model b { display: block; font-family: var(--heading); font-size: 1.08rem; text-transform: uppercase; }
+    .model small { display: block; color: var(--muted); font-size: .72rem; margin-top: 3px; }
+    .model.primary { border-color: var(--red); background: var(--red-wash); }
+    .model.wide { grid-column: 1/-1; }
+    .why {
+      margin-top: 18px; padding: 15px 17px; background: var(--ink); color: #e9e5dd;
+      font-size: .8rem; border-left: 3px solid var(--red-bright);
+    }
+    .why strong { color: #ff8492; }
+
+    .world-layout { display: grid; grid-template-columns: .85fr 1.15fr; gap: 25px; align-items: start; }
+    .world-copy { background: var(--ink); color: var(--white); padding: 28px; }
+    .world-copy h3 { margin: 13px 0; }
+    .world-copy p, .world-copy li { color: #d0ccc4; font-size: .84rem; }
+    .world-copy ul { padding-left: 18px; margin-bottom: 0; }
+    .world-flow { background: var(--white); border: 1px solid var(--line); padding: 25px; }
+    .world-node { padding: 14px 16px; background: #f0ede6; border: 1px solid var(--line); text-align: center; }
+    .world-node strong { display: block; font: 600 1.05rem var(--heading); text-transform: uppercase; }
+    .world-node small { display: block; color: var(--muted); font-size: .72rem; }
+    .world-arrow { text-align: center; color: var(--red); font-size: 1.4rem; line-height: 1.7; }
+    .world-branches { display: grid; grid-template-columns: 1fr 1fr; gap: 9px; }
+    .world-warning { margin-top: 15px; padding: 13px 15px; border: 1px solid #c9a45d; background: #fbf4e5; color: #5c4822; font-size: .76rem; }
+
+    .fusion { display: grid; grid-template-columns: repeat(3,1fr); gap: 12px; margin-bottom: 15px; }
+    .fusion-item { text-align: center; padding: 20px 12px; background: var(--white); border: 1px solid var(--line); }
+    .fusion-item strong { display: block; font: 600 1.1rem var(--heading); text-transform: uppercase; }
+    .fusion-item small { color: var(--muted); font-size: .72rem; }
+    .fusion-plus { text-align: center; color: var(--red); font: 600 1.6rem var(--heading); margin: 4px 0; }
+    .decision { background: var(--ink); color: var(--white); padding: 24px; text-align: center; }
+    .decision h3 { margin-bottom: 7px; }
+    .decision p { margin: 0; color: #d0ccc4; font-size: .82rem; }
+
+    .table-wrap { overflow-x: auto; border: 1px solid var(--line); background: var(--white); }
+    table { width: 100%; border-collapse: collapse; min-width: 650px; text-align: left; }
+    th, td { padding: 14px 16px; border-bottom: 1px solid var(--line); font-size: .8rem; vertical-align: top; }
+    th { background: var(--ink); color: var(--white); font: 500 .85rem var(--heading); text-transform: uppercase; letter-spacing: .05em; }
+    td:first-child { font-weight: 700; }
+    tr:last-child td { border-bottom: 0; }
+
+    .roadmap { display: grid; grid-template-columns: repeat(4,1fr); gap: 12px; }
+    .roadmap-item { background: var(--white); border: 1px solid var(--line); padding: 20px; }
+    .roadmap-item .phase { font: 600 1.8rem var(--heading); color: var(--red); }
+    .roadmap-item h3 { font-size: 1.25rem; margin: 8px 0; }
+    .roadmap-item ul { padding-left: 17px; margin: 0; color: var(--muted); font-size: .75rem; }
+    .status-note { margin-top: 20px; color: var(--muted); font-size: .76rem; }
+
+    .footer { padding: 30px 0; background: var(--ink); color: #c9c5bd; }
+    .footer-inner { display: flex; justify-content: space-between; gap: 20px; align-items: center; }
+    .footer strong { font: 500 1.1rem var(--heading); color: var(--white); letter-spacing: .07em; }
+    .footer small { font-size: .7rem; }
+    .back-top { color: #ff8492; text-decoration: none; font-size: .75rem; font-weight: 700; }
+
+    .colab-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  padding: 11px 18px;
+  background: var(--red);
+  color: var(--white);
+  border: 1px solid var(--red);
+  text-decoration: none;
+  font-size: .72rem;
+  font-weight: 800;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  transition: background .2s ease, border-color .2s ease;
+}
+
+.colab-button:hover {
+  background: var(--red-bright);
+  border-color: var(--red-bright);
+}
+
+.colab-button span {
+  font-size: 1rem;
+}
+
+    @media (max-width: 850px) {
+      .hero-grid, .world-layout { grid-template-columns: 1fr; }
+      .flow-row { grid-template-columns: 1fr; }
+      .flow-node { min-height: auto; }
+      .flow-node:not(:last-child)::after { content: "↓"; right: 12px; top: auto; bottom: -18px; }
+      .section-head { display: block; }
+      .section-head p { margin-top: 14px; }
+      .roadmap { grid-template-columns: repeat(2,1fr); }
+    }
+    @media (max-width: 620px) {
+      .wrap { width: min(100% - 30px, var(--max)); }
+      .nav { padding: 12px 0; align-items: flex-start; flex-direction: column; gap: 8px; }
+      .nav-links { gap: 9px 14px; }
+      .nav-links a { font-size: .62rem; }
+      .hero { padding: 72px 0 55px; }
+      .section { padding: 65px 0; }
+      .overview-grid, .pipeline-grid, .roadmap { grid-template-columns: 1fr; }
+      .pipeline-card.full { grid-column: auto; }
+      .card-top, .card-body { padding-left: 19px; padding-right: 19px; }
+      .model-list { grid-template-columns: 1fr; }
+      .model.wide { grid-column: auto; }
+      .fusion { grid-template-columns: 1fr; }
+      .flow-shell { padding: 22px 17px; }
+      .flow-title { align-items: flex-start; flex-direction: column; }
+      .footer-inner { align-items: flex-start; flex-direction: column; }
+    }
+    @media print {
+      .topbar { position: static; }
+      .section { padding: 45px 0; break-inside: avoid; }
+      .hero { padding: 55px 0; }
+      a { text-decoration: none; }
+    }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <div class="wrap nav">
+      <a class="brand" href="index.html">G.U.A.R.D.I.A.N.<span> / R&amp;D</span></a>
+      <nav class="nav-links" aria-label="Page navigation">
+        <a href="#overview">Overview</a>
+        <a href="#facial">Facial ML</a>
+        <a href="#body">Body ML</a>
+        <a href="#world-model">World Model</a>
+        <a href="#integration">Integration</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="wrap hero-grid">
+        <div>
+          <span class="eyebrow">Research &amp; Development / Machine Learning</span>
+          <h1>From observation<br>to <span>prediction.</span></h1>
+          <p class="hero-copy">
+            A modular machine learning pipeline for multimodal driver intelligence.
+            G.U.A.R.D.I.A.N. combines facial expression analysis, temporal body-movement
+            recognition and predictive vehicle-state modelling to investigate how
+            potentially unsafe situations can be identified and anticipated.
+          </p>
+          <div class="hero-meta">
+            <span>Facial recognition</span>
+            <span>Temporal learning</span>
+            <span>Predictive intelligence</span>
+            <span>TensorFlow / Keras</span>
+          </div>
+        </div>
+        <aside class="hero-note">
+          <strong>Our research objective</strong>
+          <p>Move beyond isolated detections. Learn from visual and vehicle observations over time, then provide evidence-based inputs to a separately validated safety decision layer.</p>
+        </aside>
+      </div>
+    </section>
+
+    <section class="section" id="overview">
+      <div class="wrap">
+        <div class="section-head">
+          <div>
+            <span class="eyebrow">01 / Pipeline overview</span>
+            <h2>Three intelligence components.<br>One connected system.</h2>
+          </div>
+          <p>Each component has a distinct learning objective, dataset, training process and evaluation strategy. Models remain modular so they can be compared and improved independently.</p>
+        </div>
+        <div class="overview-grid">
+          <article class="overview-card">
+            <div class="number">01</div>
+            <h3>Facial expression recognition</h3>
+            <p>Classify visible facial expressions from labelled images. MobileNetV3 is the primary candidate; EfficientNet-B0 provides a comparative benchmark.</p>
+          </article>
+          <article class="overview-card">
+            <div class="number">02</div>
+            <h3>Driver body behaviour</h3>
+            <p>Extract pose-based movement features from video sequences and compare temporal models to identify defined movement patterns.</p>
+          </article>
+          <article class="overview-card">
+            <div class="number">03</div>
+            <h3>Predictive vehicle intelligence</h3>
+            <p>Investigate a Recurrent State-Space Model (RSSM) that learns how driver and vehicle states evolve under observations and control actions.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="wrap">
+        <div class="flow-shell">
+          <div class="flow-title">
+            <h3>End-to-end ML workflow</h3>
+            <span>Proposed system flow</span>
+          </div>
+          <div class="flow-row">
+            <div class="flow-node"><b>01 / Data</b><small>Processed facial images, driver videos and synchronized vehicle telemetry.</small></div>
+            <div class="flow-node"><b>02 / Prepare</b><small>Image preprocessing, pose extraction, feature engineering and sequence generation.</small></div>
+            <div class="flow-node"><b>03 / Learn</b><small>CNN-based facial classification and temporal body-movement experiments.</small></div>
+            <div class="flow-node"><b>04 / Predict</b><small>RSSM latent-state learning and future-state prediction experiments.</small></div>
+            <div class="flow-node"><b>05 / Decide</b><small>Multimodal evidence enters a separate safety decision and hardware-control layer.</small></div>
+          </div>
+          <p class="flow-foot">The diagram represents the planned architecture. It does not imply that all models have already been trained or integrated.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="facial">
+      <div class="wrap">
+        <div class="section-head">
+          <div>
+            <span class="eyebrow">02 / Vision branch A</span>
+            <h2>Facial expression<br>recognition.</h2>
+          </div>
+          <p>Learn image-level expression representations from the processed facial dataset, then evaluate lightweight and efficient CNN architectures under the same experimental conditions.</p>
+        </div>
+        <article class="pipeline-card">
+          <div class="card-top">
+            <div>
+              <span class="tag">Primary model / MobileNetV3</span>
+              <h3 style="margin-top:12px">Facial image classification</h3>
+              <p>EfficientNet-B0 is retained as a comparison model. Both candidates use transfer learning before controlled fine-tuning.</p>
+              <a class="dataset-link" href="https://drive.google.com/drive/folders/1o3r80FUBp1VqF30KJEL6zQ376IUVBkX3" target="_blank" rel="noopener">Open processed face-expression dataset ↗</a>
+            </div>
+            <span class="tag">Image-based</span>
+          </div>
+          <div class="card-body">
+            <div class="steps">
+              <div class="step"><div><strong>Dataset inspection and label verification</strong><span>Check class names, image counts, duplicates, quality and class balance.</span></div></div>
+              <div class="step"><div><strong>Preprocessing</strong><span>Face crop where required, resize to the selected model input, normalize and apply controlled augmentation.</span></div></div>
+              <div class="step"><div><strong>Train / validation / test split</strong><span>Keep related or duplicate images together; use subject-independent splits when identity metadata exists.</span></div></div>
+              <div class="step"><div><strong>Transfer learning and fine-tuning</strong><span>Train a new classification head, then selectively fine-tune pretrained layers.</span></div></div>
+              <div class="step"><div><strong>Evaluation and export</strong><span>Compare macro F1, per-class recall, confusion matrix, calibration and inference latency.</span></div></div>
+            </div>
+            <div class="model-list">
+              <div class="model primary"><b>MobileNetV3</b><small>Primary candidate · Efficient inference and edge-deployment potential.</small></div>
+              <div class="model"><b>EfficientNet-B0</b><small>Comparative candidate · Evaluate accuracy and computational trade-offs.</small></div>
+            </div>
+            <div class="why"><strong>Why this branch?</strong> Facial images provide visual expression cues. The model outputs class probabilities, not a diagnosis of stress, intoxication, alertness or driving fitness.</div>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section class="section" id="body">
+      <div class="wrap">
+        <div class="section-head">
+          <div>
+            <span class="eyebrow">03 / Vision branch B</span>
+            <h2>Temporal body-movement<br>recognition.</h2>
+          </div>
+          <p>Driver behaviour is temporal. The pipeline therefore extracts pose sequences and movement dynamics instead of treating each video frame as an independent classification problem.</p>
+        </div>
+        <article class="pipeline-card">
+          <div class="card-top">
+            <div>
+              <span class="tag">Model comparison / Temporal learning</span>
+              <h3 style="margin-top:12px">Video-to-sequence learning</h3>
+              <p>Processed body-movement data will be inspected first. The seven genuine driver recordings will then serve as a separate real-world dataset for validation and further development.</p>
+              <a class="dataset-link" href="https://drive.google.com/drive/folders/1bvC4_lXFui1baPm_otDxmAvfAWQMx5LT" target="_blank" rel="noopener">Open processed body-movement dataset ↗</a>
+            </div>
+            <span class="tag">Sequence-based</span>
+          </div>
+          <div class="card-body">
+            <div class="steps">
+              <div class="step"><div><strong>Video and annotation audit</strong><span>Inspect formats, frame rates, labels, recording identities, duration and class distribution.</span></div></div>
+              <div class="step"><div><strong>Frame sampling and pose extraction</strong><span>Use MediaPipe Pose Landmarker to extract shoulders, elbows, wrists, torso and relevant landmarks.</span></div></div>
+              <div class="step"><div><strong>Feature engineering</strong><span>Normalize coordinates; calculate joint angles, displacement, velocity, acceleration and movement frequency.</span></div></div>
+              <div class="step"><div><strong>Temporal window generation</strong><span>Create fixed-length, timestamp-aware sequences and attach verified behaviour labels.</span></div></div>
+              <div class="step"><div><strong>Model comparison</strong><span>Train candidate architectures on identical driver-wise splits and compare generalization.</span></div></div>
+            </div>
+            <div class="model-list">
+              <div class="model"><b>1D CNN</b><small>Baseline for local temporal patterns in engineered features.</small></div>
+              <div class="model primary"><b>TCN</b><small>Strong candidate for temporal patterns using causal, dilated convolutions.</small></div>
+              <div class="model"><b>GRU</b><small>Recurrent sequence-learning alternative with a compact gating structure.</small></div>
+              <div class="model"><b>LSTM</b><small>Recurrent baseline for learning sequential dependencies.</small></div>
+              <div class="model wide"><b>CNN-LSTM</b><small>Hybrid experiment where frame-level spatial features or pose representations are encoded before temporal learning.</small></div>
+              <div class="model wide"><b>Random Forest / XGBoost</b><small>Traditional ML baseline using engineered movement statistics. Helps determine whether deep learning adds measurable value.</small></div>
+            </div>
+            <div class="why"><strong>Why this branch?</strong> A movement pattern cannot be understood reliably from one frame alone. Temporal features help describe how posture and movement change over time. Labels must describe observable actions, not inferred psychological diagnoses.</div>
+          </div>
+        </article>
+        <p class="status-note">Data integrity: split by driver or original recording before generating overlapping windows. Never distribute adjacent or overlapping windows from the same recording across training and test sets.</p>
+      </div>
+    </section>
+
+    <section class="section" id="world-model">
+      <div class="wrap">
+        <div class="section-head">
+          <div>
+            <span class="eyebrow">04 / Predictive intelligence</span>
+            <h2>World Model:<br>learning how states evolve.</h2>
+          </div>
+          <p>The World Model is a proposed advanced research component. It extends the system from current-state recognition toward predicting how driver and vehicle conditions may evolve.</p>
+        </div>
+        <div class="world-layout">
+          <div class="world-copy">
+            <span class="tag" style="color:#ff8492">Proposed / RSSM-inspired</span>
+            <h3>Recurrent State-Space Model</h3>
+            <p>An RSSM learns compact latent representations and temporal dynamics. Its predictions can be conditioned on previous observations and actions.</p>
+            <ul>
+              <li>Encode driver and vehicle observations.</li>
+              <li>Maintain a latent representation of system state.</li>
+              <li>Predict future latent states and observations.</li>
+              <li>Evaluate prediction error and possible risk indicators.</li>
+              <li>Explore action-conditioned future scenarios.</li>
+            </ul>
+          </div>
+          <div class="world-flow">
+            <div class="world-node"><strong>Multimodal observations</strong><small>Facial probabilities · Pose features · GPS speed · Acceleration</small></div>
+            <div class="world-arrow">↓</div>
+            <div class="world-node"><strong>Observation encoder</strong><small>Transform synchronized observations into latent features</small></div>
+            <div class="world-arrow">↓</div>
+            <div class="world-node"><strong>RSSM latent dynamics</strong><small>Deterministic recurrent state + stochastic latent state</small></div>
+            <div class="world-arrow">↓</div>
+            <div class="world-branches">
+              <div class="world-node"><strong>Future-state prediction</strong><small>Estimate evolving driver and vehicle state</small></div>
+              <div class="world-node"><strong>Prediction error</strong><small>Measure deviation between predicted and observed state</small></div>
+            </div>
+            <div class="world-arrow">↓</div>
+            <div class="world-node"><strong>Predictive decision support</strong><small>Evaluate possible future conditions and candidate actions</small></div>
+            <div class="world-arrow">↓</div>
+            <div class="world-node"><strong>Independent safety controller</strong><small>Validated limits · actuator constraints · manual override</small></div>
+            <div class="world-warning"><strong>Safety boundary:</strong> The World Model will not independently command real vehicle braking. Predictive outputs are advisory until validated; deterministic, fail-safe control logic remains responsible for hardware actions.</div>
+          </div>
+        </div>
+        <div class="why" style="margin-top:22px"><strong>Data requirement:</strong> A useful action-conditioned vehicle World Model requires synchronized observations, control actions and resulting states. Static facial images and driver videos alone cannot teach the model how a vehicle responds to braking or acceleration.</div>
+      </div>
+    </section>
+
+    <section class="section" id="integration">
+      <div class="wrap">
+        <div class="section-head">
+          <div>
+            <span class="eyebrow">05 / System integration</span>
+            <h2>From model outputs<br>to safety decisions.</h2>
+          </div>
+          <p>Independent models produce evidence and predictions. A separate fusion and safety layer combines them with vehicle telemetry before any alert or hardware response.</p>
+        </div>
+        <div class="fusion">
+          <div class="fusion-item"><strong>Facial indicators</strong><small>Expression probabilities and confidence</small></div>
+          <div class="fusion-item"><strong>Body behaviour</strong><small>Movement class and temporal features</small></div>
+          <div class="fusion-item"><strong>Vehicle telemetry</strong><small>GPS speed, acceleration and device state</small></div>
+        </div>
+        <div class="fusion-plus">＋</div>
+        <div class="decision">
+          <h3>Multimodal fusion &amp; safety decision layer</h3>
+          <p>Timestamp alignment · Evidence weighting · Risk rules · Confidence handling · Sensor-failure handling</p>
+        </div>
+        <div class="fusion-plus">↓</div>
+        <div class="decision" style="border:2px solid var(--red)">
+          <h3>Local vehicle response</h3>
+          <p>Driver alerts · Display · Buzzer · Indicators · Simulated actuator control</p>
+        </div>
+        <p class="status-note">Immediate safety alerts and protective limits must continue locally even if cloud connectivity is lost. The predictive model supplements, rather than replaces, deterministic safety controls.</p>
+      </div>
+    </section>
+
+    <section class="section" id="evaluation">
+      <div class="wrap">
+        <div class="section-head">
+          <div>
+            <span class="eyebrow">06 / Experimental methodology</span>
+            <h2>How we determine<br>what works.</h2>
+          </div>
+          <p>Architecture selection will be evidence-based. No model is considered successful until its performance, generalization and deployment cost have been measured.</p>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Research component</th><th>Evaluation criteria</th><th>Selection objective</th></tr></thead>
+            <tbody>
+              <tr><td>Facial CNNs</td><td>Macro F1, per-class recall, confusion matrix, calibration, latency</td><td>Reliable expression classification with practical inference cost</td></tr>
+              <tr><td>Temporal models</td><td>Macro F1, subject-wise generalization, false alerts, latency</td><td>Recognize defined movement patterns across unseen recordings</td></tr>
+              <tr><td>World Model</td><td>Next-state prediction error, rollout stability, calibration, action-conditioned prediction error</td><td>Determine whether learned dynamics improve predictive decision support</td></tr>
+              <tr><td>Integrated system</td><td>End-to-end latency, synchronization, reliability, failure handling</td><td>Demonstrate robust local operation and safe decision flow</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="status-note">Dataset splits must be established at the original subject/recording level before frame extraction, augmentation or overlapping-window generation. Report uncertainty and dataset limitations alongside performance.</p>
+      </div>
+    </section>
+
+    <section class="section" id="roadmap">
+      <div class="wrap">
+        <div class="section-head">
+          <div>
+            <span class="eyebrow">07 / Development roadmap</span>
+            <h2>Research to implementation.</h2>
+          </div>
+          <p>The following stages describe the intended development order, not completed milestones.</p>
+        </div>
+        <div class="roadmap">
+          <article class="roadmap-item">
+            <div class="phase">01</div>
+            <h3>Dataset audit</h3>
+            <ul><li>Verify labels and formats</li><li>Measure class distribution</li><li>Establish leakage-safe splits</li><li>Define annotations</li></ul>
+          </article>
+          <article class="roadmap-item">
+            <div class="phase">02</div>
+            <h3>Model training</h3>
+            <ul><li>Train facial CNNs</li><li>Extract pose sequences</li><li>Compare temporal models</li><li>Record experiments</li></ul>
+          </article>
+          <article class="roadmap-item">
+            <div class="phase">03</div>
+            <h3>Predictive learning</h3>
+            <ul><li>Collect vehicle telemetry</li><li>Define state and action vectors</li><li>Implement RSSM</li><li>Evaluate predictions</li></ul>
+          </article>
+          <article class="roadmap-item">
+            <div class="phase">04</div>
+            <h3>Integration</h3>
+            <ul><li>Fuse model outputs</li><li>Build safety decision logic</li><li>Connect local hardware</li><li>Test failure scenarios</li></ul>
+          </article>
+        </div>
+      </div>
+    </section>
+  </main>
+
+ <footer class="footer">
+  <div class="wrap footer-inner">
+    <div>
+      <strong>G.U.A.R.D.I.A.N. / MACHINE LEARNING PIPELINE</strong><br>
+      <small>Guarded Unified AI for Real-time Driver Intelligence, Alerting, and Networked Security</small>
+    </div>
+
+    <div style="display:flex; align-items:center; flex-wrap:wrap; gap:18px;">
+      <a
+        class="colab-button"
+        href="https://colab.research.google.com/drive/1NVVaGlKSD2w4lf2Xo8-6cQ7rsOrvumrK?usp=sharing"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        <span>↗</span> Open Google Colab
+      </a>
+
+      <a class="back-top" href="#">BACK TO TOP ↑</a>
+    </div>
+  </div>
+</footer>
+</body>
+</html>
